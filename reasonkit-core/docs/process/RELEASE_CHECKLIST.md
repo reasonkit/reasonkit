@@ -10,9 +10,9 @@
 
 This checklist ensures consistent, high-quality releases of `reasonkit-core`. All steps are mandatory unless marked `[OPTIONAL]`. The release process enforces the 5 Quality Gates (CONS-009) and follows semantic versioning.
 
-**Release Manager Signature:** ********\_\_\_\_********
-**Release Date:** ********\_\_\_\_********
-**Version:** ********\_\_\_\_********
+**Release Manager Signature:** **\*\*\*\***\_\_\_\_**\*\*\*\***
+**Release Date:** **\*\*\*\***\_\_\_\_**\*\*\*\***
+**Version:** **\*\*\*\***\_\_\_\_**\*\*\*\***
 
 ---
 

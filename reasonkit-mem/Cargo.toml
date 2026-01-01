@@ -1,6 +1,6 @@
 [package]
 name = "reasonkit-mem"
-version = "0.1.2"
+version = "0.1.3"
 edition = "2021"
 rust-version = "1.74"
 authors = ["ReasonKit Team <team@reasonkit.sh>"]
@@ -36,7 +36,8 @@ exclude = [
 ]
 
 [package.metadata.docs.rs]
-all-features = true
+# Don't use all-features (python/local-embeddings require system deps not in docs.rs)
+features = ["compression"]
 rustdoc-args = ["--cfg", "docsrs"]
 default-target = "x86_64-unknown-linux-gnu"
 targets = [
