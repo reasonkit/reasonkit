@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 260" fill="none">
+  <defs>
+    <linearGradient id="heroGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#06b6d4"/>
+      <stop offset="50%" stop-color="#a855f7"/>
+      <stop offset="100%" stop-color="#ec4899"/>
+    </linearGradient>
+    <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="260" fill="#030508"/>
+
+  <!-- Logo and title with generous left padding -->
+  <g transform="translate(50, 45)" filter="url(#softGlow)">
+    <!-- Crystalline logo icon -->
+    <path d="M15 0 L40 0 L55 15 L55 40 L40 55 L15 55 L0 40 L0 15 Z" fill="url(#heroGrad)" opacity="0.85"/>
+    <path d="M22 22 L48 22 M22 33 L36 33 M22 22 L22 48 M48 22 L48 33 L36 33 L48 48" stroke="#06b6d4" stroke-width="4" fill="none"/>
+
+    <!-- ReasonKit text with proper spacing from icon -->
+    <text x="75" y="40" fill="#f9fafb" font-family="Inter, sans-serif" font-size="36" font-weight="700" letter-spacing="1">ReasonKit</text>
+  </g>
+
+  <!-- Tagline with generous vertical spacing -->
+  <text x="50" y="125" fill="#f9fafb" font-family="Inter, sans-serif" font-size="26" font-weight="600">Turn Prompts into Protocols</text>
+
+  <!-- Philosophy quote with proper line height -->
+  <text x="50" y="165" fill="#9ca3af" font-family="Inter, sans-serif" font-size="17" font-style="italic">"Designed, Not Dreamed." — Structure beats intelligence. Engineering over hope.</text>
+
+  <!-- Description with generous spacing -->
+  <text x="50" y="205" fill="#06b6d4" font-family="JetBrains Mono, monospace" font-size="15" font-weight="600">Industrial-Grade Reasoning Infrastructure | Rust-Native | Zero-Trust Logic</text>
+
+  <!-- Badges - evenly distributed with generous spacing -->
+  <!-- 3 badges: 110px, 135px, 145px = 390px total, gaps = 25px × 2 = 50px, total = 440px -->
+  <!-- Starting at x=50, positions: 50, 185, 345 -->
+  <g transform="translate(50, 230)">
+    <!-- Badge 1: CI passing -->
+    <rect x="0" y="0" width="110" height="26" rx="6" fill="#111827" stroke="#06b6d4" stroke-width="1.5"/>
+    <text x="55" y="18" fill="#06b6d4" font-family="JetBrains Mono, monospace" font-size="11" text-anchor="middle" font-weight="500">CI: passing</text>
+
+    <!-- Badge 2: crates.io version -->
+    <rect x="135" y="0" width="135" height="26" rx="6" fill="#111827" stroke="#06b6d4" stroke-width="1.5"/>
+    <text x="202" y="18" fill="#06b6d4" font-family="JetBrains Mono, monospace" font-size="11" text-anchor="middle" font-weight="500">crates.io: v1.0.0</text>
+
+    <!-- Badge 3: license -->
+    <rect x="295" y="0" width="145" height="26" rx="6" fill="#111827" stroke="#06b6d4" stroke-width="1.5"/>
+    <text x="367" y="18" fill="#06b6d4" font-family="JetBrains Mono, monospace" font-size="11" text-anchor="middle" font-weight="500">license: Apache 2.0</text>
+  </g>
+</svg>

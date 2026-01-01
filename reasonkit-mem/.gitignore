@@ -1,0 +1,116 @@
+# ============================================================
+# REASONKIT-MEM .gitignore - OSS PREPARATION
+# ============================================================
+
+# ============================================================
+# PRIVATE/INTERNAL - NEVER COMMIT
+# ============================================================
+.private/
+*.private
+*-private.*
+*_private.*
+/private/
+/internal/
+/confidential/
+/secret/
+/secrets/
+
+# ============================================================
+# SENSITIVE DOCUMENTS
+# ============================================================
+*LAUNCH*
+*PITCH*
+*STRATEGY*
+*ROADMAP*
+*MARKETING*
+*PRICING_INTERNAL*
+*REVENUE*
+*ARR*
+*MRR*
+*FINANCIALS*
+*INVESTOR*
+*FUNDING*
+*BUSINESS_PLAN*
+*COMPETITIVE*
+*INTERNAL*
+*CONFIDENTIAL*
+*PROPRIETARY*
+*ORCHESTRATOR*
+
+# Allow GitHub FUNDING.yml (sponsorship config)
+!.github/FUNDING.yml
+
+# ============================================================
+# ENVIRONMENT & SECRETS
+# ============================================================
+.env
+.env.*
+*.env
+!.env.example
+.envrc
+*.secret
+*.secrets
+*credentials*
+*api_key*
+*apikey*
+*.pem
+*.key
+*.crt
+*.cert
+
+# ============================================================
+# RUST BUILD ARTIFACTS
+# ============================================================
+/target/
+**/*.rlib
+**/*.rmeta
+**/*.d
+**/*.o
+**/*.rs.bk
+Cargo.lock
+
+# ============================================================
+# DATA DIRECTORIES
+# ============================================================
+/data/
+/qdrant_data/
+/tantivy_data/
+/indices/
+
+# ============================================================
+# DATABASE
+# ============================================================
+*.db
+*.sqlite
+*.sqlite3
+
+# ============================================================
+# IDE/EDITOR
+# ============================================================
+.vscode/
+.idea/
+*.sublime-*
+.project
+.settings/
+*.code-workspace
+*.swp
+*.swo
+*~
+
+# ============================================================
+# LOGS
+# ============================================================
+*.log
+logs/
+
+# ============================================================
+# BACKUP & TEMPORARY FILES
+# ============================================================
+*.bak
+*.backup
+*.old
+*.orig
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db

@@ -1,0 +1,174 @@
+# ============================================================
+# REASONKIT-CORE .gitignore - OSS PREPARATION
+# ============================================================
+
+# ============================================================
+# RUST BUILD ARTIFACTS
+# ============================================================
+/target/
+**/*.rs.bk
+**/*.rlib
+**/*.rmeta
+**/*.d
+**/*.o
+Cargo.lock
+
+# ============================================================
+# PRIVATE/INTERNAL - NEVER COMMIT
+# ============================================================
+.private/
+*.private
+*-private.*
+*_private.*
+/private/
+/internal/
+/confidential/
+/secret/
+/secrets/
+
+# ============================================================
+# AI AGENT CONTEXT FILES - INTERNAL ONLY
+# ============================================================
+CLAUDE.md
+AGENTS.md
+GEMINI.md
+GROK.md
+.cursorrules
+.github/copilot-instructions.md
+.windsurfrules
+memory-bank/
+
+# ============================================================
+# SENSITIVE DOCUMENTS
+# ============================================================
+*LAUNCH*
+*PITCH*
+*STRATEGY*
+*ROADMAP*
+*MARKETING*
+*PRICING_INTERNAL*
+*REVENUE*
+*ARR*
+*MRR*
+*FINANCIALS*
+*INVESTOR*
+*FUNDING*
+*BUSINESS_PLAN*
+*COMPETITIVE*
+*INTERNAL*
+*CONFIDENTIAL*
+*PROPRIETARY*
+*ORCHESTRATOR*
+*AUDIT_REPORT*
+*VALIDATION_REPORT*
+*READINESS_REPORT*
+*COMPILATION_STATUS*
+*BENCHMARK_SUMMARY*
+
+# ============================================================
+# ENVIRONMENT & SECRETS
+# ============================================================
+.env
+.env.*
+*.env
+!.env.example
+.envrc
+*.secret
+*.secrets
+*credentials*
+*api_key*
+*apikey*
+*.pem
+*.key
+*.crt
+*.cert
+id_rsa
+id_rsa.pub
+
+# ============================================================
+# DATA DIRECTORIES - LOCAL/GENERATED/THIRD PARTY
+# ============================================================
+/data/docs/raw/
+/data/cache/
+/data/embeddings/
+/data/experiments/
+/data/indexes/
+/data/index/
+/data/metrics/
+/data/papers/
+/data/processed/
+/data/traces/
+/data/validation_logs/
+/data/reindex_logs/
+/qdrant_data/
+/tantivy_data/
+
+# ============================================================
+# PYTHON VIRTUAL ENV (for maturin builds)
+# ============================================================
+.venv/
+__pycache__/
+*.py[cod]
+
+# ============================================================
+# DATABASE
+# ============================================================
+*.db
+*.sqlite
+*.sqlite3
+
+# ============================================================
+# LOGS & ARTIFACTS
+# ============================================================
+*.log
+crash.log
+perf.data
+perf.data.old
+/results/experiments/
+
+# ============================================================
+# IDE/EDITOR
+# ============================================================
+.vscode/
+.idea/
+*.sublime-*
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ============================================================
+# INTERNAL DOCUMENTATION
+# ============================================================
+docs/internal/
+docs/strategy/
+
+# ============================================================
+# DEMOS (live in reasonkit-site/demos/)
+# ============================================================
+demo_*.sh
+demo_outputs/
+*_demo.sh
+
+# ============================================================
+# BACKUP FILES
+# ============================================================
+*.bak
+*.backup
+*.old
+*.orig
+
+# ============================================================
+# ADDITIONAL INTERNAL/BUSINESS
+# ============================================================
+*KPI*
+*DREAM_TEAMS*
+*DELIVERABLES*
+*BASELINE_AUDIT*
+*_SUMMARY.md
+*_COMPLETE.md
+
+
+#Ignore insiders AI rules
+.github/instructions/codacy.instructions.md

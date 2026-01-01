@@ -1,0 +1,63 @@
+# Label configuration for actions/labeler
+
+"type: documentation":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/*.md"
+          - "docs/**/*"
+
+"type: ci":
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".github/**/*"
+
+"type: tests":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "tests/**/*"
+          - "benches/**/*"
+
+"component: storage":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "src/storage/**/*"
+
+"component: embedding":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "src/embedding/**/*"
+
+"component: raptor":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "src/raptor/**/*"
+
+"component: retrieval":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "src/retrieval/**/*"
+
+"size: XS":
+  - changed-files:
+      - all-globs-to-any-file:
+          - total-count: [1, 10]
+
+"size: S":
+  - changed-files:
+      - all-globs-to-any-file:
+          - total-count: [11, 50]
+
+"size: M":
+  - changed-files:
+      - all-globs-to-any-file:
+          - total-count: [51, 200]
+
+"size: L":
+  - changed-files:
+      - all-globs-to-any-file:
+          - total-count: [201, 500]
+
+"size: XL":
+  - changed-files:
+      - all-globs-to-any-file:
+          - total-count: [501, 999999]

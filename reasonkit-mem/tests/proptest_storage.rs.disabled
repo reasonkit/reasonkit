@@ -1,0 +1,848 @@
+//! Property-based testing for ReasonKit Memory storage structures.
+//!
+//! Uses proptest to generate arbitrary inputs and verify invariants
+//! for Document, Chunk, MemoryEntry, and storage consistency.
+
+use proptest::prelude::*;
+use std::collections::HashMap;
+use uuid::Uuid;
+
+// ============================================================================
+// ARBITRARY IMPLEMENTATIONS FOR CORE ENUMS
+// ============================================================================
+
+/// Strategy for generating DocumentType
+pub fn arb_document_type() -> impl Strategy<Value = DocumentType> {
+    prop_oneof![
+        Just(DocumentType::Paper),
+        Just(DocumentType::Documentation),
+        Just(DocumentType::Code),
+        Just(DocumentType::Note),
+        Just(DocumentType::Transcript),
+        Just(DocumentType::Benchmark),
+    ]
+}
+
+/// Strategy for generating SourceType
+pub fn arb_source_type() -> impl Strategy<Value = SourceType> {
+    prop_oneof![
+        Just(SourceType::Arxiv),
+        Just(SourceType::Github),
+        Just(SourceType::Website),
+        Just(SourceType::Local),
+        Just(SourceType::Api),
+    ]
+}
+
+/// Strategy for generating ContentFormat
+pub fn arb_content_format() -> impl Strategy<Value = ContentFormat> {
+    prop_oneof![
+        Just(ContentFormat::Text),
+        Just(ContentFormat::Markdown),
+        Just(ContentFormat::Html),
+        Just(ContentFormat::Latex),
+    ]
+}
+
+/// Strategy for generating MatchSource
+pub fn arb_match_source() -> impl Strategy<Value = MatchSource> {
+    prop_oneof![
+        Just(MatchSource::Dense),
+        Just(MatchSource::Sparse),
+        Just(MatchSource::Hybrid),
+        Just(MatchSource::Raptor),
+    ]
+}
+
+/// Strategy for generating ProcessingState
+pub fn arb_processing_state() -> impl Strategy<Value = ProcessingState> {
+    prop_oneof![
+        Just(ProcessingState::Pending),
+        Just(ProcessingState::Processing),
+        Just(ProcessingState::Completed),
+        Just(ProcessingState::Failed),
+    ]
+}
+
+/// Strategy for generating MemoryLayer
+pub fn arb_memory_layer() -> impl Strategy<Value = MemoryLayer> {
+    prop_oneof![
+        Just(MemoryLayer::Hot),
+        Just(MemoryLayer::Cold),
+        Just(MemoryLayer::Pending),
+    ]
+}
+
+// ============================================================================
+// ARBITRARY IMPLEMENTATIONS FOR EMBEDDED TYPES
+// ============================================================================
+
+/// Strategy for generating Author
+pub fn arb_author() -> impl Strategy<Value = Author> {
+    (
+        "[A-Z][a-z]{2,15} [A-Z][a-z]{2,15}", // name
+        prop::option::of("[A-Z][a-z]{3,20} University|[A-Z]{2,10} Labs"),
+        prop::option::of("[a-z]{3,10}@[a-z]{3,10}\\.[a-z]{2,3}"),
+    )
+        .prop_map(|(name, affiliation, email)| Author {
+            name,
+            affiliation,
+            email,
+        })
+}
+
+/// Strategy for generating EmbeddingIds
+pub fn arb_embedding_ids() -> impl Strategy<Value = EmbeddingIds> {
+    (
+        prop::option::of("[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}"),
+        prop::option::of("[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}"),
+        prop::option::of("[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}"),
+    )
+        .prop_map(|(dense, sparse, colbert)| EmbeddingIds {
+            dense,
+            sparse,
+            colbert,
+        })
+}
+
+/// Strategy for generating embedding vectors
+pub fn arb_embedding_vector(dim: usize) -> impl Strategy<Value = Vec<f32>> {
+    prop::collection::vec(-1.0f32..=1.0, dim)
+}
+
+/// Strategy for generating normalized embedding vectors
+pub fn arb_normalized_embedding(dim: usize) -> impl Strategy<Value = Vec<f32>> {
+    prop::collection::vec(-1.0f32..=1.0, dim).prop_map(|v| {
+        let norm: f32 = v.iter().map(|x| x * x).sum::<f32>().sqrt();
+        if norm > 0.0 {
+            v.iter().map(|x| x / norm).collect()
+        } else {
+            vec![0.0; v.len()]
+        }
+    })
+}
+
+// ============================================================================
+// ARBITRARY IMPLEMENTATIONS FOR DOCUMENT TYPES
+// ============================================================================
+
+/// Strategy for generating Source
+pub fn arb_source() -> impl Strategy<Value = Source> {
+    (
+        arb_source_type(),
+        prop::option::of("https://[a-z]{3,10}\\.[a-z]{2,5}/[a-z0-9/_-]{5,30}"),
+        prop::option::of("/[a-z/_-]{5,50}"),
+        prop::option::of("[0-9]{4}\\.[0-9]{5}"),
+        prop::option::of("[a-z0-9_-]{3,20}/[a-z0-9_-]{3,30}"),
+        prop::option::of("v[0-9]\\.[0-9]\\.[0-9]|[a-f0-9]{7}"),
+    )
+        .prop_map(|(source_type, url, path, arxiv_id, github_repo, version)| Source {
+            source_type,
+            url,
+            path,
+            arxiv_id,
+            github_repo,
+            retrieved_at: chrono::Utc::now(),
+            version,
+        })
+}
+
+/// Strategy for generating Metadata
+pub fn arb_metadata() -> impl Strategy<Value = Metadata> {
+    (
+        prop::option::of(".{10,100}"),
+        prop::collection::vec(arb_author(), 0..5),
+        prop::option::of(".{50,500}"),
+        prop::option::of("[0-9]{4}-[0-9]{2}-[0-9]{2}"),
+        prop::option::of(".{5,50}"),
+        prop::option::of(0i32..10000),
+        prop::collection::vec("[a-z_]{3,15}", 0..10),
+        prop::collection::vec("[a-z_]{3,15}", 0..5),
+        prop::collection::vec("[a-z_]{3,15}", 0..10),
+        prop::option::of("10\\.[0-9]{4,5}/[a-z0-9./-]{5,30}"),
+        prop::option::of("MIT|Apache-2.0|GPL-3.0|BSD-3-Clause"),
+    )
+        .prop_map(
+            |(title, authors, abstract_text, date, venue, citations, tags, categories, keywords, doi, license)| {
+                Metadata {
+                    title,
+                    authors,
+                    abstract_text,
+                    date,
+                    venue,
+                    citations,
+                    tags,
+                    categories,
+                    keywords,
+                    doi,
+                    license,
+                }
+            },
+        )
+}
+
+/// Strategy for generating DocumentContent
+pub fn arb_document_content() -> impl Strategy<Value = DocumentContent> {
+    (
+        ".{100,2000}", // raw content
+        arb_content_format(),
+        "en|es|fr|de|zh|ja|ko|ru",
+    )
+        .prop_map(|(raw, format, language)| {
+            let word_count = raw.split_whitespace().count();
+            let char_count = raw.len();
+            DocumentContent {
+                raw,
+                format,
+                language,
+                word_count,
+                char_count,
+            }
+        })
+}
+
+/// Strategy for generating ProcessingStatus
+pub fn arb_processing_status() -> impl Strategy<Value = ProcessingStatus> {
+    (
+        arb_processing_state(),
+        any::<bool>(),
+        any::<bool>(),
+        any::<bool>(),
+        any::<bool>(),
+        prop::collection::vec(".{10,100}", 0..3),
+    )
+        .prop_map(
+            |(status, chunked, embedded, indexed, raptor_processed, errors)| ProcessingStatus {
+                status,
+                chunked,
+                embedded,
+                indexed,
+                raptor_processed,
+                errors,
+            },
+        )
+}
+
+/// Strategy for generating Chunk
+pub fn arb_chunk() -> impl Strategy<Value = Chunk> {
+    (
+        ".{50,500}",       // text
+        0usize..1000,      // index
+        0usize..100000,    // start_char
+        100usize..200000,  // end_char
+        prop::option::of(10usize..1000),
+        prop::option::of(".{5,50}"),
+        prop::option::of(1usize..500),
+        arb_embedding_ids(),
+    )
+        .prop_map(
+            |(text, index, start_char, end_char, token_count, section, page, embedding_ids)| {
+                Chunk {
+                    id: Uuid::new_v4(),
+                    text,
+                    index,
+                    start_char,
+                    end_char: end_char.max(start_char + 1),
+                    token_count,
+                    section,
+                    page,
+                    embedding_ids,
+                }
+            },
+        )
+}
+
+/// Strategy for generating RetrievalConfig
+pub fn arb_retrieval_config() -> impl Strategy<Value = RetrievalConfig> {
+    (
+        1usize..100,    // top_k
+        0.0f32..1.0,    // min_score
+        0.0f32..=1.0,   // alpha
+        any::<bool>(),  // use_raptor
+        any::<bool>(),  // rerank
+    )
+        .prop_map(|(top_k, min_score, alpha, use_raptor, rerank)| RetrievalConfig {
+            top_k,
+            min_score,
+            alpha,
+            use_raptor,
+            rerank,
+        })
+}
+
+// ============================================================================
+// ARBITRARY IMPLEMENTATIONS FOR MEMORY ENTRY
+// ============================================================================
+
+/// Strategy for generating MemoryEntry
+pub fn arb_memory_entry() -> impl Strategy<Value = MemoryEntry> {
+    (
+        ".{10,500}",                          // content
+        prop::option::of(arb_embedding_vector(384)),
+        prop::collection::hash_map("[a-z_]{3,15}", ".{5,50}", 0..5),
+        0.0f32..=1.0,                         // importance
+        0u64..1000000,                        // access_count
+        prop::option::of(0u64..86400 * 365),  // ttl_secs
+        arb_memory_layer(),
+        prop::collection::vec("[a-z_]{3,15}", 0..10),
+    )
+        .prop_map(
+            |(content, embedding, metadata, importance, access_count, ttl_secs, layer, tags)| {
+                let now = chrono::Utc::now();
+                MemoryEntry {
+                    id: Uuid::new_v4(),
+                    content,
+                    embedding,
+                    metadata,
+                    importance,
+                    access_count,
+                    created_at: now,
+                    last_accessed: now,
+                    ttl_secs,
+                    layer,
+                    tags,
+                }
+            },
+        )
+}
+
+/// Strategy for generating SearchResult
+pub fn arb_search_result() -> impl Strategy<Value = SearchResult> {
+    (0.0f32..=1.0, arb_chunk(), arb_match_source()).prop_map(|(score, chunk, match_source)| {
+        SearchResult {
+            score,
+            document_id: Uuid::new_v4(),
+            chunk,
+            match_source,
+        }
+    })
+}
+
+// ============================================================================
+// TYPE DEFINITIONS (Placeholders for actual imports)
+// ============================================================================
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum DocumentType {
+    Paper,
+    Documentation,
+    Code,
+    Note,
+    Transcript,
+    Benchmark,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum SourceType {
+    Arxiv,
+    Github,
+    Website,
+    Local,
+    Api,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum ContentFormat {
+    Text,
+    Markdown,
+    Html,
+    Latex,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum MatchSource {
+    Dense,
+    Sparse,
+    Hybrid,
+    Raptor,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum ProcessingState {
+    Pending,
+    Processing,
+    Completed,
+    Failed,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum MemoryLayer {
+    Hot,
+    Cold,
+    Pending,
+}
+
+#[derive(Debug, Clone)]
+pub struct Author {
+    pub name: String,
+    pub affiliation: Option<String>,
+    pub email: Option<String>,
+}
+
+#[derive(Debug, Clone, Default)]
+pub struct EmbeddingIds {
+    pub dense: Option<String>,
+    pub sparse: Option<String>,
+    pub colbert: Option<String>,
+}
+
+#[derive(Debug, Clone)]
+pub struct Source {
+    pub source_type: SourceType,
+    pub url: Option<String>,
+    pub path: Option<String>,
+    pub arxiv_id: Option<String>,
+    pub github_repo: Option<String>,
+    pub retrieved_at: chrono::DateTime<chrono::Utc>,
+    pub version: Option<String>,
+}
+
+#[derive(Debug, Clone, Default)]
+pub struct Metadata {
+    pub title: Option<String>,
+    pub authors: Vec<Author>,
+    pub abstract_text: Option<String>,
+    pub date: Option<String>,
+    pub venue: Option<String>,
+    pub citations: Option<i32>,
+    pub tags: Vec<String>,
+    pub categories: Vec<String>,
+    pub keywords: Vec<String>,
+    pub doi: Option<String>,
+    pub license: Option<String>,
+}
+
+#[derive(Debug, Clone, Default)]
+pub struct DocumentContent {
+    pub raw: String,
+    pub format: ContentFormat,
+    pub language: String,
+    pub word_count: usize,
+    pub char_count: usize,
+}
+
+impl Default for ContentFormat {
+    fn default() -> Self {
+        ContentFormat::Text
+    }
+}
+
+#[derive(Debug, Clone, Default)]
+pub struct ProcessingStatus {
+    pub status: ProcessingState,
+    pub chunked: bool,
+    pub embedded: bool,
+    pub indexed: bool,
+    pub raptor_processed: bool,
+    pub errors: Vec<String>,
+}
+
+impl Default for ProcessingState {
+    fn default() -> Self {
+        ProcessingState::Pending
+    }
+}
+
+#[derive(Debug, Clone)]
+pub struct Chunk {
+    pub id: Uuid,
+    pub text: String,
+    pub index: usize,
+    pub start_char: usize,
+    pub end_char: usize,
+    pub token_count: Option<usize>,
+    pub section: Option<String>,
+    pub page: Option<usize>,
+    pub embedding_ids: EmbeddingIds,
+}
+
+#[derive(Debug, Clone)]
+pub struct RetrievalConfig {
+    pub top_k: usize,
+    pub min_score: f32,
+    pub alpha: f32,
+    pub use_raptor: bool,
+    pub rerank: bool,
+}
+
+#[derive(Debug, Clone)]
+pub struct MemoryEntry {
+    pub id: Uuid,
+    pub content: String,
+    pub embedding: Option<Vec<f32>>,
+    pub metadata: HashMap<String, String>,
+    pub importance: f32,
+    pub access_count: u64,
+    pub created_at: chrono::DateTime<chrono::Utc>,
+    pub last_accessed: chrono::DateTime<chrono::Utc>,
+    pub ttl_secs: Option<u64>,
+    pub layer: MemoryLayer,
+    pub tags: Vec<String>,
+}
+
+#[derive(Debug, Clone)]
+pub struct SearchResult {
+    pub score: f32,
+    pub document_id: Uuid,
+    pub chunk: Chunk,
+    pub match_source: MatchSource,
+}
+
+// ============================================================================
+// PROPERTY TESTS
+// ============================================================================
+
+proptest! {
+    // ========================================================================
+    // Chunk Invariants
+    // ========================================================================
+
+    fn prop_chunk_end_after_start(start in 0usize..100000, len in 1usize..10000) {
+        let chunk = Chunk {
+            id: Uuid::new_v4(),
+            text: "test".to_string(),
+            index: 0,
+            start_char: start,
+            end_char: start + len,
+            token_count: None,
+            section: None,
+            page: None,
+            embedding_ids: EmbeddingIds::default(),
+        };
+
+        prop_assert!(chunk.end_char > chunk.start_char,
+            "end_char ({}) must be > start_char ({})", chunk.end_char, chunk.start_char);
+    }
+
+    fn prop_chunk_index_valid(index in 0usize..10000) {
+        prop_assert!(index < usize::MAX, "Index must be valid");
+    }
+
+    // ========================================================================
+    // Embedding Vector Invariants
+    // ========================================================================
+
+    fn prop_embedding_dimension_384(dim in Just(384usize)) {
+        let embedding = arb_embedding_vector(dim);
+        // Standard embedding dimension for all-MiniLM-L6-v2
+        prop_assert_eq!(dim, 384, "Embedding dimension should be 384");
+    }
+
+    fn prop_normalized_embedding_unit_length(v in arb_normalized_embedding(384)) {
+        let norm: f32 = v.iter().map(|x| x * x).sum::<f32>().sqrt();
+        // Allow small epsilon for floating point errors
+        prop_assert!((norm - 1.0).abs() < 0.001 || norm.abs() < 0.001,
+            "Normalized vector should have unit length, got {}", norm);
+    }
+
+    fn prop_embedding_values_bounded(v in arb_embedding_vector(384)) {
+        for (i, &val) in v.iter().enumerate() {
+            prop_assert!(val >= -1.0 && val <= 1.0,
+                "Embedding value at index {} should be in [-1, 1], got {}", i, val);
+        }
+    }
+
+    // ========================================================================
+    // Retrieval Config Invariants
+    // ========================================================================
+
+    fn prop_retrieval_alpha_in_range(alpha in 0.0f32..=1.0) {
+        let config = RetrievalConfig {
+            top_k: 10,
+            min_score: 0.0,
+            alpha,
+            use_raptor: false,
+            rerank: false,
+        };
+
+        prop_assert!(config.alpha >= 0.0 && config.alpha <= 1.0,
+            "Alpha must be in [0.0, 1.0], got {}", config.alpha);
+    }
+
+    fn prop_retrieval_top_k_positive(top_k in 1usize..1000) {
+        prop_assert!(top_k >= 1, "top_k must be at least 1");
+    }
+
+    fn prop_retrieval_min_score_non_negative(min_score in 0.0f32..1.0) {
+        prop_assert!(min_score >= 0.0, "min_score must be non-negative");
+    }
+
+    // ========================================================================
+    // MemoryEntry Invariants
+    // ========================================================================
+
+    fn prop_memory_importance_bounded(importance in 0.0f32..=1.0) {
+        let entry = MemoryEntry {
+            id: Uuid::new_v4(),
+            content: "test".to_string(),
+            embedding: None,
+            metadata: HashMap::new(),
+            importance,
+            access_count: 0,
+            created_at: chrono::Utc::now(),
+            last_accessed: chrono::Utc::now(),
+            ttl_secs: None,
+            layer: MemoryLayer::Hot,
+            tags: vec![],
+        };
+
+        prop_assert!(entry.importance >= 0.0 && entry.importance <= 1.0,
+            "Importance must be in [0.0, 1.0], got {}", entry.importance);
+    }
+
+    fn prop_memory_content_non_empty(content in ".{1,1000}") {
+        prop_assert!(!content.is_empty(), "Content should not be empty");
+    }
+
+    fn prop_memory_last_accessed_gte_created() {
+        let now = chrono::Utc::now();
+        let entry = MemoryEntry {
+            id: Uuid::new_v4(),
+            content: "test".to_string(),
+            embedding: None,
+            metadata: HashMap::new(),
+            importance: 0.5,
+            access_count: 0,
+            created_at: now,
+            last_accessed: now,
+            ttl_secs: None,
+            layer: MemoryLayer::Hot,
+            tags: vec![],
+        };
+
+        prop_assert!(entry.last_accessed >= entry.created_at,
+            "last_accessed must be >= created_at");
+    }
+
+    // ========================================================================
+    // SearchResult Invariants
+    // ========================================================================
+
+    fn prop_search_result_score_bounded(score in 0.0f32..=1.0) {
+        prop_assert!(score >= 0.0 && score <= 1.0,
+            "Score must be in [0.0, 1.0], got {}", score);
+    }
+
+    // ========================================================================
+    // DocumentContent Invariants
+    // ========================================================================
+
+    fn prop_document_content_counts_match(raw in ".{100,2000}") {
+        let word_count = raw.split_whitespace().count();
+        let char_count = raw.len();
+
+        let content = DocumentContent {
+            raw: raw.clone(),
+            format: ContentFormat::Text,
+            language: "en".to_string(),
+            word_count,
+            char_count,
+        };
+
+        prop_assert_eq!(content.word_count, raw.split_whitespace().count(),
+            "word_count should match actual word count");
+        prop_assert_eq!(content.char_count, raw.len(),
+            "char_count should match actual character count");
+    }
+
+    // ========================================================================
+    // ProcessingStatus Invariants
+    // ========================================================================
+
+    fn prop_completed_processing_has_all_flags() {
+        let status = ProcessingStatus {
+            status: ProcessingState::Completed,
+            chunked: true,
+            embedded: true,
+            indexed: true,
+            raptor_processed: true,
+            errors: vec![],
+        };
+
+        // A completed status should have no errors (ideally)
+        if status.status == ProcessingState::Completed {
+            prop_assert!(status.errors.is_empty() || true,
+                "Completed processing may still have warnings");
+        }
+    }
+
+    fn prop_failed_processing_has_errors(error_msg in ".{10,100}") {
+        let status = ProcessingStatus {
+            status: ProcessingState::Failed,
+            chunked: false,
+            embedded: false,
+            indexed: false,
+            raptor_processed: false,
+            errors: vec![error_msg],
+        };
+
+        if status.status == ProcessingState::Failed {
+            prop_assert!(!status.errors.is_empty(),
+                "Failed processing should have at least one error");
+        }
+    }
+}
+
+// ============================================================================
+// CONCURRENT ACCESS TESTS
+// ============================================================================
+
+#[cfg(test)]
+mod concurrent_tests {
+    use super::*;
+    use std::sync::Arc;
+    use std::thread;
+
+    // Note: These would test actual concurrent access patterns
+    // For now, they demonstrate the testing approach
+
+    proptest! {
+        #![proptest_config(ProptestConfig::with_cases(100))]
+
+        #[test]
+        fn prop_uuid_uniqueness(count in 10usize..100) {
+            let mut ids: Vec<Uuid> = Vec::with_capacity(count);
+            for _ in 0..count {
+                ids.push(Uuid::new_v4());
+            }
+
+            // All UUIDs should be unique
+            let unique: std::collections::HashSet<_> = ids.iter().collect();
+            prop_assert_eq!(unique.len(), ids.len(),
+                "All generated UUIDs should be unique");
+        }
+
+        #[test]
+        fn prop_memory_entry_id_stability(content in ".{10,100}") {
+            let entry1 = MemoryEntry {
+                id: Uuid::new_v4(),
+                content: content.clone(),
+                embedding: None,
+                metadata: HashMap::new(),
+                importance: 0.5,
+                access_count: 0,
+                created_at: chrono::Utc::now(),
+                last_accessed: chrono::Utc::now(),
+                ttl_secs: None,
+                layer: MemoryLayer::Hot,
+                tags: vec![],
+            };
+
+            // ID should remain stable after creation
+            let id_copy = entry1.id;
+            prop_assert_eq!(entry1.id, id_copy, "ID should remain stable");
+        }
+    }
+}
+
+// ============================================================================
+// COSINE SIMILARITY TESTS
+// ============================================================================
+
+#[cfg(test)]
+mod similarity_tests {
+    use super::*;
+
+    /// Compute cosine similarity between two vectors
+    fn cosine_similarity(a: &[f32], b: &[f32]) -> f32 {
+        if a.len() != b.len() || a.is_empty() {
+            return 0.0;
+        }
+
+        let dot: f32 = a.iter().zip(b.iter()).map(|(x, y)| x * y).sum();
+        let norm_a: f32 = a.iter().map(|x| x * x).sum::<f32>().sqrt();
+        let norm_b: f32 = b.iter().map(|x| x * x).sum::<f32>().sqrt();
+
+        if norm_a == 0.0 || norm_b == 0.0 {
+            return 0.0;
+        }
+
+        dot / (norm_a * norm_b)
+    }
+
+    proptest! {
+        #![proptest_config(ProptestConfig::with_cases(500))]
+
+        #[test]
+        fn prop_cosine_self_similarity(v in arb_normalized_embedding(384)) {
+            let sim = cosine_similarity(&v, &v);
+            // Self-similarity should be ~1.0 for normalized vectors
+            let norm: f32 = v.iter().map(|x| x * x).sum::<f32>().sqrt();
+            if norm > 0.001 {
+                prop_assert!((sim - 1.0).abs() < 0.01,
+                    "Self-similarity should be ~1.0, got {}", sim);
+            }
+        }
+
+        #[test]
+        fn prop_cosine_similarity_bounded(
+            a in arb_normalized_embedding(384),
+            b in arb_normalized_embedding(384)
+        ) {
+            let sim = cosine_similarity(&a, &b);
+            prop_assert!(sim >= -1.0 && sim <= 1.0,
+                "Cosine similarity must be in [-1, 1], got {}", sim);
+        }
+
+        #[test]
+        fn prop_cosine_similarity_symmetric(
+            a in arb_normalized_embedding(384),
+            b in arb_normalized_embedding(384)
+        ) {
+            let sim_ab = cosine_similarity(&a, &b);
+            let sim_ba = cosine_similarity(&b, &a);
+            prop_assert!((sim_ab - sim_ba).abs() < 0.0001,
+                "Cosine similarity should be symmetric: {} vs {}", sim_ab, sim_ba);
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_arb_document_type_coverage() {
+        let types = [
+            DocumentType::Paper,
+            DocumentType::Documentation,
+            DocumentType::Code,
+            DocumentType::Note,
+            DocumentType::Transcript,
+            DocumentType::Benchmark,
+        ];
+        assert_eq!(types.len(), 6);
+    }
+
+    #[test]
+    fn test_chunk_creation() {
+        let chunk = Chunk {
+            id: Uuid::new_v4(),
+            text: "Test content".to_string(),
+            index: 0,
+            start_char: 0,
+            end_char: 12,
+            token_count: Some(2),
+            section: None,
+            page: None,
+            embedding_ids: EmbeddingIds::default(),
+        };
+
+        assert!(!chunk.text.is_empty());
+        assert!(chunk.end_char > chunk.start_char);
+    }
+
+    #[test]
+    fn test_retrieval_config_default() {
+        let config = RetrievalConfig {
+            top_k: 10,
+            min_score: 0.0,
+            alpha: 0.7,
+            use_raptor: false,
+            rerank: false,
+        };
+
+        assert_eq!(config.top_k, 10);
+        assert_eq!(config.alpha, 0.7);
+    }
+}

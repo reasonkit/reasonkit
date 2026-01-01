@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1050 230" fill="none">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0a0d14"/>
+      <stop offset="100%" stop-color="#030508"/>
+    </linearGradient>
+    <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#0891b2"/>
+    </linearGradient>
+    <linearGradient id="greenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+    <linearGradient id="yellowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#f59e0b"/>
+    </linearGradient>
+    <linearGradient id="purpleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#a855f7"/>
+      <stop offset="100%" stop-color="#7c3aed"/>
+    </linearGradient>
+    <linearGradient id="orangeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#ea580c"/>
+    </linearGradient>
+    <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1050" height="230" rx="20" fill="url(#bgGrad)"/>
+
+  <!-- Title row with generous padding -->
+  <text x="50" y="45" font-family="Inter, sans-serif" font-size="20" font-weight="600" fill="#f9fafb">ThinkTools · Variance Reduction Filters</text>
+  <text x="50" y="70" font-family="Inter, sans-serif" font-size="13" fill="#9ca3af">From divergent exploration to adversarial critique in one deterministic chain.</text>
+
+  <!-- ThinkTool nodes - evenly spaced with proper margins -->
+  <!-- 5 nodes + output indicator across 950px (50 to 1000), node spacing = 950/6 ≈ 158px -->
+  <!-- Positions: 100, 258, 416, 574, 732, 900 (output) -->
+  <g font-family="Inter, sans-serif" font-size="14" text-anchor="middle">
+
+    <!-- GigaThink -->
+    <g transform="translate(100, 130)">
+      <circle r="32" fill="#030508" stroke="url(#cyanGrad)" stroke-width="2" filter="url(#softGlow)"/>
+      <path d="M-16 0 L0 -16 L16 0 L0 16 Z" fill="url(#cyanGrad)"/>
+      <text x="0" y="55" fill="#f9fafb" font-weight="600">GigaThink</text>
+      <text x="0" y="75" fill="#9ca3af" font-size="12">Diverge()</text>
+    </g>
+
+    <!-- Arrow 1 -->
+    <path d="M142 130 L228 130" stroke="#06b6d4" stroke-width="2" stroke-dasharray="5 4" opacity="0.5"/>
+    <polygon points="238,130 228,125 228,135" fill="#06b6d4" opacity="0.6"/>
+
+    <!-- LaserLogic -->
+    <g transform="translate(278, 130)">
+      <rect x="-28" y="-28" width="56" height="56" rx="10" fill="#030508" stroke="url(#greenGrad)" stroke-width="2" filter="url(#softGlow)"/>
+      <path d="M-14 -7 L14 7 M-14 7 L14 -7" stroke="url(#greenGrad)" stroke-width="3" stroke-linecap="round"/>
+      <text x="0" y="55" fill="#f9fafb" font-weight="600">LaserLogic</text>
+      <text x="0" y="75" fill="#9ca3af" font-size="12">Converge()</text>
+    </g>
+
+    <!-- Arrow 2 -->
+    <path d="M320 130 L406 130" stroke="#10b981" stroke-width="2" stroke-dasharray="5 4" opacity="0.5"/>
+    <polygon points="416,130 406,125 406,135" fill="#10b981" opacity="0.6"/>
+
+    <!-- BedRock -->
+    <g transform="translate(456, 130)">
+      <polygon points="-28,15 0,-24 28,15" fill="url(#yellowGrad)" filter="url(#softGlow)"/>
+      <rect x="-30" y="12" width="60" height="20" rx="4" fill="#111827" stroke="url(#yellowGrad)" stroke-width="1.5"/>
+      <text x="0" y="55" fill="#f9fafb" font-weight="600">BedRock</text>
+      <text x="0" y="75" fill="#9ca3af" font-size="12">Ground()</text>
+    </g>
+
+    <!-- Arrow 3 -->
+    <path d="M498 130 L584 130" stroke="#fbbf24" stroke-width="2" stroke-dasharray="5 4" opacity="0.5"/>
+    <polygon points="594,130 584,125 584,135" fill="#fbbf24" opacity="0.6"/>
+
+    <!-- ProofGuard -->
+    <g transform="translate(634, 130)">
+      <path d="M0 -28 L24 -14 L20 14 L0 26 L-20 14 L-24 -14 Z" fill="#111827" stroke="url(#purpleGrad)" stroke-width="2" filter="url(#softGlow)"/>
+      <path d="M-10 0 L-3 8 L12 -8" stroke="#10b981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="0" y="55" fill="#f9fafb" font-weight="600">ProofGuard</text>
+      <text x="0" y="75" fill="#9ca3af" font-size="12">Verify()</text>
+    </g>
+
+    <!-- Arrow 4 -->
+    <path d="M676 130 L762 130" stroke="#a855f7" stroke-width="2" stroke-dasharray="5 4" opacity="0.5"/>
+    <polygon points="772,130 762,125 762,135" fill="#a855f7" opacity="0.6"/>
+
+    <!-- BrutalHonesty -->
+    <g transform="translate(812, 130)">
+      <polygon points="0,-26 26,16 -26,16" fill="url(#orangeGrad)" filter="url(#softGlow)"/>
+      <rect x="-20" y="8" width="40" height="14" rx="3" fill="#030508"/>
+      <line x1="-28" y1="8" x2="28" y2="8" stroke="#f97316" stroke-width="2" stroke-linecap="round"/>
+      <text x="0" y="55" fill="#f9fafb" font-weight="600">BrutalHonesty</text>
+      <text x="0" y="75" fill="#9ca3af" font-size="12">Critique()</text>
+    </g>
+
+    <!-- Arrow to output -->
+    <path d="M854 130 L935 130" stroke="#f97316" stroke-width="2" stroke-dasharray="5 4" opacity="0.5"/>
+    <polygon points="945,130 935,125 935,135" fill="#10b981" opacity="0.7"/>
+
+    <!-- Final output indicator -->
+    <g transform="translate(970, 130)">
+      <circle r="16" fill="#10b981" opacity="0.25"/>
+      <circle r="8" fill="#10b981"/>
+      <text x="0" y="55" fill="#10b981" font-weight="600" font-size="12">OUTPUT</text>
+    </g>
+  </g>
+</svg>

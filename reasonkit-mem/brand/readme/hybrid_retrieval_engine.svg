@@ -1,0 +1,405 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" style="font-family: 'JetBrains Mono', 'SF Mono', Consolas, monospace;">
+  <defs>
+    <!-- Gradients for 3D depth -->
+    <linearGradient id="vectorBrain" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#a855f7;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#6366f1;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="sparseBrain" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0ea5e9;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="fusionCore" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f9fafb;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#06b6d4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#10b981;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="queryBeam" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f97316;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Glow effects -->
+    <filter id="purpleGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="8"/>
+      <feOffset dx="0" dy="0" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="1.5"/>
+      </feComponentTransfer>
+      <feFlood flood-color="#a855f7" flood-opacity="0.6"/>
+      <feComposite in2="offsetblur" operator="in"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <filter id="cyanGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="8"/>
+      <feOffset dx="0" dy="0"/>
+      <feFlood flood-color="#06b6d4" flood-opacity="0.6"/>
+      <feComposite in2="SourceAlpha" operator="in"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <filter id="whiteGlow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="12"/>
+      <feOffset dx="0" dy="0"/>
+      <feFlood flood-color="#f9fafb" flood-opacity="0.8"/>
+      <feComposite in2="SourceAlpha" operator="in"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <!-- Isometric grid pattern -->
+    <pattern id="isoGrid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 40 20 M 0 20 L 20 40 M 0 20 L 20 0" stroke="rgba(6,182,212,0.05)" stroke-width="0.5" fill="none"/>
+    </pattern>
+    
+    <!-- Animated pulse for data flow -->
+    <radialGradient id="dataPulse">
+      <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:1">
+        <animate attributeName="stop-opacity" values="1;0.3;1" dur="2s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:0"/>
+    </radialGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1600" height="1000" fill="#030508"/>
+  <rect width="1600" height="1000" fill="url(#isoGrid)"/>
+  
+  <!-- Title -->
+  <g transform="translate(800, 60)">
+    <text x="0" y="0" font-size="44" font-weight="700" fill="#f9fafb" text-anchor="middle" font-family="Inter, sans-serif" letter-spacing="-0.02em">
+      HYBRID RETRIEVAL ENGINE
+    </text>
+    <text x="0" y="35" font-size="16" fill="#6b7280" text-anchor="middle" font-family="Inter, sans-serif">
+      Dual-Brain Architecture: Dense Semantic + Sparse Keyword Fusion
+    </text>
+  </g>
+  
+  <!-- Main diagram container -->
+  <g transform="translate(0, 150)">
+    
+    <!-- LEFT: Query Input -->
+    <g transform="translate(120, 350)">
+      <!-- Query beam source -->
+      <circle cx="0" cy="0" r="20" fill="url(#queryBeam)" filter="url(#cyanGlow)"/>
+      <text x="0" y="50" font-size="14" font-weight="600" fill="#fbbf24" text-anchor="middle" font-family="Inter, sans-serif">
+        QUERY
+      </text>
+      <text x="0" y="70" font-size="11" fill="#6b7280" text-anchor="middle" font-family="Inter, sans-serif">
+        User Input
+      </text>
+      
+      <!-- Beam to splitter -->
+      <line x1="20" y1="0" x2="180" y2="0" stroke="url(#queryBeam)" stroke-width="4" opacity="0.8">
+        <animate attributeName="stroke-dasharray" values="0 200;200 0" dur="2s" repeatCount="indefinite"/>
+      </line>
+    </g>
+    
+    <!-- SPLITTER PRISM -->
+    <g transform="translate(300, 350)">
+      <!-- Isometric prism (diamond shape) -->
+      <path d="M 0,-30 L 30,0 L 0,30 L -30,0 Z" fill="rgba(249,250,251,0.1)" stroke="#f9fafb" stroke-width="2"/>
+      <path d="M 0,-30 L 30,0 L 0,30 L -30,0 Z" fill="url(#dataPulse)" opacity="0.3"/>
+      
+      <text x="0" y="60" font-size="12" font-weight="600" fill="#9ca3af" text-anchor="middle" font-family="Inter, sans-serif">
+        SPLITTER
+      </text>
+    </g>
+    
+    <!-- TOP PATH: SEMANTIC/DENSE -->
+    <g transform="translate(0, 0)">
+      <!-- Beam from splitter to vector encoder -->
+      <line x1="320" y1="330" x2="480" y2="220" stroke="#a855f7" stroke-width="3" opacity="0.7">
+        <animate attributeName="stroke-dasharray" values="0 200;200 0" dur="1.5s" repeatCount="indefinite"/>
+      </line>
+      
+      <!-- Vector Encoder (Neural Network icon) -->
+      <g transform="translate(500, 200)">
+        <!-- Isometric cube for encoder -->
+        <g>
+          <!-- Top face -->
+          <path d="M 0,0 L 60,-30 L 120,0 L 60,30 Z" fill="url(#vectorBrain)" opacity="0.9"/>
+          <!-- Left face -->
+          <path d="M 0,0 L 60,30 L 60,90 L 0,60 Z" fill="url(#vectorBrain)" opacity="0.6"/>
+          <!-- Right face -->
+          <path d="M 60,30 L 120,0 L 120,60 L 60,90 Z" fill="url(#vectorBrain)" opacity="0.7"/>
+          
+          <!-- Neural network dots -->
+          <circle cx="30" cy="15" r="4" fill="#f9fafb" opacity="0.8"/>
+          <circle cx="60" cy="0" r="4" fill="#f9fafb" opacity="0.8"/>
+          <circle cx="90" cy="15" r="4" fill="#f9fafb" opacity="0.8"/>
+          <circle cx="45" cy="45" r="4" fill="#f9fafb" opacity="0.8"/>
+          <circle cx="75" cy="45" r="4" fill="#f9fafb" opacity="0.8"/>
+          
+          <!-- Connections -->
+          <line x1="30" y1="15" x2="45" y2="45" stroke="#f9fafb" stroke-width="1" opacity="0.4"/>
+          <line x1="60" y1="0" x2="45" y2="45" stroke="#f9fafb" stroke-width="1" opacity="0.4"/>
+          <line x1="90" y1="15" x2="75" y2="45" stroke="#f9fafb" stroke-width="1" opacity="0.4"/>
+        </g>
+        
+        <text x="60" y="120" font-size="13" font-weight="600" fill="#a855f7" text-anchor="middle" font-family="Inter, sans-serif">
+          VECTOR ENCODER
+        </text>
+        <text x="60" y="138" font-size="10" fill="#8b5cf6" text-anchor="middle" font-family="Inter, sans-serif">
+          Neural Embedding
+        </text>
+      </g>
+      
+      <!-- Dense cloud visualization -->
+      <g transform="translate(680, 200)">
+        <!-- Particle cloud -->
+        <circle cx="0" cy="10" r="3" fill="#a855f7" opacity="0.6">
+          <animate attributeName="cy" values="10;5;10" dur="2s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="15" cy="20" r="3" fill="#a855f7" opacity="0.7">
+          <animate attributeName="cy" values="20;15;20" dur="2.3s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="30" cy="15" r="3" fill="#a855f7" opacity="0.5">
+          <animate attributeName="cy" values="15;10;15" dur="1.8s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="10" cy="35" r="3" fill="#a855f7" opacity="0.8">
+          <animate attributeName="cy" values="35;30;35" dur="2.1s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="25" cy="40" r="3" fill="#a855f7" opacity="0.6">
+          <animate attributeName="cy" values="40;35;40" dur="1.9s" repeatCount="indefinite"/>
+        </circle>
+      </g>
+      
+      <!-- Arrow to Qdrant -->
+      <line x1="720" y1="230" x2="820" y2="230" stroke="#a855f7" stroke-width="3" opacity="0.7" marker-end="url(#arrowPurple)">
+        <animate attributeName="stroke-dasharray" values="0 100;100 0" dur="1.5s" repeatCount="indefinite"/>
+      </line>
+      
+      <!-- Qdrant Database (Isometric Cube) -->
+      <g transform="translate(850, 180)">
+        <!-- Large isometric cube -->
+        <g filter="url(#purpleGlow)">
+          <!-- Top face -->
+          <path d="M 0,0 L 80,-40 L 160,0 L 80,40 Z" fill="url(#vectorBrain)" opacity="0.9" stroke="#a855f7" stroke-width="2"/>
+          <!-- Left face -->
+          <path d="M 0,0 L 80,40 L 80,140 L 0,100 Z" fill="url(#vectorBrain)" opacity="0.5" stroke="#a855f7" stroke-width="2"/>
+          <!-- Right face -->
+          <path d="M 80,40 L 160,0 L 160,100 L 80,140 Z" fill="url(#vectorBrain)" opacity="0.7" stroke="#a855f7" stroke-width="2"/>
+          
+          <!-- Logo/Icon area -->
+          <circle cx="80" cy="50" r="25" fill="rgba(0,0,0,0.3)"/>
+          <text x="80" y="58" font-size="24" font-weight="700" fill="#f9fafb" text-anchor="middle" font-family="Inter, sans-serif">
+            Q
+          </text>
+        </g>
+        
+        <text x="80" y="170" font-size="15" font-weight="700" fill="#a855f7" text-anchor="middle" font-family="Inter, sans-serif">
+          QDRANT
+        </text>
+        <text x="80" y="188" font-size="11" fill="#8b5cf6" text-anchor="middle" font-family="Inter, sans-serif">
+          Vector Database
+        </text>
+      </g>
+    </g>
+    
+    <!-- BOTTOM PATH: SPARSE/KEYWORD -->
+    <g transform="translate(0, 0)">
+      <!-- Beam from splitter to tokenizer -->
+      <line x1="320" y1="370" x2="480" y2="480" stroke="#06b6d4" stroke-width="3" opacity="0.7">
+        <animate attributeName="stroke-dasharray" values="0 200;200 0" dur="1.5s" repeatCount="indefinite"/>
+      </line>
+      
+      <!-- Tokenizer (Gears icon) -->
+      <g transform="translate(500, 460)">
+        <!-- Isometric cube -->
+        <g>
+          <!-- Top face -->
+          <path d="M 0,0 L 60,-30 L 120,0 L 60,30 Z" fill="url(#sparseBrain)" opacity="0.9"/>
+          <!-- Left face -->
+          <path d="M 0,0 L 60,30 L 60,90 L 0,60 Z" fill="url(#sparseBrain)" opacity="0.6"/>
+          <!-- Right face -->
+          <path d="M 60,30 L 120,0 L 120,60 L 60,90 Z" fill="url(#sparseBrain)" opacity="0.7"/>
+          
+          <!-- Gear icon -->
+          <circle cx="60" cy="30" r="20" fill="none" stroke="#f9fafb" stroke-width="2" opacity="0.8"/>
+          <circle cx="60" cy="30" r="8" fill="#f9fafb" opacity="0.6"/>
+          <!-- Gear teeth -->
+          <rect x="58" y="10" width="4" height="8" fill="#f9fafb" opacity="0.6"/>
+          <rect x="58" y="42" width="4" height="8" fill="#f9fafb" opacity="0.6"/>
+          <rect x="78" y="28" width="8" height="4" fill="#f9fafb" opacity="0.6"/>
+          <rect x="34" y="28" width="8" height="4" fill="#f9fafb" opacity="0.6"/>
+        </g>
+        
+        <text x="60" y="120" font-size="13" font-weight="600" fill="#06b6d4" text-anchor="middle" font-family="Inter, sans-serif">
+          TOKENIZER
+        </text>
+        <text x="60" y="138" font-size="10" fill="#0ea5e9" text-anchor="middle" font-family="Inter, sans-serif">
+          Text Parsing
+        </text>
+      </g>
+      
+      <!-- Text fragments visualization -->
+      <g transform="translate(680, 470)">
+        <rect x="0" y="0" width="35" height="12" fill="#06b6d4" opacity="0.7" rx="2"/>
+        <text x="17" y="9" font-size="8" fill="#030508" text-anchor="middle" font-weight="600">WORD</text>
+        
+        <rect x="0" y="18" width="28" height="12" fill="#06b6d4" opacity="0.7" rx="2"/>
+        <text x="14" y="27" font-size="8" fill="#030508" text-anchor="middle" font-weight="600">KEY</text>
+        
+        <rect x="0" y="36" width="42" height="12" fill="#06b6d4" opacity="0.7" rx="2"/>
+        <text x="21" y="45" font-size="8" fill="#030508" text-anchor="middle" font-weight="600">TOKEN</text>
+      </g>
+      
+      <!-- Arrow to Tantivy -->
+      <line x1="730" y1="490" x2="820" y2="490" stroke="#06b6d4" stroke-width="3" opacity="0.7" marker-end="url(#arrowCyan)">
+        <animate attributeName="stroke-dasharray" values="0 100;100 0" dur="1.5s" repeatCount="indefinite"/>
+      </line>
+      
+      <!-- Tantivy Index (Library/Grid) -->
+      <g transform="translate(850, 440)">
+        <!-- Isometric grid structure -->
+        <g filter="url(#cyanGlow)">
+          <!-- Top face -->
+          <path d="M 0,0 L 80,-40 L 160,0 L 80,40 Z" fill="url(#sparseBrain)" opacity="0.9" stroke="#06b6d4" stroke-width="2"/>
+          <!-- Left face -->
+          <path d="M 0,0 L 80,40 L 80,140 L 0,100 Z" fill="url(#sparseBrain)" opacity="0.5" stroke="#06b6d4" stroke-width="2"/>
+          <!-- Right face -->
+          <path d="M 80,40 L 160,0 L 160,100 L 80,140 Z" fill="url(#sparseBrain)" opacity="0.7" stroke="#06b6d4" stroke-width="2"/>
+          
+          <!-- Grid lines on faces -->
+          <line x1="40" y1="20" x2="40" y2="80" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+          <line x1="120" y1="20" x2="120" y2="80" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+          <line x1="20" y1="30" x2="140" y2="30" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+          <line x1="20" y1="50" x2="140" y2="50" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+          
+          <!-- Logo area -->
+          <circle cx="80" cy="50" r="25" fill="rgba(0,0,0,0.3)"/>
+          <text x="80" y="58" font-size="24" font-weight="700" fill="#f9fafb" text-anchor="middle" font-family="Inter, sans-serif">
+            T
+          </text>
+        </g>
+        
+        <text x="80" y="170" font-size="15" font-weight="700" fill="#06b6d4" text-anchor="middle" font-family="Inter, sans-serif">
+          TANTIVY
+        </text>
+        <text x="80" y="188" font-size="11" fill="#0ea5e9" text-anchor="middle" font-family="Inter, sans-serif">
+          Search Index
+        </text>
+      </g>
+    </g>
+    
+    <!-- FUSION REACTOR (CENTER) -->
+    <g transform="translate(1140, 350)">
+      <!-- Arrows from both databases to fusion -->
+      <line x1="-80" y1="-100" x2="0" y2="-20" stroke="#a855f7" stroke-width="3" opacity="0.6">
+        <animate attributeName="stroke-dasharray" values="0 150;150 0" dur="2s" repeatCount="indefinite"/>
+      </line>
+      <line x1="-80" y1="100" x2="0" y2="20" stroke="#06b6d4" stroke-width="3" opacity="0.6">
+        <animate attributeName="stroke-dasharray" values="0 150;150 0" dur="2s" repeatCount="indefinite"/>
+      </line>
+      
+      <!-- Central fusion core -->
+      <g filter="url(#whiteGlow)">
+        <circle cx="0" cy="0" r="50" fill="url(#fusionCore)" opacity="0.9">
+          <animate attributeName="r" values="50;55;50" dur="2s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="0" cy="0" r="35" fill="rgba(249,250,251,0.2)">
+          <animate attributeName="r" values="35;40;35" dur="1.5s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="0" cy="0" r="20" fill="#f9fafb">
+          <animate attributeName="opacity" values="1;0.6;1" dur="1s" repeatCount="indefinite"/>
+        </circle>
+      </g>
+      
+      <text x="0" y="80" font-size="15" font-weight="700" fill="#f9fafb" text-anchor="middle" font-family="Inter, sans-serif">
+        RRF FUSION
+      </text>
+      <text x="0" y="98" font-size="11" fill="#9ca3af" text-anchor="middle" font-family="Inter, sans-serif">
+        Reciprocal Rank Fusion
+      </text>
+    </g>
+    
+    <!-- OUTPUT: Precision Context -->
+    <g transform="translate(1140, 350)">
+      <!-- Beam from fusion to output -->
+      <line x1="50" y1="0" x2="200" y2="0" stroke="url(#fusionCore)" stroke-width="5" opacity="0.9" filter="url(#whiteGlow)">
+        <animate attributeName="stroke-dasharray" values="0 150;150 0" dur="1.5s" repeatCount="indefinite"/>
+      </line>
+      
+      <!-- Output beam -->
+      <g transform="translate(220, 0)">
+        <circle cx="0" cy="0" r="25" fill="#10b981" filter="url(#whiteGlow)"/>
+        <path d="M -8,-8 L 8,0 L -8,8 Z" fill="#f9fafb"/>
+        
+        <text x="0" y="50" font-size="14" font-weight="600" fill="#10b981" text-anchor="middle" font-family="Inter, sans-serif">
+          PRECISION
+        </text>
+        <text x="0" y="68" font-size="14" font-weight="600" fill="#10b981" text-anchor="middle" font-family="Inter, sans-serif">
+          CONTEXT
+        </text>
+        <text x="0" y="86" font-size="10" fill="#6b7280" text-anchor="middle" font-family="Inter, sans-serif">
+          Optimized Results
+        </text>
+      </g>
+    </g>
+  </g>
+  
+  <!-- Legend / Info Panel -->
+  <g transform="translate(80, 820)">
+    <rect x="0" y="0" width="1440" height="100" fill="rgba(10,13,20,0.6)" stroke="rgba(255,255,255,0.05)" stroke-width="1" rx="8"/>
+    
+    <text x="20" y="30" font-size="13" font-weight="600" fill="#f9fafb" font-family="Inter, sans-serif">
+      ARCHITECTURE COMPONENTS
+    </text>
+    
+    <!-- Component descriptions -->
+    <g transform="translate(20, 50)">
+      <circle cx="0" cy="0" r="4" fill="#a855f7"/>
+      <text x="12" y="4" font-size="11" fill="#9ca3af" font-family="Inter, sans-serif">
+        <tspan font-weight="600" fill="#a855f7">DENSE PATH:</tspan> Neural embeddings capture semantic meaning (∼768 dimensions)
+      </text>
+      
+      <circle cx="480" cy="0" r="4" fill="#06b6d4"/>
+      <text x="492" y="4" font-size="11" fill="#9ca3af" font-family="Inter, sans-serif">
+        <tspan font-weight="600" fill="#06b6d4">SPARSE PATH:</tspan> BM25 tokenization for exact keyword matching
+      </text>
+      
+      <circle cx="960" cy="0" r="4" fill="#10b981"/>
+      <text x="972" y="4" font-size="11" fill="#9ca3af" font-family="Inter, sans-serif">
+        <tspan font-weight="600" fill="#10b981">RRF FUSION:</tspan> Reciprocal Rank Fusion combines both signals (k=60)
+      </text>
+    </g>
+    
+    <!-- Tech stack -->
+    <text x="20" y="82" font-size="10" fill="#6b7280" font-family="Inter, sans-serif">
+      <tspan font-weight="600">Technology Stack:</tspan> Qdrant (Vector DB) | Tantivy (Full-Text Search) | HuggingFace Embeddings | Rust Backend
+    </text>
+    
+    <!-- ReasonKit branding -->
+    <g transform="translate(1200, 65)">
+      <text x="0" y="0" font-size="11" fill="#06b6d4" font-weight="600" font-family="JetBrains Mono, monospace">
+        reasonkit-mem v0.1.0
+      </text>
+      <text x="0" y="16" font-size="9" fill="#6b7280" font-family="Inter, sans-serif" font-style="italic">
+        "Designed, Not Dreamed"
+      </text>
+    </g>
+  </g>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowPurple" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#a855f7"/>
+    </marker>
+    <marker id="arrowCyan" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#06b6d4"/>
+    </marker>
+  </defs>
+</svg>
