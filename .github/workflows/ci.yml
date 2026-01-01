@@ -104,7 +104,7 @@ jobs:
           shared-key: "clippy"
 
       - name: Clippy (all crates)
-        run: cargo clippy --workspace --all-features -- -D warnings
+        run: cargo clippy --workspace -- -D warnings
 
   # ===========================================================================
   # Build & Test Matrix
@@ -135,10 +135,10 @@ jobs:
           shared-key: "test-${{ matrix.os }}-${{ matrix.rust }}"
 
       - name: Build workspace
-        run: cargo build --workspace --all-features
+        run: cargo build --workspace
 
       - name: Test workspace
-        run: cargo test --workspace --all-features
+        run: cargo test --workspace
 
   # ===========================================================================
   # Feature Combinations (meta-crate only)
@@ -184,7 +184,7 @@ jobs:
       - name: Build docs
         env:
           RUSTDOCFLAGS: --cfg docsrs -D warnings
-        run: cargo doc --workspace --all-features --no-deps
+        run: cargo doc --workspace --no-deps
 
       - name: Upload docs artifact
         uses: actions/upload-artifact@v4

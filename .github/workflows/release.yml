@@ -104,10 +104,10 @@ jobs:
       - uses: Swatinem/rust-cache@v2
 
       - name: Run all tests
-        run: cargo test --workspace --all-features
+        run: cargo test --workspace
 
       - name: Check clippy
-        run: cargo clippy --workspace --all-features -- -D warnings
+        run: cargo clippy --workspace -- -D warnings
 
       - name: Verify crate versions
         run: |

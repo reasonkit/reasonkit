@@ -9,7 +9,7 @@
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue?style=flat-square&color=%23a855f7)](./LICENSE)
 [![Rust](https://img.shields.io/badge/rust-1.74+-orange?style=flat-square&logo=rust&color=%23f97316)](https://www.rust-lang.org/)
 
-*The Long-Term Memory Layer ("Hippocampus") for AI Reasoning*
+_The Long-Term Memory Layer ("Hippocampus") for AI Reasoning_
 
 [Documentation](https://docs.rs/reasonkit-mem) | [ReasonKit Core](https://github.com/ReasonKit/reasonkit-core) | [Website](https://reasonkit.sh)
 
@@ -285,6 +285,6 @@ Apache License 2.0 - see [LICENSE](https://github.com/reasonkit/reasonkit-mem/bl
 
 [ReasonKit Core](https://github.com/ReasonKit/reasonkit-core) | [ReasonKit Web](https://github.com/ReasonKit/reasonkit-web) | [Website](https://reasonkit.sh)
 
-*"See How Your AI Thinks"*
+_"See How Your AI Thinks"_
 
 </div>

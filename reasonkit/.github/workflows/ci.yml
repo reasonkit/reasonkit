@@ -11,22 +11,22 @@ on:
   push:
     branches: [main, develop]
     paths:
-      - 'reasonkit/**'
-      - 'reasonkit-core/**'
-      - 'reasonkit-mem/**'
-      - 'reasonkit-web/**'
-      - 'Cargo.toml'
-      - 'Cargo.lock'
-      - '.github/workflows/ci.yml'
+      - "reasonkit/**"
+      - "reasonkit-core/**"
+      - "reasonkit-mem/**"
+      - "reasonkit-web/**"
+      - "Cargo.toml"
+      - "Cargo.lock"
+      - ".github/workflows/ci.yml"
   pull_request:
     branches: [main]
     paths:
-      - 'reasonkit/**'
-      - 'reasonkit-core/**'
-      - 'reasonkit-mem/**'
-      - 'reasonkit-web/**'
-      - 'Cargo.toml'
-      - 'Cargo.lock'
+      - "reasonkit/**"
+      - "reasonkit-core/**"
+      - "reasonkit-mem/**"
+      - "reasonkit-web/**"
+      - "Cargo.toml"
+      - "Cargo.lock"
   workflow_dispatch:
 
 env:
@@ -118,7 +118,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest]
-        rust: [stable, "1.74"]  # MSRV
+        rust: [stable, "1.74"] # MSRV
         exclude:
           - os: macos-latest
             rust: "1.74"

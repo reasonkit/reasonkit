@@ -21,11 +21,11 @@ curl -fsSL https://reasonkit.sh/install | bash
 
 ## What's Included
 
-| Component | Crate | Purpose |
-|-----------|-------|---------|
-| **Core** | [reasonkit-core](https://crates.io/crates/reasonkit-core) | Reasoning engine with ThinkTools |
-| **Memory** | [reasonkit-mem](https://crates.io/crates/reasonkit-mem) | Vector storage, hybrid search, RAPTOR trees |
-| **Web** | [reasonkit-web](https://crates.io/crates/reasonkit-web) | Browser automation, MCP sidecar |
+| Component  | Crate                                                     | Purpose                                     |
+| ---------- | --------------------------------------------------------- | ------------------------------------------- |
+| **Core**   | [reasonkit-core](https://crates.io/crates/reasonkit-core) | Reasoning engine with ThinkTools            |
+| **Memory** | [reasonkit-mem](https://crates.io/crates/reasonkit-mem)   | Vector storage, hybrid search, RAPTOR trees |
+| **Web**    | [reasonkit-web](https://crates.io/crates/reasonkit-web)   | Browser automation, MCP sidecar             |
 
 ## Quick Start
 
@@ -77,24 +77,24 @@ async fn main() -> anyhow::Result<()> {
 
 Five core reasoning protocols:
 
-| Tool | Shortcut | Purpose |
-|------|----------|---------|
-| **GigaThink** | `gt` | Generate 10+ diverse perspectives |
-| **LaserLogic** | `ll` | Precision deductive reasoning, fallacy detection |
-| **BedRock** | `br` | First principles decomposition |
-| **ProofGuard** | `pg` | Multi-source verification (3+ sources) |
-| **BrutalHonesty** | `bh` | Adversarial self-critique |
+| Tool              | Shortcut | Purpose                                          |
+| ----------------- | -------- | ------------------------------------------------ |
+| **GigaThink**     | `gt`     | Generate 10+ diverse perspectives                |
+| **LaserLogic**    | `ll`     | Precision deductive reasoning, fallacy detection |
+| **BedRock**       | `br`     | First principles decomposition                   |
+| **ProofGuard**    | `pg`     | Multi-source verification (3+ sources)           |
+| **BrutalHonesty** | `bh`     | Adversarial self-critique                        |
 
 ## Profiles
 
 Pre-configured protocol chains:
 
-| Profile | ThinkTools | Confidence | Use Case |
-|---------|------------|------------|----------|
-| `quick` | GT, LL | 70% | Fast analysis |
-| `balanced` | GT, LL, BR, PG | 80% | Standard decisions |
-| `deep` | All 5 | 85% | Complex problems |
-| `paranoid` | All 5 + validation | 95% | High-stakes |
+| Profile    | ThinkTools         | Confidence | Use Case           |
+| ---------- | ------------------ | ---------- | ------------------ |
+| `quick`    | GT, LL             | 70%        | Fast analysis      |
+| `balanced` | GT, LL, BR, PG     | 80%        | Standard decisions |
+| `deep`     | All 5              | 85%        | Complex problems   |
+| `paranoid` | All 5 + validation | 95%        | High-stakes        |
 
 ## Features
 
@@ -113,13 +113,13 @@ reasonkit = { version = "0.1", default-features = false, features = ["mem"] }
 reasonkit = { version = "0.1", default-features = false, features = ["web"] }
 ```
 
-| Feature | Description |
-|---------|-------------|
-| `full` | All components (default) |
-| `core` | Reasoning engine only |
-| `mem` | Memory layer only |
-| `web` | Web/browser automation only |
-| `python` | Python bindings via PyO3 |
+| Feature  | Description                 |
+| -------- | --------------------------- |
+| `full`   | All components (default)    |
+| `core`   | Reasoning engine only       |
+| `mem`    | Memory layer only           |
+| `web`    | Web/browser automation only |
+| `python` | Python bindings via PyO3    |
 
 ## LLM Providers
 

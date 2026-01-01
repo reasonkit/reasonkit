@@ -10,9 +10,9 @@
 
 This checklist ensures consistent, high-quality releases of `reasonkit-core`. All steps are mandatory unless marked `[OPTIONAL]`. The release process enforces the 5 Quality Gates (CONS-009) and follows semantic versioning.
 
-**Release Manager Signature:** ____________________
-**Release Date:** ____________________
-**Version:** ____________________
+**Release Manager Signature:** ********\_\_\_\_********
+**Release Date:** ********\_\_\_\_********
+**Version:** ********\_\_\_\_********
 
 ---
 
@@ -34,6 +34,7 @@ This checklist ensures consistent, high-quality releases of `reasonkit-core`. Al
 - [ ] Verify no yanked crates: `cargo verify-project`
 
 **Security Audit Results:**
+
 ```
 [ ] No vulnerabilities found
 [ ] Vulnerabilities found and documented: ____________________
@@ -42,13 +43,13 @@ This checklist ensures consistent, high-quality releases of `reasonkit-core`. Al
 ### 1.3 Code Quality Review
 
 - [ ] Review all TODOs: `grep -r "TODO" src --include="*.rs" | wc -l`
-  - Current count: ____
+  - Current count: \_\_\_\_
   - Acceptable threshold: < 20
 - [ ] Review all FIXMEs: `grep -r "FIXME" src --include="*.rs" | wc -l`
-  - Current count: ____
+  - Current count: \_\_\_\_
   - Acceptable threshold: 0 (critical), < 5 (non-critical)
 - [ ] Check unsafe blocks: `grep -r "unsafe" src --include="*.rs" | wc -l`
-  - Current count: ____
+  - Current count: \_\_\_\_
   - All unsafe blocks documented: [ ] Yes [ ] No
 
 ---
@@ -56,6 +57,7 @@ This checklist ensures consistent, high-quality releases of `reasonkit-core`. Al
 ## Phase 2: The 5 Quality Gates (CONS-009)
 
 **All gates MUST pass before proceeding. Run the full suite:**
+
 ```bash
 # From the reasonkit-core directory
 ./scripts/quality_metrics.sh --ci
@@ -68,16 +70,18 @@ cargo build --release --locked
 ```
 
 - [ ] Exit code: 0
-- [ ] Build time: ____ seconds
-- [ ] Warning count: ____ (target: 0)
-- [ ] Binary size: ____ MB
+- [ ] Build time: \_\_\_\_ seconds
+- [ ] Warning count: \_\_\_\_ (target: 0)
+- [ ] Binary size: \_\_\_\_ MB
 
 **Build Verification:**
+
 ```bash
 # Verify binary exists and runs
 ./target/release/rk-core --version
 ./target/release/rk-core --help
 ```
+
 - [ ] Version output correct
 - [ ] Help output displays properly
 
@@ -92,6 +96,7 @@ cargo clippy --all-targets --all-features --locked -- -D warnings
 - [ ] Clippy errors: 0
 
 **Strict Mode (Recommended):**
+
 ```bash
 cargo clippy --all-targets --all-features --locked -- \
   -D warnings \
@@ -102,6 +107,7 @@ cargo clippy --all-targets --all-features --locked -- \
   -A clippy::missing_errors_doc \
   -A clippy::missing_panics_doc
 ```
+
 - [ ] Strict mode passes (or exceptions documented)
 
 ### Gate 3: Format
@@ -114,6 +120,7 @@ cargo fmt --all -- --check
 - [ ] All files formatted
 
 **If format fails:**
+
 ```bash
 cargo fmt --all
 git diff  # Review changes
@@ -127,11 +134,12 @@ cargo test --all-features --locked
 ```
 
 - [ ] Exit code: 0
-- [ ] Tests passed: ____
+- [ ] Tests passed: \_\_\_\_
 - [ ] Tests failed: 0
-- [ ] Tests ignored: ____ (document reasons)
+- [ ] Tests ignored: \_\_\_\_ (document reasons)
 
 **Additional Test Suites:**
+
 ```bash
 # Unit tests only
 cargo test --lib --all-features --locked
@@ -160,11 +168,11 @@ cargo bench --all-features
 
 **Key Benchmarks to Verify:**
 
-| Benchmark | Target | Actual | Status |
-|-----------|--------|--------|--------|
-| Protocol orchestration | < 10ms | ____ ms | [ ] Pass |
-| ThinkTool execution | < 100ms | ____ ms | [ ] Pass |
-| Concurrent chains (8x) | < 10ms | ____ ms | [ ] Pass |
+| Benchmark              | Target  | Actual      | Status   |
+| ---------------------- | ------- | ----------- | -------- |
+| Protocol orchestration | < 10ms  | \_\_\_\_ ms | [ ] Pass |
+| ThinkTool execution    | < 100ms | \_\_\_\_ ms | [ ] Pass |
+| Concurrent chains (8x) | < 10ms  | \_\_\_\_ ms | [ ] Pass |
 
 ---
 
@@ -195,6 +203,7 @@ cargo metadata --no-deps --format-version 1 | jq -r '.packages[] | select(.name 
 ### 3.3 Update Version References
 
 Check and update version in:
+
 - [ ] `README.md` (installation examples)
 - [ ] `docs/` files (if version-specific)
 - [ ] Example code (if version-specific)
@@ -213,22 +222,28 @@ Edit `CHANGELOG.md`:
 ## [0.3.0] - YYYY-MM-DD
 
 ### Added
+
 - Feature 1 description
 - Feature 2 description
 
 ### Changed
+
 - Change 1 description
 
 ### Fixed
+
 - Fix 1 description
 
 ### Deprecated
+
 - (If applicable)
 
 ### Removed
+
 - (If applicable)
 
 ### Security
+
 - (If applicable)
 ```
 
@@ -264,6 +279,7 @@ cargo doc --no-deps --all-features --locked
 - [ ] Docs build successfully
 
 **Open locally to verify:**
+
 ```bash
 open target/doc/reasonkit/index.html  # macOS
 xdg-open target/doc/reasonkit/index.html  # Linux
@@ -461,7 +477,7 @@ docker run ghcr.io/reasonkit/reasonkit-core:0.3.0 --version
 
 **Subject:** ReasonKit Core v0.3.0 Released
 
-```markdown
+````markdown
 # ReasonKit Core v0.3.0 Released
 
 We're excited to announce the release of ReasonKit Core v0.3.0!
@@ -484,6 +500,7 @@ cargo install reasonkit-core
 # Via Docker
 docker run ghcr.io/reasonkit/reasonkit-core:0.3.0 --help
 ```
+````
 
 ## Links
 
@@ -499,7 +516,8 @@ docker run ghcr.io/reasonkit/reasonkit-core:0.3.0 --help
 
 **Full documentation:** https://reasonkit.sh/docs
 **Report issues:** https://github.com/reasonkit/reasonkit-core/issues
-```
+
+````
 
 ### 10.2 Announcement Channels
 
@@ -525,7 +543,7 @@ git push origin main
 # Delete release branch
 git branch -d release/v0.3.0
 git push origin --delete release/v0.3.0
-```
+````
 
 - [ ] Release branch merged to main
 - [ ] Release branch deleted
@@ -556,25 +574,25 @@ Reset the `[Unreleased]` section in CHANGELOG.md:
 
 ## Quality Score Summary
 
-| Gate | Status | Notes |
-|------|--------|-------|
-| Gate 1: Build | [ ] Pass [ ] Fail | |
-| Gate 2: Clippy | [ ] Pass [ ] Fail | |
-| Gate 3: Format | [ ] Pass [ ] Fail | |
-| Gate 4: Tests | [ ] Pass [ ] Fail | |
-| Gate 5: Benchmarks | [ ] Pass [ ] Fail | |
+| Gate               | Status            | Notes |
+| ------------------ | ----------------- | ----- |
+| Gate 1: Build      | [ ] Pass [ ] Fail |       |
+| Gate 2: Clippy     | [ ] Pass [ ] Fail |       |
+| Gate 3: Format     | [ ] Pass [ ] Fail |       |
+| Gate 4: Tests      | [ ] Pass [ ] Fail |       |
+| Gate 5: Benchmarks | [ ] Pass [ ] Fail |       |
 
-**Overall Quality Score:** ____/10 (Target: 8.0+, Minimum: 7.0)
+**Overall Quality Score:** \_\_\_\_/10 (Target: 8.0+, Minimum: 7.0)
 
 ---
 
 ## Sign-Off
 
-| Role | Name | Date | Signature |
-|------|------|------|-----------|
-| Release Manager | | | |
-| Code Reviewer | | | |
-| QA Verification | | | |
+| Role            | Name | Date | Signature |
+| --------------- | ---- | ---- | --------- |
+| Release Manager |      |      |           |
+| Code Reviewer   |      |      |           |
+| QA Verification |      |      |           |
 
 ---
 
@@ -620,6 +638,7 @@ If a critical issue is discovered post-release:
 ### Immediate Actions
 
 1. **Yank from crates.io** (if critical security issue):
+
    ```bash
    cargo yank --version 0.3.0
    ```
@@ -643,13 +662,13 @@ If a critical issue is discovered post-release:
 
 ## Appendix C: Version Naming
 
-| Type | Format | Example | When to Use |
-|------|--------|---------|-------------|
-| Major | `X.0.0` | `1.0.0` | Breaking changes |
-| Minor | `0.X.0` | `0.3.0` | New features, backward compatible |
-| Patch | `0.0.X` | `0.3.1` | Bug fixes only |
-| Pre-release | `0.X.0-alpha.N` | `0.3.0-alpha.1` | Testing before release |
-| Release Candidate | `0.X.0-rc.N` | `0.3.0-rc.1` | Final testing |
+| Type              | Format          | Example         | When to Use                       |
+| ----------------- | --------------- | --------------- | --------------------------------- |
+| Major             | `X.0.0`         | `1.0.0`         | Breaking changes                  |
+| Minor             | `0.X.0`         | `0.3.0`         | New features, backward compatible |
+| Patch             | `0.0.X`         | `0.3.1`         | Bug fixes only                    |
+| Pre-release       | `0.X.0-alpha.N` | `0.3.0-alpha.1` | Testing before release            |
+| Release Candidate | `0.X.0-rc.N`    | `0.3.0-rc.1`    | Final testing                     |
 
 ---
 

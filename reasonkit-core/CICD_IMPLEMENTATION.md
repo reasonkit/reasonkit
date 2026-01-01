@@ -431,5 +431,5 @@ The production-grade CI/CD pipeline for ReasonKit Core is fully implemented with
 
 ---
 
-*"Designed, Not Dreamed. Turn Prompts into Protocols."*
-*<https://reasonkit.sh>*
+_"Designed, Not Dreamed. Turn Prompts into Protocols."_
+_<https://reasonkit.sh>_

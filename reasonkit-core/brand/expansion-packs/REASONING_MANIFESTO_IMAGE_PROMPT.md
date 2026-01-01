@@ -1,4 +1,5 @@
 # Reasoning Manifesto - Image Generation Prompt
+
 ## Super Deep In-Depth Extensive/Comprehensive Prompt
 
 > **Purpose:** Generate a beautiful, detailed poster image for the "Reasoning Manifesto"
@@ -85,32 +86,34 @@ Create a high-resolution, detailed poster image titled "Reasoning Manifesto" wit
 - Alignment: Right-aligned text
 - Font: JetBrains Mono Regular, 10pt (3.5mm)
 - Line Height: 1.4 (tight spacing)
-- Color Gradient: 
+- Color Gradient:
   * Top lines: Cyan (#06b6d4) at full opacity
   * Middle lines: Purple (#a855f7) at 0.8 opacity
   * Bottom lines: Fade to transparent (opacity 0.0) over last 100mm
 - Content (from top to bottom, fading):
-  ```
-  > INIT_SEQ_01
-  > PROTOCOL_LOADED
-  > TRIANGULATION::ACTIVE
-  > VARIANCE_REDUCTION: 94%
-  > CONFIDENCE_THRESHOLD: 0.85
-  > EXECUTION_PATH: DETERMINISTIC
-  > TRACE_ID: 0x7f3a2b1c
-  > TIMESTAMP: 2025-01-01T00:00:00Z
-  > MEMORY_USAGE: 2.4GB
-  > CPU_UTILIZATION: 12%
-  > NETWORK_LATENCY: 8ms
-  > VALIDATION_PASSED
-  > OUTPUT_VERIFIED
-  > SYSTEM_STATUS: OPERATIONAL
-  > REASONING_CHAIN: COMPLETE
-  > CONFIDENCE_SCORE: 0.92
-  > ERROR_RATE: 0.03%
-  > UPTIME: 99.97%
-  > PERFORMANCE: OPTIMAL
-  ```
+```
+
+> INIT_SEQ_01
+> PROTOCOL_LOADED
+> TRIANGULATION::ACTIVE
+> VARIANCE_REDUCTION: 94%
+> CONFIDENCE_THRESHOLD: 0.85
+> EXECUTION_PATH: DETERMINISTIC
+> TRACE_ID: 0x7f3a2b1c
+> TIMESTAMP: 2025-01-01T00:00:00Z
+> MEMORY_USAGE: 2.4GB
+> CPU_UTILIZATION: 12%
+> NETWORK_LATENCY: 8ms
+> VALIDATION_PASSED
+> OUTPUT_VERIFIED
+> SYSTEM_STATUS: OPERATIONAL
+> REASONING_CHAIN: COMPLETE
+> CONFIDENCE_SCORE: 0.92
+> ERROR_RATE: 0.03%
+> UPTIME: 99.97%
+> PERFORMANCE: OPTIMAL
+
+```
 - Style: Terminal/console output, monospace, technical
 - Spacing: 4mm between lines
 - Fade Effect: Gradual opacity reduction from 1.0 to 0.0 over bottom 100mm
@@ -118,38 +121,38 @@ Create a high-resolution, detailed poster image titled "Reasoning Manifesto" wit
 === ADDITIONAL DESIGN ELEMENTS ===
 
 1. **Corner Brackets:**
-   - Top-left and bottom-right corners
-   - Thin lines (0.5mm) in Cyan (#06b6d4)
-   - Style: Technical drawing brackets, 10mm x 10mm
-   - Opacity: 0.6
+ - Top-left and bottom-right corners
+ - Thin lines (0.5mm) in Cyan (#06b6d4)
+ - Style: Technical drawing brackets, 10mm x 10mm
+ - Opacity: 0.6
 
 2. **Measurement Markers:**
-   - Subtle scale markers along edges (like technical drawings)
-   - Color: #1f2937 (very dark gray)
-   - Opacity: 0.3
-   - Spacing: Every 50mm
-   - Style: Small tick marks with numbers
+ - Subtle scale markers along edges (like technical drawings)
+ - Color: #1f2937 (very dark gray)
+ - Opacity: 0.3
+ - Spacing: Every 50mm
+ - Style: Small tick marks with numbers
 
 3. **Connection Lines:**
-   - Faint lines connecting polyhedron to text elements
-   - Color: #06b6d4 (Cyan)
-   - Opacity: 0.2
-   - Style: Dotted or dashed lines (2mm dash, 1mm gap)
-   - Purpose: Suggest logical connections between elements
+ - Faint lines connecting polyhedron to text elements
+ - Color: #06b6d4 (Cyan)
+ - Opacity: 0.2
+ - Style: Dotted or dashed lines (2mm dash, 1mm gap)
+ - Purpose: Suggest logical connections between elements
 
 4. **Data Visualization Elements:**
-   - Small graphs/charts in corners (optional)
-   - Style: Minimalist line graphs
-   - Colors: Cyan, Purple, Pink gradients
-   - Size: 30mm x 20mm each
-   - Content: Abstract performance metrics
+ - Small graphs/charts in corners (optional)
+ - Style: Minimalist line graphs
+ - Colors: Cyan, Purple, Pink gradients
+ - Size: 30mm x 20mm each
+ - Content: Abstract performance metrics
 
 5. **Hexagonal Accents:**
-   - Small hexagonal shapes scattered throughout
-   - Size: 5-10mm diameter
-   - Color: Cyan (#06b6d4) with varying opacity (0.1-0.3)
-   - Position: Random but balanced distribution
-   - Purpose: Reinforce hexagonal grid theme
+ - Small hexagonal shapes scattered throughout
+ - Size: 5-10mm diameter
+ - Color: Cyan (#06b6d4) with varying opacity (0.1-0.3)
+ - Position: Random but balanced distribution
+ - Purpose: Reinforce hexagonal grid theme
 
 === COLOR PALETTE (STRICT) ===
 - Primary Background: #030508 (Void Black)
@@ -167,9 +170,9 @@ Create a high-resolution, detailed poster image titled "Reasoning Manifesto" wit
 - Overall Mood: Dark, technical, industrial, futuristic
 - Lighting Style: Dramatic, high-contrast, cinematic
 - Light Sources:
-  * Primary: Cyan light from top-left (45-degree angle)
-  * Secondary: Purple light from bottom-right
-  * Ambient: Minimal, just enough to define shapes
+* Primary: Cyan light from top-left (45-degree angle)
+* Secondary: Purple light from bottom-right
+* Ambient: Minimal, just enough to define shapes
 - Shadows: Deep, black shadows, creating strong contrast
 - Glow Effects: Subtle, only on key elements (polyhedron, text)
 - Atmosphere: Clean, precise, no fog or haze
@@ -185,10 +188,10 @@ Create a high-resolution, detailed poster image titled "Reasoning Manifesto" wit
 - Layout: Asymmetric but balanced
 - Focal Point: Exploded polyhedron (center)
 - Visual Hierarchy:
-  1. Large text ("DESIGNED, NOT DREAMED.") - most prominent
-  2. Exploded polyhedron - secondary focus
-  3. Audit log - tertiary, supporting element
-  4. Protocol label - smallest, informational
+1. Large text ("DESIGNED, NOT DREAMED.") - most prominent
+2. Exploded polyhedron - secondary focus
+3. Audit log - tertiary, supporting element
+4. Protocol label - smallest, informational
 - Negative Space: Generous use of void black, creating breathing room
 - Balance: Visual weight distributed across page
 
@@ -207,12 +210,12 @@ Create a high-resolution, detailed poster image titled "Reasoning Manifesto" wit
 - Compression: None (lossless)
 - Metadata: Include title, creator, copyright, description
 - Layers: If possible, separate layers for:
-  * Background
-  * Grid
-  * Polyhedron
-  * Text elements
-  * Data overlay
-  * Effects/glows
+* Background
+* Grid
+* Polyhedron
+* Text elements
+* Data overlay
+* Effects/glows
 
 === FINAL ARTISTIC DIRECTION ===
 This is not a marketing poster. This is a technical artifact. It should look like it was generated by a machine, designed by an engineer, and printed by a precision instrument. Every element serves a purpose. Every line is intentional. Every color is specified. This is "Designed, Not Dreamed" made visual.
@@ -237,39 +240,39 @@ The aesthetic is: Industrial. Precise. Authoritative. Technical. Professional. S
 Use advanced AI image generation (DALL-E 3, Midjourney v6, Stable Diffusion XL) with the following approach:
 
 1. **Primary Prompt:**
-   "Technical schematic poster, A2 format, deep black background (#030508) with subtle hexagonal grid overlay, exploded wireframe polyhedron centerpiece in cyan and purple, large white text 'DESIGNED, NOT DREAMED.' at bottom, technical audit log in right margin fading to transparent, industrial aesthetic, sci-fi interface design, high contrast, precise lines, matte finish, 300 DPI, professional technical drawing style"
+ "Technical schematic poster, A2 format, deep black background (#030508) with subtle hexagonal grid overlay, exploded wireframe polyhedron centerpiece in cyan and purple, large white text 'DESIGNED, NOT DREAMED.' at bottom, technical audit log in right margin fading to transparent, industrial aesthetic, sci-fi interface design, high contrast, precise lines, matte finish, 300 DPI, professional technical drawing style"
 
 2. **Style Modifiers:**
-   - "engineering blueprint"
-   - "technical documentation"
-   - "sci-fi interface"
-   - "industrial design"
-   - "minimalist poster"
-   - "cyberpunk aesthetic"
-   - "high-tech"
-   - "precision rendering"
+ - "engineering blueprint"
+ - "technical documentation"
+ - "sci-fi interface"
+ - "industrial design"
+ - "minimalist poster"
+ - "cyberpunk aesthetic"
+ - "high-tech"
+ - "precision rendering"
 
 3. **Negative Prompts (avoid):**
-   - "marketing"
-   - "promotional"
-   - "colorful"
-   - "playful"
-   - "artistic"
-   - "hand-drawn"
-   - "sketchy"
-   - "watercolor"
-   - "painting"
-   - "illustration"
-   - "cartoon"
-   - "3D render" (unless specifically wireframe)
+ - "marketing"
+ - "promotional"
+ - "colorful"
+ - "playful"
+ - "artistic"
+ - "hand-drawn"
+ - "sketchy"
+ - "watercolor"
+ - "painting"
+ - "illustration"
+ - "cartoon"
+ - "3D render" (unless specifically wireframe)
 
 4. **Iteration Strategy:**
-   - Generate base composition
-   - Refine polyhedron detail
-   - Adjust typography positioning
-   - Fine-tune color accuracy
-   - Add data overlay
-   - Final polish and contrast adjustment
+ - Generate base composition
+ - Refine polyhedron detail
+ - Adjust typography positioning
+ - Fine-tune color accuracy
+ - Add data overlay
+ - Final polish and contrast adjustment
 
 === QUALITY CHECKLIST ===
 Before finalizing, verify:
@@ -319,19 +322,18 @@ Technical schematic poster, A2 format (420x594mm), deep void black background (#
 
 ## 📐 SPECIFICATIONS SUMMARY
 
-| Element | Specification |
-|---------|---------------|
-| **Dimensions** | A2 (420 x 594 mm) or 1:1.414 ratio |
-| **Resolution** | 300 DPI minimum (4961 x 7016 px for A2) |
-| **Background** | Void Black (#030508) with hexagonal grid |
+| Element         | Specification                               |
+| --------------- | ------------------------------------------- |
+| **Dimensions**  | A2 (420 x 594 mm) or 1:1.414 ratio          |
+| **Resolution**  | 300 DPI minimum (4961 x 7016 px for A2)     |
+| **Background**  | Void Black (#030508) with hexagonal grid    |
 | **Centerpiece** | Exploded wireframe polyhedron (Cyan/Purple) |
-| **Typography** | Inter Bold (large), JetBrains Mono (data) |
-| **Colors** | Strict brand palette (Cyan, Purple, White) |
-| **Style** | Industrial, technical, sci-fi schematic |
-| **Mood** | Dark, precise, authoritative, systematic |
+| **Typography**  | Inter Bold (large), JetBrains Mono (data)   |
+| **Colors**      | Strict brand palette (Cyan, Purple, White)  |
+| **Style**       | Industrial, technical, sci-fi schematic     |
+| **Mood**        | Dark, precise, authoritative, systematic    |
 
 ---
 
 **Last Updated:** 2025-01-01  
 **Status:** ✅ Comprehensive Prompt Complete
-

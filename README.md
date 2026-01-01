@@ -18,7 +18,7 @@
 
 ReasonKit transforms ad-hoc LLM prompting into structured, auditable reasoning chains.
 
-**Philosophy:** *Designed, Not Dreamed* — Structure beats raw intelligence.
+**Philosophy:** _Designed, Not Dreamed_ — Structure beats raw intelligence.
 
 ## Installation
 
@@ -47,12 +47,12 @@ reasonkit serve
 
 ## Components
 
-| Crate | Description |
-|-------|-------------|
-| [`reasonkit`](https://crates.io/crates/reasonkit) | Meta-crate — installs complete suite |
-| [`reasonkit-core`](https://crates.io/crates/reasonkit-core) | The Reasoning Engine — ThinkTools, protocols, MCP |
-| [`reasonkit-mem`](https://crates.io/crates/reasonkit-mem) | Memory layer — vector storage, hybrid search, RAPTOR |
-| [`reasonkit-web`](https://crates.io/crates/reasonkit-web) | Web sensing — browser automation, content extraction |
+| Crate                                                       | Description                                          |
+| ----------------------------------------------------------- | ---------------------------------------------------- |
+| [`reasonkit`](https://crates.io/crates/reasonkit)           | Meta-crate — installs complete suite                 |
+| [`reasonkit-core`](https://crates.io/crates/reasonkit-core) | The Reasoning Engine — ThinkTools, protocols, MCP    |
+| [`reasonkit-mem`](https://crates.io/crates/reasonkit-mem)   | Memory layer — vector storage, hybrid search, RAPTOR |
+| [`reasonkit-web`](https://crates.io/crates/reasonkit-web)   | Web sensing — browser automation, content extraction |
 
 ## Architecture
 

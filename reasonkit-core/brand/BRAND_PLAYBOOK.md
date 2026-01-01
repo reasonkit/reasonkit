@@ -43,7 +43,7 @@
 | **Philosophy**  | "Designed, Not Dreamed" / "High Logic > Lost Hopes"   |
 | **Positioning** | "Structure Beats Intelligence"                        |
 | **Technical**   | "Auditable Reasoning by Default"                      |
-| **Website**     | <https://reasonkit.sh>                                  |
+| **Website**     | <https://reasonkit.sh>                                |
 | **Mission**     | Make AI reasoning structured, auditable, and reliable |
 
 ### Product Ecosystem
@@ -455,4 +455,4 @@ All AI agents, projects, documentation, and marketing materials MUST:
 
 ---
 
-*"Designed, Not Dreamed" | <https://reasonkit.sh>*
+_"Designed, Not Dreamed" | <https://reasonkit.sh>_

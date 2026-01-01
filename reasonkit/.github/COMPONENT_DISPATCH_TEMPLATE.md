@@ -49,7 +49,7 @@ name: Release
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
 
 jobs:
   release:
@@ -136,6 +136,7 @@ The sync-release workflow can also be triggered manually:
 4. Optionally enable auto-publish
 
 This is useful for:
+
 - Testing the workflow
 - Catching up on missed dispatches
 - Manual version coordination

@@ -12,11 +12,13 @@
 **The `reasonkit` crate contains ZERO business logic.**
 
 All functionality lives in the component crates:
+
 - Reasoning logic → `reasonkit-core`
 - Memory/retrieval logic → `reasonkit-mem`
 - Web/browser logic → `reasonkit-web`
 
 This crate ONLY provides:
+
 1. Re-exports of the three component crates
 2. A unified CLI that delegates to the component libraries
 3. Version coordination
@@ -26,6 +28,7 @@ This crate ONLY provides:
 ### When to Update This Crate
 
 Update `reasonkit` when:
+
 1. A component crate releases a new version
 2. Adding new top-level CLI commands
 3. Breaking API changes in components (rare with semver)
@@ -41,6 +44,7 @@ That's it. No code changes needed for version bumps.
 ### Automated Updates (CI/CD)
 
 Component crates trigger updates via repository dispatch:
+
 - `reasonkit-core` release → Triggers `sync-release.yml`
 - `reasonkit-mem` release → Triggers `sync-release.yml`
 - `reasonkit-web` release → Triggers `sync-release.yml`
@@ -48,11 +52,13 @@ Component crates trigger updates via repository dispatch:
 ## Description Rules
 
 ### CORRECT Description:
+
 ```
 The Reasoning Engine — Complete ReasonKit Suite | Auditable Reasoning for Production AI
 ```
 
 ### NEVER say:
+
 - "RAG engine" when describing the whole suite
 - The individual crate descriptions as the suite description
 
@@ -78,6 +84,7 @@ reasonkit                    # Unified CLI
 ## Quality Gates
 
 Same as component crates:
+
 1. `cargo build --release`
 2. `cargo clippy -- -D warnings`
 3. `cargo fmt --check`

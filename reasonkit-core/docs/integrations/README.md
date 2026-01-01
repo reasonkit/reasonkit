@@ -230,5 +230,5 @@ rk-core metrics cost --provider anthropic
 
 ---
 
-*ReasonKit Integrations | v1.0.0 | Apache 2.0*
-*"See How Your AI Thinks"*
+_ReasonKit Integrations | v1.0.0 | Apache 2.0_
+_"See How Your AI Thinks"_

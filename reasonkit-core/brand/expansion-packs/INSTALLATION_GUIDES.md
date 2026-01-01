@@ -27,6 +27,7 @@ source ~/.zshrc  # or ~/.bashrc
 ### Verification
 
 Your prompt should now show:
+
 ```
 ┌─ /path/to/project RUST_CORE::1.74.0 ☍ main ✓ SYNC
 └─>
@@ -61,19 +62,22 @@ ln -s $(pwd)/reasonkit-core/brand/expansion-packs/vscode-extension ~/.vscode/ext
 ## 📦 3. ReasonAudio (UI Sounds)
 
 ### Status
+
 ⏳ Audio files pending production
 
 ### When Available
 
 **Web Implementation:**
+
 ```javascript
-import { ReasonAudio } from './reasonkit-audio';
+import { ReasonAudio } from "./reasonkit-audio";
 
 const audio = new ReasonAudio();
-audio.play('gigathink-start', 0.7);
+audio.play("gigathink-start", 0.7);
 ```
 
 **Rust Implementation:**
+
 ```rust
 use reasonkit_audio::ReasonAudio;
 
@@ -88,20 +92,24 @@ audio.play("gigathink-start");
 ## 📦 4. Reasoning Manifesto Poster
 
 ### Status
+
 ⏳ Image generation pending
 
 ### When Available
 
 **Print (A2):**
+
 - File: `reasonkit-core/brand/posters/reasoning-manifesto-a2.png`
 - Size: 420 x 594 mm
 - Resolution: 300 DPI
 
 **Web Hero:**
+
 - File: `reasonkit-core/brand/posters/reasoning-manifesto-hero.png`
 - Size: 1920 x 1080 px
 
 **Social Media:**
+
 - File: `reasonkit-core/brand/posters/reasoning-manifesto-social.png`
 - Size: 1200 x 1200 px
 
@@ -110,9 +118,11 @@ audio.play("gigathink-start");
 ## 📦 5. 404/500/403 Error Pages
 
 ### Status
+
 ✅ Implemented
 
 ### Location
+
 - `reasonkit-site/404.html`
 - `reasonkit-site/500.html`
 - `reasonkit-site/403.html`
@@ -120,16 +130,19 @@ audio.play("gigathink-start");
 ### Integration
 
 **Static Site:**
+
 - Files are ready to use
 - Configure web server to serve these files for error codes
 
 **Next.js:**
+
 ```typescript
 // pages/404.tsx
-export { default } from '../reasonkit-site/404.html';
+export { default } from "../reasonkit-site/404.html";
 ```
 
 **React Router:**
+
 ```typescript
 <Route path="*" element={<NotFound />} />
 ```
@@ -157,4 +170,3 @@ export { default } from '../reasonkit-site/404.html';
 ---
 
 **Last Updated:** 2025-01-01
-

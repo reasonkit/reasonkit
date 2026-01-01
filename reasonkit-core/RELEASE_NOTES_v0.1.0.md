@@ -168,5 +168,5 @@ curl -fsSL https://reasonkit.sh/install | bash
 
 ---
 
-*"Designed, Not Dreamed. Turn Prompts into Protocols."*
-*<https://reasonkit.sh>*
+_"Designed, Not Dreamed. Turn Prompts into Protocols."_
+_<https://reasonkit.sh>_

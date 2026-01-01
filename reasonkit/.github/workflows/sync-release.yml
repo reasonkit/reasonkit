@@ -28,7 +28,7 @@ on:
   workflow_dispatch:
     inputs:
       component:
-        description: 'Component crate name (reasonkit-core, reasonkit-mem, reasonkit-web)'
+        description: "Component crate name (reasonkit-core, reasonkit-mem, reasonkit-web)"
         required: true
         type: choice
         options:
@@ -36,11 +36,11 @@ on:
           - reasonkit-mem
           - reasonkit-web
       version:
-        description: 'New version (e.g., 0.2.0)'
+        description: "New version (e.g., 0.2.0)"
         required: true
         type: string
       auto_publish:
-        description: 'Auto-publish to crates.io after successful tests'
+        description: "Auto-publish to crates.io after successful tests"
         required: false
         type: boolean
         default: false
@@ -166,7 +166,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: main  # Get the updated commit
+          ref: main # Get the updated commit
 
       - name: Install Rust
         uses: dtolnay/rust-action@stable
