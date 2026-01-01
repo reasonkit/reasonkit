@@ -1,6 +1,6 @@
 [package]
 name = "reasonkit"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 rust-version = "1.74"
 authors = ["ReasonKit Team <team@reasonkit.sh>"]
@@ -102,7 +102,8 @@ tokio-test = "0.4"
 tempfile = "3"
 
 [package.metadata.docs.rs]
-all-features = true
+# Don't use all-features (python requires PyO3/Python headers not in docs.rs)
+features = ["full"]
 rustdoc-args = ["--cfg", "docsrs"]
 
 # =============================================================================
