@@ -1,0 +1,245 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" fill="none">
+  <defs>
+    <linearGradient id="heroGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#06b6d4"/>
+      <stop offset="50%" stop-color="#a855f7"/>
+      <stop offset="100%" stop-color="#ec4899"/>
+    </linearGradient>
+    <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#0891b2"/>
+    </linearGradient>
+    <linearGradient id="purpleGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#a855f7"/>
+      <stop offset="100%" stop-color="#9333ea"/>
+    </linearGradient>
+    <linearGradient id="greenGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feFlood flood-color="#06b6d4" flood-opacity="0.4"/>
+      <feComposite in2="blur" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="700" fill="#030508"/>
+  <ellipse cx="600" cy="350" rx="500" ry="300" fill="url(#heroGrad)" opacity="0.05"/>
+
+  <!-- Title -->
+  <text x="600" y="50" text-anchor="middle" fill="url(#heroGrad)" font-family="Inter, sans-serif" font-size="36" font-weight="700">RAPTOR Tree</text>
+  <text x="600" y="85" text-anchor="middle" fill="#9ca3af" font-family="Inter, sans-serif" font-size="16">Recursive Abstractive Processing for Tree-Organized Retrieval</text>
+
+  <!-- Legend -->
+  <g transform="translate(50, 120)">
+    <rect x="0" y="0" width="200" height="140" rx="12" fill="#0a0d14" stroke="rgba(6,182,212,0.2)" stroke-width="1"/>
+    <text x="100" y="25" text-anchor="middle" fill="#f9fafb" font-family="Inter, sans-serif" font-size="12" font-weight="600">TREE LEVELS</text>
+
+    <circle cx="25" cy="50" r="8" fill="url(#cyanGrad)"/>
+    <text x="45" y="55" fill="#06b6d4" font-family="Inter, sans-serif" font-size="11">Level 0: Root Summary</text>
+
+    <circle cx="25" cy="75" r="8" fill="url(#purpleGrad)"/>
+    <text x="45" y="80" fill="#a855f7" font-family="Inter, sans-serif" font-size="11">Level 1: Cluster Summaries</text>
+
+    <circle cx="25" cy="100" r="8" fill="url(#greenGrad)"/>
+    <text x="45" y="105" fill="#10b981" font-family="Inter, sans-serif" font-size="11">Level 2: Sub-clusters</text>
+
+    <rect x="17" y="118" width="16" height="12" rx="2" fill="#fbbf24"/>
+    <text x="45" y="128" fill="#fbbf24" font-family="Inter, sans-serif" font-size="11">Leaf: Document Chunks</text>
+  </g>
+
+  <!-- RAPTOR Tree visualization -->
+  <!-- Root Node (Level 0) -->
+  <g transform="translate(600, 150)">
+    <circle cx="0" cy="0" r="35" fill="url(#cyanGrad)" filter="url(#glow)"/>
+    <text x="0" y="5" text-anchor="middle" fill="#030508" font-family="Inter, sans-serif" font-size="12" font-weight="700">ROOT</text>
+    <text x="0" y="60" text-anchor="middle" fill="#06b6d4" font-family="Inter, sans-serif" font-size="10">Global Summary</text>
+  </g>
+
+  <!-- Level 1 connections -->
+  <line x1="600" y1="185" x2="350" y2="280" stroke="#4b5563" stroke-width="2"/>
+  <line x1="600" y1="185" x2="600" y2="280" stroke="#4b5563" stroke-width="2"/>
+  <line x1="600" y1="185" x2="850" y2="280" stroke="#4b5563" stroke-width="2"/>
+
+  <!-- Level 1 Nodes -->
+  <g transform="translate(350, 300)">
+    <circle cx="0" cy="0" r="28" fill="url(#purpleGrad)"/>
+    <text x="0" y="5" text-anchor="middle" fill="#030508" font-family="Inter, sans-serif" font-size="10" font-weight="600">CLUSTER</text>
+    <text x="0" y="50" text-anchor="middle" fill="#a855f7" font-family="Inter, sans-serif" font-size="9">Architecture</text>
+  </g>
+
+  <g transform="translate(600, 300)">
+    <circle cx="0" cy="0" r="28" fill="url(#purpleGrad)"/>
+    <text x="0" y="5" text-anchor="middle" fill="#030508" font-family="Inter, sans-serif" font-size="10" font-weight="600">CLUSTER</text>
+    <text x="0" y="50" text-anchor="middle" fill="#a855f7" font-family="Inter, sans-serif" font-size="9">Features</text>
+  </g>
+
+  <g transform="translate(850, 300)">
+    <circle cx="0" cy="0" r="28" fill="url(#purpleGrad)"/>
+    <text x="0" y="5" text-anchor="middle" fill="#030508" font-family="Inter, sans-serif" font-size="10" font-weight="600">CLUSTER</text>
+    <text x="0" y="50" text-anchor="middle" fill="#a855f7" font-family="Inter, sans-serif" font-size="9">API</text>
+  </g>
+
+  <!-- Level 2 connections -->
+  <line x1="350" y1="328" x2="250" y2="400" stroke="#4b5563" stroke-width="1.5"/>
+  <line x1="350" y1="328" x2="350" y2="400" stroke="#4b5563" stroke-width="1.5"/>
+  <line x1="350" y1="328" x2="450" y2="400" stroke="#4b5563" stroke-width="1.5"/>
+
+  <line x1="600" y1="328" x2="520" y2="400" stroke="#4b5563" stroke-width="1.5"/>
+  <line x1="600" y1="328" x2="600" y2="400" stroke="#4b5563" stroke-width="1.5"/>
+  <line x1="600" y1="328" x2="680" y2="400" stroke="#4b5563" stroke-width="1.5"/>
+
+  <line x1="850" y1="328" x2="770" y2="400" stroke="#4b5563" stroke-width="1.5"/>
+  <line x1="850" y1="328" x2="850" y2="400" stroke="#4b5563" stroke-width="1.5"/>
+  <line x1="850" y1="328" x2="930" y2="400" stroke="#4b5563" stroke-width="1.5"/>
+
+  <!-- Level 2 Nodes -->
+  <g>
+    <circle cx="250" cy="420" r="22" fill="url(#greenGrad)"/>
+    <circle cx="350" cy="420" r="22" fill="url(#greenGrad)"/>
+    <circle cx="450" cy="420" r="22" fill="url(#greenGrad)"/>
+    <circle cx="520" cy="420" r="22" fill="url(#greenGrad)"/>
+    <circle cx="600" cy="420" r="22" fill="url(#greenGrad)"/>
+    <circle cx="680" cy="420" r="22" fill="url(#greenGrad)"/>
+    <circle cx="770" cy="420" r="22" fill="url(#greenGrad)"/>
+    <circle cx="850" cy="420" r="22" fill="url(#greenGrad)"/>
+    <circle cx="930" cy="420" r="22" fill="url(#greenGrad)"/>
+  </g>
+
+  <!-- Leaf connections -->
+  <g stroke="#4b5563" stroke-width="1" opacity="0.6">
+    <line x1="250" y1="442" x2="200" y2="500"/>
+    <line x1="250" y1="442" x2="250" y2="500"/>
+    <line x1="250" y1="442" x2="300" y2="500"/>
+    <line x1="350" y1="442" x2="320" y2="500"/>
+    <line x1="350" y1="442" x2="380" y2="500"/>
+    <line x1="450" y1="442" x2="420" y2="500"/>
+    <line x1="450" y1="442" x2="480" y2="500"/>
+    <line x1="520" y1="442" x2="520" y2="500"/>
+    <line x1="600" y1="442" x2="570" y2="500"/>
+    <line x1="600" y1="442" x2="630" y2="500"/>
+    <line x1="680" y1="442" x2="680" y2="500"/>
+    <line x1="770" y1="442" x2="740" y2="500"/>
+    <line x1="770" y1="442" x2="800" y2="500"/>
+    <line x1="850" y1="442" x2="850" y2="500"/>
+    <line x1="930" y1="442" x2="900" y2="500"/>
+    <line x1="930" y1="442" x2="960" y2="500"/>
+  </g>
+
+  <!-- Leaf nodes (document chunks) -->
+  <g fill="#fbbf24">
+    <rect x="190" y="510" width="20" height="14" rx="3"/>
+    <rect x="240" y="510" width="20" height="14" rx="3"/>
+    <rect x="290" y="510" width="20" height="14" rx="3"/>
+    <rect x="310" y="510" width="20" height="14" rx="3"/>
+    <rect x="370" y="510" width="20" height="14" rx="3"/>
+    <rect x="410" y="510" width="20" height="14" rx="3"/>
+    <rect x="470" y="510" width="20" height="14" rx="3"/>
+    <rect x="510" y="510" width="20" height="14" rx="3"/>
+    <rect x="560" y="510" width="20" height="14" rx="3"/>
+    <rect x="620" y="510" width="20" height="14" rx="3"/>
+    <rect x="670" y="510" width="20" height="14" rx="3"/>
+    <rect x="730" y="510" width="20" height="14" rx="3"/>
+    <rect x="790" y="510" width="20" height="14" rx="3"/>
+    <rect x="840" y="510" width="20" height="14" rx="3"/>
+    <rect x="890" y="510" width="20" height="14" rx="3"/>
+    <rect x="950" y="510" width="20" height="14" rx="3"/>
+  </g>
+
+  <!-- Right side: Process explanation -->
+  <g transform="translate(980, 120)">
+    <rect x="0" y="0" width="200" height="450" rx="12" fill="#0a0d14" stroke="rgba(168,85,247,0.3)" stroke-width="1"/>
+    <text x="100" y="30" text-anchor="middle" fill="#a855f7" font-family="Inter, sans-serif" font-size="14" font-weight="600">RAPTOR PROCESS</text>
+
+    <!-- Step 1 -->
+    <g transform="translate(15, 55)">
+      <circle cx="15" cy="15" r="15" fill="rgba(6,182,212,0.2)" stroke="#06b6d4" stroke-width="1"/>
+      <text x="15" y="20" text-anchor="middle" fill="#06b6d4" font-family="Inter, sans-serif" font-size="12" font-weight="700">1</text>
+      <text x="40" y="12" fill="#f9fafb" font-family="Inter, sans-serif" font-size="11" font-weight="500">Chunk Documents</text>
+      <text x="40" y="26" fill="#6b7280" font-family="Inter, sans-serif" font-size="9">Split into semantic units</text>
+    </g>
+
+    <!-- Step 2 -->
+    <g transform="translate(15, 110)">
+      <circle cx="15" cy="15" r="15" fill="rgba(16,185,129,0.2)" stroke="#10b981" stroke-width="1"/>
+      <text x="15" y="20" text-anchor="middle" fill="#10b981" font-family="Inter, sans-serif" font-size="12" font-weight="700">2</text>
+      <text x="40" y="12" fill="#f9fafb" font-family="Inter, sans-serif" font-size="11" font-weight="500">Embed Chunks</text>
+      <text x="40" y="26" fill="#6b7280" font-family="Inter, sans-serif" font-size="9">Generate vector embeddings</text>
+    </g>
+
+    <!-- Step 3 -->
+    <g transform="translate(15, 165)">
+      <circle cx="15" cy="15" r="15" fill="rgba(168,85,247,0.2)" stroke="#a855f7" stroke-width="1"/>
+      <text x="15" y="20" text-anchor="middle" fill="#a855f7" font-family="Inter, sans-serif" font-size="12" font-weight="700">3</text>
+      <text x="40" y="12" fill="#f9fafb" font-family="Inter, sans-serif" font-size="11" font-weight="500">Cluster Similar</text>
+      <text x="40" y="26" fill="#6b7280" font-family="Inter, sans-serif" font-size="9">Group by semantic similarity</text>
+    </g>
+
+    <!-- Step 4 -->
+    <g transform="translate(15, 220)">
+      <circle cx="15" cy="15" r="15" fill="rgba(251,191,36,0.2)" stroke="#fbbf24" stroke-width="1"/>
+      <text x="15" y="20" text-anchor="middle" fill="#fbbf24" font-family="Inter, sans-serif" font-size="12" font-weight="700">4</text>
+      <text x="40" y="12" fill="#f9fafb" font-family="Inter, sans-serif" font-size="11" font-weight="500">Summarize Clusters</text>
+      <text x="40" y="26" fill="#6b7280" font-family="Inter, sans-serif" font-size="9">LLM-generated summaries</text>
+    </g>
+
+    <!-- Step 5 -->
+    <g transform="translate(15, 275)">
+      <circle cx="15" cy="15" r="15" fill="rgba(236,72,153,0.2)" stroke="#ec4899" stroke-width="1"/>
+      <text x="15" y="20" text-anchor="middle" fill="#ec4899" font-family="Inter, sans-serif" font-size="12" font-weight="700">5</text>
+      <text x="40" y="12" fill="#f9fafb" font-family="Inter, sans-serif" font-size="11" font-weight="500">Recurse Upward</text>
+      <text x="40" y="26" fill="#6b7280" font-family="Inter, sans-serif" font-size="9">Build hierarchy to root</text>
+    </g>
+
+    <!-- Benefits -->
+    <line x1="15" y1="320" x2="185" y2="320" stroke="#4b5563" stroke-width="1"/>
+    <text x="100" y="345" text-anchor="middle" fill="#10b981" font-family="Inter, sans-serif" font-size="12" font-weight="600">BENEFITS</text>
+
+    <text x="20" y="370" fill="#9ca3af" font-family="Inter, sans-serif" font-size="10">✓ Multi-level retrieval</text>
+    <text x="20" y="390" fill="#9ca3af" font-family="Inter, sans-serif" font-size="10">✓ Better context</text>
+    <text x="20" y="410" fill="#9ca3af" font-family="Inter, sans-serif" font-size="10">✓ Scalable to large docs</text>
+    <text x="20" y="430" fill="#9ca3af" font-family="Inter, sans-serif" font-size="10">✓ Reduced hallucination</text>
+  </g>
+
+  <!-- Query flow -->
+  <g transform="translate(50, 560)">
+    <rect x="0" y="0" width="900" height="80" rx="12" fill="#0a0d14" stroke="rgba(6,182,212,0.2)" stroke-width="1"/>
+    <text x="450" y="25" text-anchor="middle" fill="#06b6d4" font-family="Inter, sans-serif" font-size="12" font-weight="600">QUERY FLOW</text>
+
+    <text x="30" y="55" fill="#f9fafb" font-family="JetBrains Mono, monospace" font-size="11">Query</text>
+    <path d="M80 52 L120 52" stroke="#4b5563" stroke-width="2"/>
+    <polygon points="128,52 120,48 120,56" fill="#4b5563"/>
+
+    <rect x="130" y="40" width="120" height="28" rx="6" fill="rgba(6,182,212,0.2)"/>
+    <text x="190" y="58" text-anchor="middle" fill="#06b6d4" font-family="JetBrains Mono, monospace" font-size="10">Top-k @ Root</text>
+
+    <path d="M260 52 L300 52" stroke="#4b5563" stroke-width="2"/>
+    <polygon points="308,52 300,48 300,56" fill="#4b5563"/>
+
+    <rect x="310" y="40" width="120" height="28" rx="6" fill="rgba(168,85,247,0.2)"/>
+    <text x="370" y="58" text-anchor="middle" fill="#a855f7" font-family="JetBrains Mono, monospace" font-size="10">Expand Clusters</text>
+
+    <path d="M440 52 L480 52" stroke="#4b5563" stroke-width="2"/>
+    <polygon points="488,52 480,48 480,56" fill="#4b5563"/>
+
+    <rect x="490" y="40" width="120" height="28" rx="6" fill="rgba(16,185,129,0.2)"/>
+    <text x="550" y="58" text-anchor="middle" fill="#10b981" font-family="JetBrains Mono, monospace" font-size="10">Drill Down</text>
+
+    <path d="M620 52 L660 52" stroke="#4b5563" stroke-width="2"/>
+    <polygon points="668,52 660,48 660,56" fill="#4b5563"/>
+
+    <rect x="670" y="40" width="120" height="28" rx="6" fill="rgba(251,191,36,0.2)"/>
+    <text x="730" y="58" text-anchor="middle" fill="#fbbf24" font-family="JetBrains Mono, monospace" font-size="10">Retrieve Leaves</text>
+
+    <path d="M800 52 L840 52" stroke="#4b5563" stroke-width="2"/>
+    <polygon points="848,52 840,48 840,56" fill="#4b5563"/>
+
+    <text x="870" y="55" fill="#f9fafb" font-family="JetBrains Mono, monospace" font-size="11">Result</text>
+  </g>
+
+  <!-- Footer -->
+  <text x="600" y="680" text-anchor="middle" fill="#4b5563" font-family="Inter, sans-serif" font-size="11">reasonkit-mem | Hierarchical Memory for RAG | reasonkit.sh</text>
+</svg>

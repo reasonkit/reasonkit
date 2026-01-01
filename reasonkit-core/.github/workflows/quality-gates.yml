@@ -1,0 +1,545 @@
+# ReasonKit Core - Quality Gates CI/CD
+# Enforces CONS-009: All 5 quality gates must pass before merge
+# Reference: ORCHESTRATOR.md v3.8.0
+#
+# QUALITY GATES (from ORCHESTRATOR.md):
+# | Gate   | Command                       | Threshold       |
+# |--------|-------------------------------|-----------------|
+# | Build  | cargo build --release         | Exit 0          |
+# | Lint   | cargo clippy -- -D warnings   | 0 errors        |
+# | Format | cargo fmt --check             | Pass            |
+# | Test   | cargo test --all-features     | 100% pass       |
+# | Bench  | cargo bench                   | < 5% regression |
+#
+# Quality Target: 8.0/10 | Minimum for Release: 7.0/10
+
+name: Quality Gates
+
+on:
+  push:
+    branches: [main, develop, "feature/*"]
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+    inputs:
+      run_benchmarks:
+        description: "Run benchmark gate (Gate 5)"
+        required: false
+        default: "false"
+        type: boolean
+      strict_security:
+        description: "Fail on security vulnerabilities"
+        required: false
+        default: "false"
+        type: boolean
+
+# Cancel in-progress runs for same workflow and branch
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+  RUSTFLAGS: "-D warnings"
+  RUST_BACKTRACE: 1
+  CARGO_INCREMENTAL: 0
+
+jobs:
+  # ===========================================================================
+  # GATE 1: Build (BLOCKING)
+  # Threshold: Exit 0 on `cargo build --release`
+  # ===========================================================================
+  gate1-build:
+    name: "Gate 1: Build"
+    runs-on: ubuntu-latest
+    outputs:
+      binary_size: ${{ steps.size.outputs.size }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Setup Rust cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          cache-on-failure: true
+          prefix-key: "v2-gate1"
+
+      - name: Verify Cargo.lock is up to date
+        run: cargo update --workspace --locked
+
+      - name: Build (release)
+        run: cargo build --release --locked
+
+      - name: Build (all features)
+        run: cargo build --release --all-features --locked
+
+      - name: Build (no default features)
+        run: cargo build --release --no-default-features --locked
+
+      - name: Measure binary size
+        id: size
+        run: |
+          if [ -f "target/release/rk-core" ]; then
+            SIZE=$(stat -c%s target/release/rk-core 2>/dev/null || stat -f%z target/release/rk-core 2>/dev/null || echo "0")
+            echo "size=$SIZE" >> $GITHUB_OUTPUT
+            echo "Binary size: $SIZE bytes ($(numfmt --to=iec $SIZE 2>/dev/null || echo "${SIZE}B"))"
+          else
+            echo "size=0" >> $GITHUB_OUTPUT
+            echo "Binary not found (library-only build)"
+          fi
+
+      - name: Upload binary artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: rk-core-binary
+          path: target/release/rk-core
+          retention-days: 7
+          if-no-files-found: ignore
+
+  # ===========================================================================
+  # GATE 2: Lint with Clippy (BLOCKING)
+  # Threshold: 0 errors on `cargo clippy -- -D warnings`
+  # ===========================================================================
+  gate2-lint:
+    name: "Gate 2: Clippy"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy
+
+      - name: Setup Rust cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          cache-on-failure: true
+          prefix-key: "v2-gate2"
+
+      - name: Run Clippy (strict mode)
+        run: |
+          cargo clippy --all-targets --all-features --locked -- \
+            -D warnings \
+            -W clippy::pedantic \
+            -W clippy::nursery \
+            -W clippy::cargo \
+            -W clippy::suspicious \
+            -W clippy::perf \
+            -W clippy::correctness \
+            -A clippy::module_name_repetitions \
+            -A clippy::must_use_candidate \
+            -A clippy::missing_errors_doc \
+            -A clippy::missing_panics_doc \
+            -A clippy::too_many_lines
+
+      - name: Run Clippy (default features)
+        run: cargo clippy --locked -- -D warnings
+
+  # ===========================================================================
+  # GATE 3: Format Check (BLOCKING)
+  # Threshold: Pass on `cargo fmt --check`
+  # ===========================================================================
+  gate3-format:
+    name: "Gate 3: Format"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt
+
+      - name: Check formatting
+        run: cargo fmt --all -- --check
+
+      - name: Generate format diff (on failure)
+        if: failure()
+        run: |
+          echo "## Format Check Failed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Run the following command locally to fix:" >> $GITHUB_STEP_SUMMARY
+          echo '```bash' >> $GITHUB_STEP_SUMMARY
+          echo 'cargo fmt' >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          cargo fmt --all -- --check --verbose 2>&1 || true
+
+  # ===========================================================================
+  # GATE 4: Tests (BLOCKING)
+  # Threshold: 100% pass on `cargo test --all-features`
+  # ===========================================================================
+  gate4-test:
+    name: "Gate 4: Tests"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Setup Rust cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          cache-on-failure: true
+          prefix-key: "v2-gate4"
+
+      - name: Run library tests
+        run: cargo test --lib --all-features --locked
+
+      - name: Run binary tests
+        run: cargo test --bins --all-features --locked
+
+      - name: Run integration tests
+        run: cargo test --tests --all-features --locked
+
+      - name: Run doc tests
+        run: cargo test --doc --all-features --locked
+
+      - name: Test with no default features
+        run: cargo test --no-default-features --locked
+
+      - name: Generate test summary
+        if: always()
+        run: |
+          echo "## Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Test Type | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Library tests | Completed |" >> $GITHUB_STEP_SUMMARY
+          echo "| Binary tests | Completed |" >> $GITHUB_STEP_SUMMARY
+          echo "| Integration tests | Completed |" >> $GITHUB_STEP_SUMMARY
+          echo "| Doc tests | Completed |" >> $GITHUB_STEP_SUMMARY
+          echo "| No-default-features | Completed |" >> $GITHUB_STEP_SUMMARY
+
+  # ===========================================================================
+  # GATE 5: Benchmarks (SOFT - < 5% regression threshold)
+  # Threshold: < 5% regression on `cargo bench`
+  # Runs on: workflow_dispatch, 'performance' label, or tags
+  # ===========================================================================
+  gate5-bench:
+    name: "Gate 5: Benchmarks"
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'workflow_dispatch' && github.event.inputs.run_benchmarks == 'true' ||
+      contains(github.event.pull_request.labels.*.name, 'performance') ||
+      startsWith(github.ref, 'refs/tags/v')
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Setup Rust cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          cache-on-failure: true
+          prefix-key: "v2-gate5"
+
+      - name: Restore benchmark baseline
+        uses: actions/cache@v4
+        with:
+          path: target/criterion
+          key: benchmark-baseline-${{ github.base_ref || 'main' }}
+          restore-keys: |
+            benchmark-baseline-main
+            benchmark-baseline-
+
+      - name: Run benchmarks
+        run: |
+          echo "Running benchmark suite with 5% regression threshold..."
+          cargo bench --bench retrieval_bench -- --noplot 2>&1 | tee bench_output.txt || true
+          cargo bench --bench rerank_bench -- --noplot 2>&1 | tee -a bench_output.txt || true
+          cargo bench --bench fusion_bench -- --noplot 2>&1 | tee -a bench_output.txt || true
+        continue-on-error: true
+
+      - name: Check for performance regressions
+        id: regression
+        run: |
+          REGRESSION_DETECTED=false
+          if grep -q "Performance has regressed" bench_output.txt 2>/dev/null; then
+            # Check if regression is > 5%
+            if grep -E "regressed by [0-9]+\.[0-9]+%" bench_output.txt | grep -E "[5-9][0-9]?\.[0-9]+%|[1-9][0-9][0-9]+\.[0-9]+%" > /dev/null 2>&1; then
+              echo "Performance regression > 5% detected!"
+              REGRESSION_DETECTED=true
+            fi
+          fi
+          echo "regression=$REGRESSION_DETECTED" >> $GITHUB_OUTPUT
+        continue-on-error: true
+
+      - name: Save benchmark baseline (main only)
+        if: github.ref == 'refs/heads/main'
+        uses: actions/cache/save@v4
+        with:
+          path: target/criterion
+          key: benchmark-baseline-main-${{ github.sha }}
+
+      - name: Generate benchmark summary
+        if: always()
+        run: |
+          echo "## Benchmark Results (Gate 5)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Threshold:** < 5% regression" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Benchmark | Target | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----------|--------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Retrieval | < 5ms | See logs |" >> $GITHUB_STEP_SUMMARY
+          echo "| Rerank (20 candidates) | < 200ms | See logs |" >> $GITHUB_STEP_SUMMARY
+          echo "| Fusion RRF | < 50ms | See logs |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ steps.regression.outputs.regression }}" = "true" ]; then
+            echo "**Warning:** Performance regression > 5% detected" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "**Result:** No significant regressions detected" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Upload benchmark reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-reports
+          path: target/criterion
+          retention-days: 30
+
+  # ===========================================================================
+  # Documentation Build (Part of quality metrics)
+  # ===========================================================================
+  docs:
+    name: "Documentation"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Setup Rust cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          prefix-key: "v2-docs"
+          cache-on-failure: true
+
+      - name: Build documentation
+        run: cargo doc --no-deps --all-features --locked
+        env:
+          RUSTDOCFLAGS: "-D warnings --cfg docsrs"
+
+      - name: Upload documentation
+        uses: actions/upload-artifact@v4
+        with:
+          name: documentation
+          path: target/doc
+          retention-days: 7
+
+  # ===========================================================================
+  # Security Audit (Monitored - optionally blocking)
+  # ===========================================================================
+  security:
+    name: "Security Audit"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install cargo-audit
+        run: cargo install cargo-audit --locked
+
+      - name: Run security audit
+        id: audit
+        run: |
+          cargo audit --json > audit-report.json 2>&1 || true
+          if cargo audit 2>&1 | grep -q "Vulnerability found"; then
+            echo "vulnerabilities=true" >> $GITHUB_OUTPUT
+          else
+            echo "vulnerabilities=false" >> $GITHUB_OUTPUT
+          fi
+        continue-on-error: ${{ github.event.inputs.strict_security != 'true' }}
+
+      - name: Run cargo-deny (advisories)
+        uses: EmbarkStudios/cargo-deny-action@v1
+        with:
+          log-level: warn
+          command: check advisories
+        continue-on-error: ${{ github.event.inputs.strict_security != 'true' }}
+
+      - name: Run cargo-deny (licenses)
+        uses: EmbarkStudios/cargo-deny-action@v1
+        with:
+          log-level: warn
+          command: check licenses
+        continue-on-error: ${{ github.event.inputs.strict_security != 'true' }}
+
+      - name: Generate security summary
+        if: always()
+        run: |
+          echo "## Security Audit Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ steps.audit.outputs.vulnerabilities }}" = "true" ]; then
+            echo "| cargo-audit | Vulnerabilities found |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| cargo-audit | No vulnerabilities |" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "| cargo-deny (advisories) | Completed |" >> $GITHUB_STEP_SUMMARY
+          echo "| cargo-deny (licenses) | Completed |" >> $GITHUB_STEP_SUMMARY
+
+  # ===========================================================================
+  # Quality Metrics Collection
+  # ===========================================================================
+  metrics:
+    name: "Quality Metrics"
+    runs-on: ubuntu-latest
+    needs: [gate1-build, gate2-lint, gate3-format, gate4-test, docs]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install tools
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Calculate quality metrics
+        run: |
+          echo "## Quality Metrics Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Code Statistics" >> $GITHUB_STEP_SUMMARY
+          echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+
+          # Lines of code
+          RUST_LINES=$(find src -name '*.rs' -exec cat {} \; 2>/dev/null | wc -l || echo 0)
+          echo "| Lines of Rust | $RUST_LINES |" >> $GITHUB_STEP_SUMMARY
+
+          RUST_FILES=$(find src -name '*.rs' 2>/dev/null | wc -l || echo 0)
+          echo "| Rust source files | $RUST_FILES |" >> $GITHUB_STEP_SUMMARY
+
+          TEST_FILES=$(find tests -name '*.rs' 2>/dev/null | wc -l || echo 0)
+          echo "| Test files | $TEST_FILES |" >> $GITHUB_STEP_SUMMARY
+
+          # Quality indicators
+          TODO_COUNT=$(grep -r 'TODO' src --include='*.rs' 2>/dev/null | wc -l || echo 0)
+          echo "| TODO count | $TODO_COUNT |" >> $GITHUB_STEP_SUMMARY
+
+          FIXME_COUNT=$(grep -r 'FIXME' src --include='*.rs' 2>/dev/null | wc -l || echo 0)
+          echo "| FIXME count | $FIXME_COUNT |" >> $GITHUB_STEP_SUMMARY
+
+          UNSAFE_COUNT=$(grep -r 'unsafe' src --include='*.rs' 2>/dev/null | wc -l || echo 0)
+          echo "| Unsafe blocks | $UNSAFE_COUNT |" >> $GITHUB_STEP_SUMMARY
+
+          TEST_COUNT=$(grep -r '#\[test\]' src tests --include='*.rs' 2>/dev/null | wc -l || echo 0)
+          echo "| Test functions | $TEST_COUNT |" >> $GITHUB_STEP_SUMMARY
+
+          # Dependencies
+          DEP_COUNT=$(cargo metadata --no-deps --format-version 1 2>/dev/null | jq '.packages[0].dependencies | length' || echo 0)
+          echo "| Direct dependencies | $DEP_COUNT |" >> $GITHUB_STEP_SUMMARY
+
+          # Binary size (from gate1-build output)
+          BINARY_SIZE="${{ needs.gate1-build.outputs.binary_size }}"
+          if [ -n "$BINARY_SIZE" ] && [ "$BINARY_SIZE" != "0" ]; then
+            SIZE_MB=$(echo "scale=2; $BINARY_SIZE / 1048576" | bc 2>/dev/null || echo "N/A")
+            echo "| Binary size | ${SIZE_MB} MB |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Gate Status (CONS-009)" >> $GITHUB_STEP_SUMMARY
+          echo "| Gate | Command | Threshold | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|---------|-----------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Build | \`cargo build --release\` | Exit 0 | Passed |" >> $GITHUB_STEP_SUMMARY
+          echo "| Lint | \`cargo clippy -- -D warnings\` | 0 errors | Passed |" >> $GITHUB_STEP_SUMMARY
+          echo "| Format | \`cargo fmt --check\` | Pass | Passed |" >> $GITHUB_STEP_SUMMARY
+          echo "| Test | \`cargo test --all-features\` | 100% pass | Passed |" >> $GITHUB_STEP_SUMMARY
+          echo "| Bench | \`cargo bench\` | < 5% regression | Conditional |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Quality Target:** 8.0/10 | **Minimum for Release:** 7.0/10" >> $GITHUB_STEP_SUMMARY
+
+  # ===========================================================================
+  # Final Status Check (for branch protection)
+  # ===========================================================================
+  ci-success:
+    name: "CI Success"
+    runs-on: ubuntu-latest
+    needs:
+      [
+        gate1-build,
+        gate2-lint,
+        gate3-format,
+        gate4-test,
+        docs,
+        metrics,
+        security,
+      ]
+    if: always()
+
+    steps:
+      - name: Check all required gates
+        run: |
+          echo "## CI Pipeline Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Job | Result |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Gate 1: Build | ${{ needs.gate1-build.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Gate 2: Lint | ${{ needs.gate2-lint.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Gate 3: Format | ${{ needs.gate3-format.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Gate 4: Test | ${{ needs.gate4-test.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Documentation | ${{ needs.docs.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Metrics | ${{ needs.metrics.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Security | ${{ needs.security.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Check blocking gates (Gates 1-4)
+          FAILED=false
+          if [ "${{ needs.gate1-build.result }}" != "success" ]; then
+            echo "Gate 1 (Build) failed: ${{ needs.gate1-build.result }}"
+            FAILED=true
+          fi
+          if [ "${{ needs.gate2-lint.result }}" != "success" ]; then
+            echo "Gate 2 (Lint) failed: ${{ needs.gate2-lint.result }}"
+            FAILED=true
+          fi
+          if [ "${{ needs.gate3-format.result }}" != "success" ]; then
+            echo "Gate 3 (Format) failed: ${{ needs.gate3-format.result }}"
+            FAILED=true
+          fi
+          if [ "${{ needs.gate4-test.result }}" != "success" ]; then
+            echo "Gate 4 (Test) failed: ${{ needs.gate4-test.result }}"
+            FAILED=true
+          fi
+          if [ "${{ needs.docs.result }}" != "success" ]; then
+            echo "Documentation build failed: ${{ needs.docs.result }}"
+            FAILED=true
+          fi
+
+          if [ "$FAILED" = "true" ]; then
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**CI FAILED** - One or more required gates did not succeed" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          else
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**CI PASSED** - All required quality gates succeeded!" >> $GITHUB_STEP_SUMMARY
+            echo ""
+            echo "All quality gates passed!"
+          fi

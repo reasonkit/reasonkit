@@ -1,0 +1,242 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" fill="none">
+  <defs>
+    <linearGradient id="heroGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#06b6d4"/>
+      <stop offset="50%" stop-color="#a855f7"/>
+      <stop offset="100%" stop-color="#ec4899"/>
+    </linearGradient>
+    <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#0891b2"/>
+    </linearGradient>
+    <linearGradient id="purpleGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#a855f7"/>
+      <stop offset="100%" stop-color="#9333ea"/>
+    </linearGradient>
+    <linearGradient id="greenGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feFlood flood-color="#06b6d4" flood-opacity="0.3"/>
+      <feComposite in2="blur" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="800" fill="#030508"/>
+  <ellipse cx="600" cy="400" rx="500" ry="300" fill="url(#heroGrad)" opacity="0.05"/>
+
+  <!-- Title -->
+  <text x="600" y="50" text-anchor="middle" fill="url(#heroGrad)" font-family="Inter, sans-serif" font-size="36" font-weight="700">reasonkit-mem</text>
+  <text x="600" y="80" text-anchor="middle" fill="#9ca3af" font-family="Inter, sans-serif" font-size="16">Memory Layer Architecture | RAPTOR + Hybrid Search</text>
+
+  <!-- Layer 1: Document Ingestion -->
+  <g transform="translate(50, 120)">
+    <text x="550" y="0" text-anchor="middle" fill="#f97316" font-family="Inter, sans-serif" font-size="14" font-weight="600">LAYER 1: DOCUMENT INGESTION</text>
+    <rect x="0" y="15" width="1100" height="100" rx="12" fill="#0a0d14" stroke="#f97316" stroke-width="1" stroke-dasharray="5,5"/>
+
+    <!-- Input sources -->
+    <g transform="translate(30, 35)">
+      <rect x="0" y="0" width="140" height="60" rx="8" fill="rgba(249,115,22,0.1)" stroke="#f97316" stroke-width="1"/>
+      <text x="70" y="25" text-anchor="middle" fill="#f97316" font-family="Inter, sans-serif" font-size="12" font-weight="600">PDF</text>
+      <text x="70" y="45" text-anchor="middle" fill="#6b7280" font-family="JetBrains Mono, monospace" font-size="9">lopdf parser</text>
+    </g>
+
+    <g transform="translate(190, 35)">
+      <rect x="0" y="0" width="140" height="60" rx="8" fill="rgba(249,115,22,0.1)" stroke="#f97316" stroke-width="1"/>
+      <text x="70" y="25" text-anchor="middle" fill="#f97316" font-family="Inter, sans-serif" font-size="12" font-weight="600">Markdown</text>
+      <text x="70" y="45" text-anchor="middle" fill="#6b7280" font-family="JetBrains Mono, monospace" font-size="9">pulldown-cmark</text>
+    </g>
+
+    <g transform="translate(350, 35)">
+      <rect x="0" y="0" width="140" height="60" rx="8" fill="rgba(249,115,22,0.1)" stroke="#f97316" stroke-width="1"/>
+      <text x="70" y="25" text-anchor="middle" fill="#f97316" font-family="Inter, sans-serif" font-size="12" font-weight="600">JSON/JSONL</text>
+      <text x="70" y="45" text-anchor="middle" fill="#6b7280" font-family="JetBrains Mono, monospace" font-size="9">serde_json</text>
+    </g>
+
+    <!-- Arrow to chunking -->
+    <path d="M500 65 L550 65" stroke="#4b5563" stroke-width="2"/>
+    <polygon points="560,65 550,60 550,70" fill="#4b5563"/>
+
+    <!-- Chunking -->
+    <g transform="translate(570, 35)">
+      <rect x="0" y="0" width="200" height="60" rx="8" fill="rgba(251,191,36,0.1)" stroke="#fbbf24" stroke-width="1"/>
+      <text x="100" y="22" text-anchor="middle" fill="#fbbf24" font-family="Inter, sans-serif" font-size="12" font-weight="600">SEMANTIC CHUNKING</text>
+      <text x="100" y="42" text-anchor="middle" fill="#6b7280" font-family="JetBrains Mono, monospace" font-size="9">512 tokens, 64 overlap</text>
+    </g>
+
+    <!-- Arrow to dedup -->
+    <path d="M780 65 L820 65" stroke="#4b5563" stroke-width="2"/>
+    <polygon points="830,65 820,60 820,70" fill="#4b5563"/>
+
+    <!-- Dedup -->
+    <g transform="translate(840, 35)">
+      <rect x="0" y="0" width="200" height="60" rx="8" fill="rgba(16,185,129,0.1)" stroke="#10b981" stroke-width="1"/>
+      <text x="100" y="22" text-anchor="middle" fill="#10b981" font-family="Inter, sans-serif" font-size="12" font-weight="600">DEDUPLICATION</text>
+      <text x="100" y="42" text-anchor="middle" fill="#6b7280" font-family="JetBrains Mono, monospace" font-size="9">MinHash LSH</text>
+    </g>
+  </g>
+
+  <!-- Arrow down -->
+  <path d="M600 235 L600 265" stroke="#4b5563" stroke-width="2"/>
+  <polygon points="600,275 595,265 605,265" fill="#4b5563"/>
+
+  <!-- Layer 2: Embedding Pipeline -->
+  <g transform="translate(50, 285)">
+    <text x="550" y="0" text-anchor="middle" fill="#06b6d4" font-family="Inter, sans-serif" font-size="14" font-weight="600">LAYER 2: EMBEDDING PIPELINE</text>
+    <rect x="0" y="15" width="1100" height="100" rx="12" fill="#0a0d14" stroke="#06b6d4" stroke-width="1" stroke-dasharray="5,5"/>
+
+    <!-- Embedding model -->
+    <g transform="translate(50, 35)">
+      <rect x="0" y="0" width="200" height="60" rx="8" fill="rgba(6,182,212,0.1)" stroke="#06b6d4" stroke-width="1"/>
+      <text x="100" y="22" text-anchor="middle" fill="#06b6d4" font-family="Inter, sans-serif" font-size="12" font-weight="600">EMBEDDING MODEL</text>
+      <text x="100" y="42" text-anchor="middle" fill="#6b7280" font-family="JetBrains Mono, monospace" font-size="9">fastembed-rs (384d)</text>
+    </g>
+
+    <!-- Arrow -->
+    <path d="M260 65 L300 65" stroke="#4b5563" stroke-width="2"/>
+    <polygon points="310,65 300,60 300,70" fill="#4b5563"/>
+
+    <!-- Batch processing -->
+    <g transform="translate(320, 35)">
+      <rect x="0" y="0" width="200" height="60" rx="8" fill="rgba(6,182,212,0.1)" stroke="#06b6d4" stroke-width="1"/>
+      <text x="100" y="22" text-anchor="middle" fill="#06b6d4" font-family="Inter, sans-serif" font-size="12" font-weight="600">BATCH PROCESSOR</text>
+      <text x="100" y="42" text-anchor="middle" fill="#6b7280" font-family="JetBrains Mono, monospace" font-size="9">async, 128 batch</text>
+    </g>
+
+    <!-- Arrow -->
+    <path d="M530 65 L570 65" stroke="#4b5563" stroke-width="2"/>
+    <polygon points="580,65 570,60 570,70" fill="#4b5563"/>
+
+    <!-- Caching -->
+    <g transform="translate(590, 35)">
+      <rect x="0" y="0" width="200" height="60" rx="8" fill="rgba(6,182,212,0.1)" stroke="#06b6d4" stroke-width="1"/>
+      <text x="100" y="22" text-anchor="middle" fill="#06b6d4" font-family="Inter, sans-serif" font-size="12" font-weight="600">EMBEDDING CACHE</text>
+      <text x="100" y="42" text-anchor="middle" fill="#6b7280" font-family="JetBrains Mono, monospace" font-size="9">content-hash keyed</text>
+    </g>
+
+    <!-- Arrow -->
+    <path d="M800 65 L840 65" stroke="#4b5563" stroke-width="2"/>
+    <polygon points="850,65 840,60 840,70" fill="#4b5563"/>
+
+    <!-- Output -->
+    <g transform="translate(860, 35)">
+      <rect x="0" y="0" width="180" height="60" rx="8" fill="rgba(6,182,212,0.2)" stroke="#06b6d4" stroke-width="2"/>
+      <text x="90" y="22" text-anchor="middle" fill="#06b6d4" font-family="Inter, sans-serif" font-size="12" font-weight="600">VECTORS</text>
+      <text x="90" y="42" text-anchor="middle" fill="#f9fafb" font-family="JetBrains Mono, monospace" font-size="9">[384d dense]</text>
+    </g>
+  </g>
+
+  <!-- Arrow down -->
+  <path d="M600 400 L600 430" stroke="#4b5563" stroke-width="2"/>
+  <polygon points="600,440 595,430 605,430" fill="#4b5563"/>
+
+  <!-- Layer 3: Storage (Split into two) -->
+  <g transform="translate(50, 450)">
+    <text x="550" y="0" text-anchor="middle" fill="#a855f7" font-family="Inter, sans-serif" font-size="14" font-weight="600">LAYER 3: DUAL STORAGE ENGINE</text>
+
+    <!-- Vector Store (Left) -->
+    <g transform="translate(0, 20)">
+      <rect x="0" y="0" width="530" height="130" rx="12" fill="#0a0d14" stroke="#a855f7" stroke-width="2"/>
+      <text x="265" y="25" text-anchor="middle" fill="#a855f7" font-family="Inter, sans-serif" font-size="14" font-weight="700">QDRANT EMBEDDED</text>
+      <text x="265" y="45" text-anchor="middle" fill="#9ca3af" font-family="Inter, sans-serif" font-size="11">Vector Database (HNSW index)</text>
+
+      <g transform="translate(30, 60)">
+        <rect x="0" y="0" width="140" height="50" rx="6" fill="rgba(168,85,247,0.1)"/>
+        <text x="70" y="20" text-anchor="middle" fill="#a855f7" font-family="Inter, sans-serif" font-size="10" font-weight="600">Collections</text>
+        <text x="70" y="38" text-anchor="middle" fill="#6b7280" font-family="JetBrains Mono, monospace" font-size="8">docs, raptor, meta</text>
+      </g>
+
+      <g transform="translate(190, 60)">
+        <rect x="0" y="0" width="140" height="50" rx="6" fill="rgba(168,85,247,0.1)"/>
+        <text x="70" y="20" text-anchor="middle" fill="#a855f7" font-family="Inter, sans-serif" font-size="10" font-weight="600">Quantization</text>
+        <text x="70" y="38" text-anchor="middle" fill="#6b7280" font-family="JetBrains Mono, monospace" font-size="8">scalar (int8)</text>
+      </g>
+
+      <g transform="translate(350, 60)">
+        <rect x="0" y="0" width="140" height="50" rx="6" fill="rgba(168,85,247,0.1)"/>
+        <text x="70" y="20" text-anchor="middle" fill="#a855f7" font-family="Inter, sans-serif" font-size="10" font-weight="600">Index</text>
+        <text x="70" y="38" text-anchor="middle" fill="#6b7280" font-family="JetBrains Mono, monospace" font-size="8">HNSW m=16 ef=100</text>
+      </g>
+    </g>
+
+    <!-- BM25 Store (Right) -->
+    <g transform="translate(570, 20)">
+      <rect x="0" y="0" width="530" height="130" rx="12" fill="#0a0d14" stroke="#10b981" stroke-width="2"/>
+      <text x="265" y="25" text-anchor="middle" fill="#10b981" font-family="Inter, sans-serif" font-size="14" font-weight="700">TANTIVY INDEX</text>
+      <text x="265" y="45" text-anchor="middle" fill="#9ca3af" font-family="Inter, sans-serif" font-size="11">Full-Text Search (BM25 scoring)</text>
+
+      <g transform="translate(30, 60)">
+        <rect x="0" y="0" width="140" height="50" rx="6" fill="rgba(16,185,129,0.1)"/>
+        <text x="70" y="20" text-anchor="middle" fill="#10b981" font-family="Inter, sans-serif" font-size="10" font-weight="600">Tokenizer</text>
+        <text x="70" y="38" text-anchor="middle" fill="#6b7280" font-family="JetBrains Mono, monospace" font-size="8">en_stem + ngram</text>
+      </g>
+
+      <g transform="translate(190, 60)">
+        <rect x="0" y="0" width="140" height="50" rx="6" fill="rgba(16,185,129,0.1)"/>
+        <text x="70" y="20" text-anchor="middle" fill="#10b981" font-family="Inter, sans-serif" font-size="10" font-weight="600">Fields</text>
+        <text x="70" y="38" text-anchor="middle" fill="#6b7280" font-family="JetBrains Mono, monospace" font-size="8">content, title, meta</text>
+      </g>
+
+      <g transform="translate(350, 60)">
+        <rect x="0" y="0" width="140" height="50" rx="6" fill="rgba(16,185,129,0.1)"/>
+        <text x="70" y="20" text-anchor="middle" fill="#10b981" font-family="Inter, sans-serif" font-size="10" font-weight="600">Facets</text>
+        <text x="70" y="38" text-anchor="middle" fill="#6b7280" font-family="JetBrains Mono, monospace" font-size="8">source, date, tags</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- Arrow down -->
+  <path d="M600 620 L600 650" stroke="#4b5563" stroke-width="2"/>
+  <polygon points="600,660 595,650 605,650" fill="#4b5563"/>
+
+  <!-- Layer 4: RAPTOR Tree -->
+  <g transform="translate(50, 670)">
+    <text x="550" y="0" text-anchor="middle" fill="#ec4899" font-family="Inter, sans-serif" font-size="14" font-weight="600">LAYER 4: RAPTOR HIERARCHICAL INDEX</text>
+    <rect x="0" y="15" width="1100" height="80" rx="12" fill="#0a0d14" stroke="#ec4899" stroke-width="2"/>
+
+    <!-- RAPTOR levels -->
+    <g transform="translate(30, 30)">
+      <rect x="0" y="0" width="180" height="50" rx="8" fill="rgba(236,72,153,0.1)" stroke="#ec4899" stroke-width="1"/>
+      <text x="90" y="20" text-anchor="middle" fill="#ec4899" font-family="Inter, sans-serif" font-size="11" font-weight="600">LEAF CHUNKS</text>
+      <text x="90" y="38" text-anchor="middle" fill="#6b7280" font-family="JetBrains Mono, monospace" font-size="9">original documents</text>
+    </g>
+
+    <path d="M220 55 L260 55" stroke="#4b5563" stroke-width="2"/>
+    <polygon points="270,55 260,50 260,60" fill="#4b5563"/>
+
+    <g transform="translate(280, 30)">
+      <rect x="0" y="0" width="180" height="50" rx="8" fill="rgba(236,72,153,0.15)" stroke="#ec4899" stroke-width="1"/>
+      <text x="90" y="20" text-anchor="middle" fill="#ec4899" font-family="Inter, sans-serif" font-size="11" font-weight="600">CLUSTER L1</text>
+      <text x="90" y="38" text-anchor="middle" fill="#6b7280" font-family="JetBrains Mono, monospace" font-size="9">GMM summarization</text>
+    </g>
+
+    <path d="M470 55 L510 55" stroke="#4b5563" stroke-width="2"/>
+    <polygon points="520,55 510,50 510,60" fill="#4b5563"/>
+
+    <g transform="translate(530, 30)">
+      <rect x="0" y="0" width="180" height="50" rx="8" fill="rgba(236,72,153,0.2)" stroke="#ec4899" stroke-width="1"/>
+      <text x="90" y="20" text-anchor="middle" fill="#ec4899" font-family="Inter, sans-serif" font-size="11" font-weight="600">CLUSTER L2</text>
+      <text x="90" y="38" text-anchor="middle" fill="#6b7280" font-family="JetBrains Mono, monospace" font-size="9">meta-summaries</text>
+    </g>
+
+    <path d="M720 55 L760 55" stroke="#4b5563" stroke-width="2"/>
+    <polygon points="770,55 760,50 760,60" fill="#4b5563"/>
+
+    <g transform="translate(780, 30)">
+      <rect x="0" y="0" width="180" height="50" rx="8" fill="rgba(236,72,153,0.3)" stroke="#ec4899" stroke-width="2"/>
+      <text x="90" y="20" text-anchor="middle" fill="#ec4899" font-family="Inter, sans-serif" font-size="11" font-weight="600">ROOT</text>
+      <text x="90" y="38" text-anchor="middle" fill="#6b7280" font-family="JetBrains Mono, monospace" font-size="9">global context</text>
+    </g>
+
+    <!-- Benefits -->
+    <text x="1000" y="45" fill="#10b981" font-family="Inter, sans-serif" font-size="9" font-weight="600">Multi-level</text>
+    <text x="1000" y="58" fill="#10b981" font-family="Inter, sans-serif" font-size="9" font-weight="600">retrieval</text>
+  </g>
+
+  <!-- Footer -->
+  <text x="600" y="785" text-anchor="middle" fill="#4b5563" font-family="Inter, sans-serif" font-size="11">reasonkit-mem v1.0 | Apache 2.0 | Optional Memory Layer for reasonkit-core | reasonkit.sh</text>
+</svg>

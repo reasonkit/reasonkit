@@ -1,0 +1,37 @@
+# =============================================================================
+# ReasonKit Workspace
+# =============================================================================
+# The Reasoning Engine — Auditable Reasoning for Production AI
+# https://reasonkit.sh
+# =============================================================================
+
+[workspace]
+members = [
+    "reasonkit",
+    "reasonkit-core",
+    "reasonkit-mem",
+    "reasonkit-web",
+]
+resolver = "2"
+
+# Use local paths for development
+[patch.crates-io]
+reasonkit-core = { path = "reasonkit-core" }
+reasonkit-mem = { path = "reasonkit-mem" }
+reasonkit-web = { path = "reasonkit-web" }
+
+[profile.release]
+lto = true
+codegen-units = 1
+opt-level = 3
+strip = true
+
+[profile.bench]
+lto = true
+codegen-units = 1
+opt-level = 3
+
+[workspace.metadata.release]
+# Release configuration for cargo-release
+shared-version = true
+tag-name = "v{{version}}"

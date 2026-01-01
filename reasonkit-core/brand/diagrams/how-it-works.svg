@@ -1,0 +1,247 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 900" fill="none">
+  <defs>
+    <linearGradient id="heroGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#06b6d4"/>
+      <stop offset="50%" stop-color="#a855f7"/>
+      <stop offset="100%" stop-color="#ec4899"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feFlood flood-color="#06b6d4" flood-opacity="0.4"/>
+      <feComposite in2="blur" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <marker id="arrowhead" markerWidth="12" markerHeight="9" refX="10" refY="4.5" orient="auto">
+      <polygon points="0 0, 12 4.5, 0 9" fill="#4b5563"/>
+    </marker>
+    <marker id="arrowCyan" markerWidth="12" markerHeight="9" refX="10" refY="4.5" orient="auto">
+      <polygon points="0 0, 12 4.5, 0 9" fill="#06b6d4"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1400" height="900" fill="#030508"/>
+  <ellipse cx="700" cy="450" rx="550" ry="350" fill="url(#heroGrad)" opacity="0.03"/>
+
+  <!-- Title with generous top padding -->
+  <text x="700" y="55" text-anchor="middle" fill="url(#heroGrad)" font-family="Inter, sans-serif" font-size="40" font-weight="800">HOW REASONKIT WORKS</text>
+  <text x="700" y="92" text-anchor="middle" fill="#9ca3af" font-family="Inter, sans-serif" font-size="18">From Question to Verified Answer in 5 Steps</text>
+
+  <!-- Top row: 3 steps evenly distributed -->
+  <!-- 3 items × 400px + 2 gaps × 50px = 1300px, margins = (1400-1300)/2 = 50px -->
+  <!-- Positions: 50, 500, 950 -->
+
+  <!-- Step 1: User Input -->
+  <g transform="translate(50, 135)">
+    <circle cx="55" cy="55" r="35" fill="#0a0d14" stroke="#ec4899" stroke-width="2.5"/>
+    <text x="55" y="65" text-anchor="middle" fill="#ec4899" font-family="Inter, sans-serif" font-size="28" font-weight="800">1</text>
+    <text x="115" y="48" fill="#ec4899" font-family="Inter, sans-serif" font-size="20" font-weight="700">USER INPUT</text>
+    <text x="115" y="72" fill="#9ca3af" font-family="Inter, sans-serif" font-size="14">Your question or problem</text>
+
+    <rect x="0" y="100" width="400" height="95" rx="14" fill="#0a0d14" stroke="#ec4899" stroke-width="1.5"/>
+    <text x="25" y="135" fill="#f9fafb" font-family="JetBrains Mono, monospace" font-size="13">$ rk-core think --profile deep \</text>
+    <text x="25" y="165" fill="#f9fafb" font-family="JetBrains Mono, monospace" font-size="13">    "Should we adopt microservices?"</text>
+  </g>
+
+  <!-- Arrow 1→2 -->
+  <path d="M465 210 L485 210" stroke="#4b5563" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 2: Profile Selection -->
+  <g transform="translate(500, 135)">
+    <circle cx="55" cy="55" r="35" fill="#0a0d14" stroke="#a855f7" stroke-width="2.5"/>
+    <text x="55" y="65" text-anchor="middle" fill="#a855f7" font-family="Inter, sans-serif" font-size="28" font-weight="800">2</text>
+    <text x="115" y="48" fill="#a855f7" font-family="Inter, sans-serif" font-size="20" font-weight="700">PROFILE SELECTION</text>
+    <text x="115" y="72" fill="#9ca3af" font-family="Inter, sans-serif" font-size="14">Choose reasoning depth</text>
+
+    <rect x="0" y="100" width="400" height="95" rx="14" fill="#0a0d14" stroke="#a855f7" stroke-width="1.5"/>
+    <g transform="translate(30, 125)">
+      <rect x="0" y="0" width="80" height="30" rx="6" fill="rgba(6,182,212,0.2)"/>
+      <text x="40" y="20" text-anchor="middle" fill="#06b6d4" font-family="JetBrains Mono, monospace" font-size="11">--quick</text>
+    </g>
+    <g transform="translate(125, 125)">
+      <rect x="0" y="0" width="80" height="30" rx="6" fill="rgba(168,85,247,0.3)" stroke="#a855f7" stroke-width="1.5"/>
+      <text x="40" y="20" text-anchor="middle" fill="#a855f7" font-family="JetBrains Mono, monospace" font-size="11">--deep</text>
+    </g>
+    <g transform="translate(220, 125)">
+      <rect x="0" y="0" width="95" height="30" rx="6" fill="rgba(249,115,22,0.2)"/>
+      <text x="47" y="20" text-anchor="middle" fill="#f97316" font-family="JetBrains Mono, monospace" font-size="11">--paranoid</text>
+    </g>
+    <text x="30" y="180" fill="#6b7280" font-family="Inter, sans-serif" font-size="12">Selected: deep (gt → ll → br → pg → bh)</text>
+  </g>
+
+  <!-- Arrow 2→3 -->
+  <path d="M915 210 L935 210" stroke="#4b5563" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 3: ThinkTool Chain -->
+  <g transform="translate(950, 135)">
+    <circle cx="55" cy="55" r="35" fill="#0a0d14" stroke="#06b6d4" stroke-width="2.5"/>
+    <text x="55" y="65" text-anchor="middle" fill="#06b6d4" font-family="Inter, sans-serif" font-size="28" font-weight="800">3</text>
+    <text x="115" y="48" fill="#06b6d4" font-family="Inter, sans-serif" font-size="20" font-weight="700">THINKTOOL CHAIN</text>
+    <text x="115" y="72" fill="#9ca3af" font-family="Inter, sans-serif" font-size="14">Execute reasoning modules</text>
+
+    <rect x="0" y="100" width="400" height="95" rx="14" fill="#0a0d14" stroke="#06b6d4" stroke-width="1.5"/>
+    <g transform="translate(30, 130)">
+      <circle cx="18" cy="18" r="18" fill="rgba(6,182,212,0.2)"/>
+      <text x="18" y="24" text-anchor="middle" font-size="16">💡</text>
+    </g>
+    <text x="70" y="148" fill="#4b5563" font-size="16">→</text>
+    <g transform="translate(90, 130)">
+      <circle cx="18" cy="18" r="18" fill="rgba(168,85,247,0.2)"/>
+      <text x="18" y="24" text-anchor="middle" font-size="16">⚡</text>
+    </g>
+    <text x="130" y="148" fill="#4b5563" font-size="16">→</text>
+    <g transform="translate(150, 130)">
+      <circle cx="18" cy="18" r="18" fill="rgba(16,185,129,0.2)"/>
+      <text x="18" y="24" text-anchor="middle" font-size="16">🪨</text>
+    </g>
+    <text x="190" y="148" fill="#4b5563" font-size="16">→</text>
+    <g transform="translate(210, 130)">
+      <circle cx="18" cy="18" r="18" fill="rgba(251,191,36,0.2)"/>
+      <text x="18" y="24" text-anchor="middle" font-size="16">🛡️</text>
+    </g>
+    <text x="250" y="148" fill="#4b5563" font-size="16">→</text>
+    <g transform="translate(270, 130)">
+      <circle cx="18" cy="18" r="18" fill="rgba(249,115,22,0.2)"/>
+      <text x="18" y="24" text-anchor="middle" font-size="16">🔥</text>
+    </g>
+    <text x="30" y="180" fill="#6b7280" font-family="Inter, sans-serif" font-size="12">Each step builds on the previous</text>
+  </g>
+
+  <!-- Middle Section: Detailed Process -->
+  <g transform="translate(50, 290)">
+    <rect x="0" y="0" width="1300" height="320" rx="18" fill="#0a0d14" stroke="url(#heroGrad)" stroke-width="2"/>
+    <text x="650" y="35" text-anchor="middle" fill="url(#heroGrad)" font-family="Inter, sans-serif" font-size="18" font-weight="700">DETAILED EXECUTION FLOW</text>
+
+    <!-- 5 boxes evenly distributed: 5 × 220px + 4 × 30px = 1220px, offset = (1300-1220)/2 = 40px -->
+
+    <!-- GigaThink -->
+    <g transform="translate(40, 55)">
+      <rect x="0" y="0" width="220" height="240" rx="14" fill="rgba(6,182,212,0.05)" stroke="#06b6d4" stroke-width="1.5"/>
+      <text x="110" y="32" text-anchor="middle" font-size="28">💡</text>
+      <text x="110" y="58" text-anchor="middle" fill="#06b6d4" font-family="Inter, sans-serif" font-size="14" font-weight="700">GigaThink</text>
+      <text x="110" y="78" text-anchor="middle" fill="#6b7280" font-family="Inter, sans-serif" font-size="11">DIVERGENT</text>
+
+      <text x="15" y="105" fill="#9ca3af" font-family="Inter, sans-serif" font-size="11">Generated perspectives:</text>
+      <text x="20" y="128" fill="#10b981" font-family="JetBrains Mono, monospace" font-size="10">• Scalability angle</text>
+      <text x="20" y="148" fill="#10b981" font-family="JetBrains Mono, monospace" font-size="10">• Team structure impact</text>
+      <text x="20" y="168" fill="#10b981" font-family="JetBrains Mono, monospace" font-size="10">• Cost analysis</text>
+      <text x="20" y="188" fill="#10b981" font-family="JetBrains Mono, monospace" font-size="10">• Technical debt view</text>
+      <text x="20" y="208" fill="#10b981" font-family="JetBrains Mono, monospace" font-size="10">• Developer experience</text>
+      <text x="20" y="228" fill="#6b7280" font-family="JetBrains Mono, monospace" font-size="10">... +5 more</text>
+    </g>
+
+    <path d="M265 175 L290 175" stroke="#4b5563" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+    <!-- LaserLogic -->
+    <g transform="translate(290, 55)">
+      <rect x="0" y="0" width="220" height="240" rx="14" fill="rgba(168,85,247,0.05)" stroke="#a855f7" stroke-width="1.5"/>
+      <text x="110" y="32" text-anchor="middle" font-size="28">⚡</text>
+      <text x="110" y="58" text-anchor="middle" fill="#a855f7" font-family="Inter, sans-serif" font-size="14" font-weight="700">LaserLogic</text>
+      <text x="110" y="78" text-anchor="middle" fill="#6b7280" font-family="Inter, sans-serif" font-size="11">CONVERGENT</text>
+
+      <text x="15" y="105" fill="#9ca3af" font-family="Inter, sans-serif" font-size="11">Analysis results:</text>
+      <text x="20" y="128" fill="#10b981" font-family="JetBrains Mono, monospace" font-size="10">✓ Scalability: VALID</text>
+      <text x="20" y="148" fill="#10b981" font-family="JetBrains Mono, monospace" font-size="10">✓ Team impact: VALID</text>
+      <text x="20" y="168" fill="#f97316" font-family="JetBrains Mono, monospace" font-size="10">⚠ Cost: NEEDS DATA</text>
+      <text x="20" y="188" fill="#ef4444" font-family="JetBrains Mono, monospace" font-size="10">✗ Tech debt: FALLACY</text>
+      <text x="15" y="215" fill="#9ca3af" font-family="Inter, sans-serif" font-size="11">Fallacy detected:</text>
+      <text x="20" y="232" fill="#ef4444" font-family="JetBrains Mono, monospace" font-size="10">Sunk cost reasoning</text>
+    </g>
+
+    <path d="M515 175 L540 175" stroke="#4b5563" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+    <!-- BedRock -->
+    <g transform="translate(540, 55)">
+      <rect x="0" y="0" width="220" height="240" rx="14" fill="rgba(16,185,129,0.05)" stroke="#10b981" stroke-width="1.5"/>
+      <text x="110" y="32" text-anchor="middle" font-size="28">🪨</text>
+      <text x="110" y="58" text-anchor="middle" fill="#10b981" font-family="Inter, sans-serif" font-size="14" font-weight="700">BedRock</text>
+      <text x="110" y="78" text-anchor="middle" fill="#6b7280" font-family="Inter, sans-serif" font-size="11">GROUNDING</text>
+
+      <text x="15" y="105" fill="#9ca3af" font-family="Inter, sans-serif" font-size="11">First principles:</text>
+      <text x="20" y="128" fill="#10b981" font-family="JetBrains Mono, monospace" font-size="10">1. Team size > 10</text>
+      <text x="20" y="148" fill="#10b981" font-family="JetBrains Mono, monospace" font-size="10">2. Independent deploy</text>
+      <text x="20" y="168" fill="#10b981" font-family="JetBrains Mono, monospace" font-size="10">3. Failure isolation</text>
+      <text x="20" y="188" fill="#10b981" font-family="JetBrains Mono, monospace" font-size="10">4. Scale per service</text>
+      <text x="15" y="215" fill="#9ca3af" font-family="Inter, sans-serif" font-size="11">Axiom check:</text>
+      <text x="20" y="232" fill="#06b6d4" font-family="JetBrains Mono, monospace" font-size="10">All conditions met ✓</text>
+    </g>
+
+    <path d="M765 175 L790 175" stroke="#4b5563" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+    <!-- ProofGuard -->
+    <g transform="translate(790, 55)">
+      <rect x="0" y="0" width="220" height="240" rx="14" fill="rgba(251,191,36,0.05)" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="110" y="32" text-anchor="middle" font-size="28">🛡️</text>
+      <text x="110" y="58" text-anchor="middle" fill="#fbbf24" font-family="Inter, sans-serif" font-size="14" font-weight="700">ProofGuard</text>
+      <text x="110" y="78" text-anchor="middle" fill="#6b7280" font-family="Inter, sans-serif" font-size="11">VERIFICATION</text>
+
+      <text x="15" y="105" fill="#9ca3af" font-family="Inter, sans-serif" font-size="11">Triangulation:</text>
+      <text x="20" y="128" fill="#10b981" font-family="JetBrains Mono, monospace" font-size="10">Source 1: Fowler ✓</text>
+      <text x="20" y="148" fill="#10b981" font-family="JetBrains Mono, monospace" font-size="10">Source 2: Gartner ✓</text>
+      <text x="20" y="168" fill="#10b981" font-family="JetBrains Mono, monospace" font-size="10">Source 3: AWS docs ✓</text>
+      <text x="15" y="195" fill="#9ca3af" font-family="Inter, sans-serif" font-size="11">Verdict:</text>
+      <text x="20" y="215" fill="#10b981" font-family="JetBrains Mono, monospace" font-size="10">3/3 sources agree</text>
+      <text x="20" y="232" fill="#10b981" font-family="JetBrains Mono, monospace" font-size="10">Confidence: 87%</text>
+    </g>
+
+    <path d="M1015 175 L1040 175" stroke="#4b5563" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+    <!-- BrutalHonesty -->
+    <g transform="translate(1040, 55)">
+      <rect x="0" y="0" width="220" height="240" rx="14" fill="rgba(249,115,22,0.05)" stroke="#f97316" stroke-width="1.5"/>
+      <text x="110" y="32" text-anchor="middle" font-size="28">🔥</text>
+      <text x="110" y="58" text-anchor="middle" fill="#f97316" font-family="Inter, sans-serif" font-size="14" font-weight="700">BrutalHonesty</text>
+      <text x="110" y="78" text-anchor="middle" fill="#6b7280" font-family="Inter, sans-serif" font-size="11">CRITIQUE</text>
+
+      <text x="15" y="105" fill="#9ca3af" font-family="Inter, sans-serif" font-size="11">Weaknesses:</text>
+      <text x="20" y="128" fill="#f97316" font-family="JetBrains Mono, monospace" font-size="10">• Learning curve high</text>
+      <text x="20" y="148" fill="#f97316" font-family="JetBrains Mono, monospace" font-size="10">• Ops complexity up</text>
+      <text x="20" y="168" fill="#f97316" font-family="JetBrains Mono, monospace" font-size="10">• Network latency risk</text>
+
+      <text x="15" y="195" fill="#9ca3af" font-family="Inter, sans-serif" font-size="11">Mitigations:</text>
+      <text x="20" y="215" fill="#10b981" font-family="JetBrains Mono, monospace" font-size="10">✓ Training plan exists</text>
+      <text x="20" y="232" fill="#10b981" font-family="JetBrains Mono, monospace" font-size="10">✓ K8s team expertise</text>
+    </g>
+  </g>
+
+  <!-- Bottom row: Steps 4 and 5 -->
+  <!-- Step 4: 420px, gap: 50px, Step 5: 780px = 1250px, margins = (1350-1250)/2 = 50px -->
+
+  <!-- Step 4: Telemetry -->
+  <g transform="translate(50, 655)">
+    <circle cx="55" cy="55" r="35" fill="#0a0d14" stroke="#10b981" stroke-width="2.5"/>
+    <text x="55" y="65" text-anchor="middle" fill="#10b981" font-family="Inter, sans-serif" font-size="28" font-weight="800">4</text>
+    <text x="115" y="48" fill="#10b981" font-family="Inter, sans-serif" font-size="20" font-weight="700">TELEMETRY &amp; TRACING</text>
+    <text x="115" y="72" fill="#9ca3af" font-family="Inter, sans-serif" font-size="14">Full execution audit trail</text>
+
+    <rect x="0" y="100" width="420" height="100" rx="14" fill="#0a0d14" stroke="#10b981" stroke-width="1.5"/>
+    <text x="25" y="135" fill="#6b7280" font-family="JetBrains Mono, monospace" font-size="12">execution_id: rk_7f3a...</text>
+    <text x="25" y="160" fill="#6b7280" font-family="JetBrains Mono, monospace" font-size="12">duration: 2.3s</text>
+    <text x="25" y="185" fill="#10b981" font-family="JetBrains Mono, monospace" font-size="12">steps: 5/5 completed ✓</text>
+  </g>
+
+  <!-- Arrow 4→5 -->
+  <path d="M485 755 L505 755" stroke="#4b5563" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 5: Structured Output -->
+  <g transform="translate(520, 655)">
+    <circle cx="55" cy="55" r="35" fill="#0a0d14" stroke="#06b6d4" stroke-width="2.5" filter="url(#glow)"/>
+    <text x="55" y="65" text-anchor="middle" fill="#06b6d4" font-family="Inter, sans-serif" font-size="28" font-weight="800">5</text>
+    <text x="115" y="48" fill="#06b6d4" font-family="Inter, sans-serif" font-size="20" font-weight="700">STRUCTURED OUTPUT</text>
+    <text x="115" y="72" fill="#9ca3af" font-family="Inter, sans-serif" font-size="14">Auditable, reproducible result</text>
+
+    <rect x="0" y="100" width="830" height="100" rx="14" fill="#0a0d14" stroke="#06b6d4" stroke-width="2"/>
+    <text x="25" y="130" fill="#06b6d4" font-family="JetBrains Mono, monospace" font-size="12">verdict: "conditional_yes"</text>
+    <text x="25" y="155" fill="#06b6d4" font-family="JetBrains Mono, monospace" font-size="12">confidence: 0.87</text>
+    <text x="25" y="180" fill="#06b6d4" font-family="JetBrains Mono, monospace" font-size="12">grade: "A-"</text>
+    <text x="300" y="130" fill="#9ca3af" font-family="JetBrains Mono, monospace" font-size="12">reasoning_chain: [gt, ll, br, pg, bh]</text>
+    <text x="300" y="155" fill="#9ca3af" font-family="JetBrains Mono, monospace" font-size="12">sources_verified: 3</text>
+    <text x="300" y="180" fill="#9ca3af" font-family="JetBrains Mono, monospace" font-size="12">recommendations: [...]</text>
+    <text x="620" y="130" fill="#10b981" font-family="JetBrains Mono, monospace" font-size="12">traceable: true</text>
+    <text x="620" y="155" fill="#10b981" font-family="JetBrains Mono, monospace" font-size="12">reproducible: true</text>
+    <text x="620" y="180" fill="#10b981" font-family="JetBrains Mono, monospace" font-size="12">audit_ready: true</text>
+  </g>
+
+  <!-- Footer -->
+  <text x="700" y="875" text-anchor="middle" fill="#4b5563" font-family="Inter, sans-serif" font-size="14">ReasonKit | See How Your AI Thinks | reasonkit.sh</text>
+</svg>

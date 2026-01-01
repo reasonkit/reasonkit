@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1050 380" fill="none">
+  <defs>
+    <linearGradient id="heroGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#06b6d4"/>
+      <stop offset="50%" stop-color="#a855f7"/>
+      <stop offset="100%" stop-color="#ec4899"/>
+    </linearGradient>
+    <marker id="arrowCyan" markerWidth="12" markerHeight="10" refX="10" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,10 L12,5 z" fill="#06b6d4"/>
+    </marker>
+    <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1050" height="380" fill="#030508"/>
+
+  <!-- Title with generous top padding -->
+  <text x="525" y="45" fill="#f9fafb" font-family="Inter, sans-serif" font-size="26" font-weight="700" text-anchor="middle">Probabilistic vs Deterministic AI</text>
+
+  <!-- Left Box: Slot Machine (Probabilistic) -->
+  <g transform="translate(60, 80)">
+    <rect width="400" height="230" rx="16" fill="#0a0d14" stroke="#f97316" stroke-width="2.5"/>
+    <text x="200" y="38" fill="#f97316" font-family="Inter, sans-serif" font-size="18" font-weight="700" text-anchor="middle">Most AI (Probabilistic)</text>
+
+    <!-- Slot machine graphic with proper centering -->
+    <g transform="translate(125, 65)">
+      <rect x="0" y="0" width="150" height="95" rx="10" fill="#111827" stroke="#f97316" stroke-width="1.5"/>
+      <!-- Slot reels with proper spacing -->
+      <rect x="18" y="22" width="32" height="50" rx="4" fill="#030508" stroke="#f97316"/>
+      <text x="34" y="56" fill="#f97316" font-family="JetBrains Mono, monospace" font-size="24" text-anchor="middle">?</text>
+      <rect x="59" y="22" width="32" height="50" rx="4" fill="#030508" stroke="#f97316"/>
+      <text x="75" y="56" fill="#f97316" font-family="JetBrains Mono, monospace" font-size="24" text-anchor="middle">?</text>
+      <rect x="100" y="22" width="32" height="50" rx="4" fill="#030508" stroke="#f97316"/>
+      <text x="116" y="56" fill="#f97316" font-family="JetBrains Mono, monospace" font-size="24" text-anchor="middle">?</text>
+      <!-- Lever -->
+      <path d="M155 18 L155 55 L172 55" stroke="#f97316" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <circle cx="172" cy="55" r="8" fill="#f97316"/>
+    </g>
+
+    <text x="200" y="185" fill="#9ca3af" font-family="JetBrains Mono, monospace" font-size="13" text-anchor="middle">Insert prompt → Pull lever → Hope</text>
+    <text x="200" y="212" fill="#f97316" font-family="Inter, sans-serif" font-size="16" font-weight="600" text-anchor="middle">"Slot Machine"</text>
+  </g>
+
+  <!-- Arrow between boxes -->
+  <g transform="translate(485, 195)">
+    <line x1="0" y1="0" x2="70" y2="0" stroke="#06b6d4" stroke-width="4" marker-end="url(#arrowCyan)"/>
+  </g>
+
+  <!-- Right Box: Factory (Deterministic) -->
+  <g transform="translate(590, 80)">
+    <rect width="400" height="230" rx="16" fill="#0a0d14" stroke="#06b6d4" stroke-width="2.5" filter="url(#softGlow)"/>
+    <text x="200" y="38" fill="#06b6d4" font-family="Inter, sans-serif" font-size="18" font-weight="700" text-anchor="middle">ReasonKit (Deterministic)</text>
+
+    <!-- Factory pipeline graphic with proper spacing -->
+    <g transform="translate(45, 65)">
+      <!-- Input -->
+      <rect x="0" y="22" width="65" height="50" rx="8" fill="#111827" stroke="#06b6d4" stroke-width="1.5"/>
+      <text x="32" y="52" fill="#06b6d4" font-family="JetBrains Mono, monospace" font-size="11" text-anchor="middle">INPUT</text>
+
+      <!-- Arrow -->
+      <line x1="72" y1="47" x2="95" y2="47" stroke="#06b6d4" stroke-width="2.5" marker-end="url(#arrowCyan)"/>
+
+      <!-- Protocol box -->
+      <rect x="100" y="12" width="120" height="70" rx="10" fill="rgba(6,182,212,0.1)" stroke="#06b6d4" stroke-width="1.5"/>
+      <path d="M118 32 L150 32 M118 47 L200 47 M118 62 L140 62" stroke="#06b6d4" stroke-width="2.5"/>
+      <text x="160" y="92" fill="#06b6d4" font-family="JetBrains Mono, monospace" font-size="11" text-anchor="middle">PROTOCOL</text>
+
+      <!-- Arrow -->
+      <line x1="227" y1="47" x2="250" y2="47" stroke="#06b6d4" stroke-width="2.5" marker-end="url(#arrowCyan)"/>
+
+      <!-- Output -->
+      <rect x="255" y="22" width="65" height="50" rx="8" fill="#111827" stroke="#10b981" stroke-width="1.5"/>
+      <text x="287" y="52" fill="#10b981" font-family="JetBrains Mono, monospace" font-size="11" text-anchor="middle">OUTPUT</text>
+    </g>
+
+    <text x="200" y="185" fill="#9ca3af" font-family="JetBrains Mono, monospace" font-size="13" text-anchor="middle">Input → Protocol → Auditable Output</text>
+    <text x="200" y="212" fill="#06b6d4" font-family="Inter, sans-serif" font-size="16" font-weight="600" text-anchor="middle">"Factory"</text>
+  </g>
+
+  <!-- Footer with generous bottom padding -->
+  <text x="525" y="345" fill="#9ca3af" font-family="Inter, sans-serif" font-size="14" text-anchor="middle">Structure beats intelligence. Engineering over hope.</text>
+</svg>
