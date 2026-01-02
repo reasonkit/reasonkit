@@ -2,7 +2,7 @@
 name = "reasonkit-mem"
 version = "0.1.3"
 edition = "2021"
-rust-version = "1.74"
+rust-version = "1.80"
 authors = ["ReasonKit Team <team@reasonkit.sh>"]
 description = "High-performance vector database & RAG memory layer - hybrid search, embeddings, RAPTOR trees, BM25 fusion, and semantic retrieval for AI systems"
 license = "Apache-2.0"

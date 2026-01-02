@@ -2,7 +2,7 @@
 name = "reasonkit-core"
 version = "0.1.3"
 edition = "2021"
-rust-version = "1.74"
+rust-version = "1.80"
 authors = ["ReasonKit Team <team@reasonkit.sh>"]
 description = "The Reasoning Engine — Auditable Reasoning for Production AI | Rust-Native | Turn Prompts into Protocols"
 license = "Apache-2.0"

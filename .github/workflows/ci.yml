@@ -118,10 +118,10 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest]
-        rust: [stable, "1.74"] # MSRV
+        rust: [stable, "1.80"] # MSRV
         exclude:
           - os: macos-latest
-            rust: "1.74"
+            rust: "1.80"
 
     steps:
       - uses: actions/checkout@v4
