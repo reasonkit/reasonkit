@@ -118,7 +118,7 @@ regex = "1.10"
 qdrant-client = { version = "1.10", optional = true }
 
 # Full-text Search (optional - use reasonkit-mem for full memory features)
-tantivy = { version = "0.22", optional = true }
+tantivy = { version = "0.25", optional = true }
 
 # Memory Infrastructure (optional - provides storage, retrieval, embeddings)
 # Version required for crates.io publishing; path used for workspace development
