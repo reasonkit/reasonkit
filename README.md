@@ -4,6 +4,8 @@
 
 **The Reasoning Engine — Auditable Reasoning for Production AI**
 
+[![CI](https://img.shields.io/github/actions/workflow/status/reasonkit/reasonkit/ci.yml?branch=main&style=flat-square&logo=github&label=CI&color=06b6d4)](https://github.com/reasonkit/reasonkit/actions/workflows/ci.yml)
+[![Security](https://img.shields.io/github/actions/workflow/status/reasonkit/reasonkit/security.yml?branch=main&style=flat-square&logo=github&label=Security&color=10b981)](https://github.com/reasonkit/reasonkit/actions/workflows/security.yml)
 [![Crates.io](https://img.shields.io/crates/v/reasonkit.svg)](https://crates.io/crates/reasonkit)
 [![Documentation](https://docs.rs/reasonkit/badge.svg)](https://docs.rs/reasonkit)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
