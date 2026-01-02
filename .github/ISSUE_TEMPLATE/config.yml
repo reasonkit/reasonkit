@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation
+    url: https://docs.rs/reasonkit
+    about: Check the documentation for usage guides
+  - name: Website
+    url: https://reasonkit.sh
+    about: Visit our website for more information
