@@ -1,0 +1,19 @@
+# ReasonKit cargo-audit configuration
+# See: https://rustsec.org/advisories/
+
+[advisories]
+ignore = [
+    # fxhash: used by sled, scraper, wasmtime - TODO: replace sled with redb
+    "RUSTSEC-2025-0057",
+    # instant: used by parking_lot in sled - removed when sled replaced
+    "RUSTSEC-2024-0384",
+    # protobuf: used by rust-bert via rust_tokenizers
+    # Low risk: only affects parsing untrusted protobuf, we control inputs
+    "RUSTSEC-2024-0437",
+    # number_prefix: unmaintained, low risk, cosmetic dependency
+    "RUSTSEC-2025-0119",
+    # rustls-pemfile: unmaintained, tracked upstream
+    "RUSTSEC-2025-0134",
+    # paste: unmaintained, macro_rules_attribute uses it - widely used, low risk
+    "RUSTSEC-2024-0436",
+]
