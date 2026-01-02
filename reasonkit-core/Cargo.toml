@@ -192,7 +192,7 @@ walkdir = "2.4"
 ort = { version = "2.0.0-rc.10", optional = true }
 
 # HuggingFace tokenizers
-tokenizers = { version = "0.19", optional = true }
+tokenizers = { version = "0.22", optional = true }
 
 # NDArray for tensor operations (needed by ONNX)
 ndarray = { version = "0.15", optional = true }
