@@ -117,7 +117,7 @@ reqwest = { version = "0.12", features = ["json"] }
 
 # Error Handling
 anyhow = "1.0"
-thiserror = "1.0"
+thiserror = "2.0"
 
 # Async traits
 async-trait = "0.1"
