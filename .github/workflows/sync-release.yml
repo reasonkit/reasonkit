@@ -1,0 +1,198 @@
+# =============================================================================
+# Sync Component Release Workflow
+# =============================================================================
+# Automatically updates meta-crate dependencies when component crates release.
+#
+# Triggered by:
+# - repository_dispatch from reasonkit-core, reasonkit-mem, or reasonkit-web
+# - Manual dispatch with component and version inputs
+#
+# Flow:
+# 1. Component crate releases new version
+# 2. Component's release workflow dispatches to this repo
+# 3. This workflow updates Cargo.toml dependency version
+# 4. Creates PR (or commits directly if approved)
+# 5. Optionally auto-publishes to crates.io
+# =============================================================================
+
+name: Sync Component Release
+
+on:
+  repository_dispatch:
+    types:
+      - component-released
+      - reasonkit-core-released
+      - reasonkit-mem-released
+      - reasonkit-web-released
+
+  workflow_dispatch:
+    inputs:
+      component:
+        description: 'Component crate name (reasonkit-core, reasonkit-mem, reasonkit-web)'
+        required: true
+        type: choice
+        options:
+          - reasonkit-core
+          - reasonkit-mem
+          - reasonkit-web
+      version:
+        description: 'New version (e.g., 0.2.0)'
+        required: true
+        type: string
+      auto_publish:
+        description: 'Auto-publish to crates.io after successful tests'
+        required: false
+        type: boolean
+        default: false
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  # ===========================================================================
+  # Update Dependency Version
+  # ===========================================================================
+  update-dependency:
+    name: Update ${{ github.event.client_payload.component || inputs.component }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract component info
+        id: info
+        run: |
+          if [ "${{ github.event_name }}" = "repository_dispatch" ]; then
+            COMPONENT="${{ github.event.client_payload.component }}"
+            VERSION="${{ github.event.client_payload.version }}"
+          else
+            COMPONENT="${{ inputs.component }}"
+            VERSION="${{ inputs.version }}"
+          fi
+
+          echo "component=$COMPONENT" >> $GITHUB_OUTPUT
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+          # Extract crate name for Cargo.toml (use underscores)
+          CRATE_NAME=$(echo "$COMPONENT" | tr '-' '_')
+          echo "crate_name=$CRATE_NAME" >> $GITHUB_OUTPUT
+
+          echo "Updating $COMPONENT to version $VERSION"
+
+      - name: Install Rust
+        uses: dtolnay/rust-action@stable
+
+      - name: Update Cargo.toml
+        run: |
+          COMPONENT="${{ steps.info.outputs.component }}"
+          VERSION="${{ steps.info.outputs.version }}"
+
+          echo "Updating $COMPONENT to $VERSION in Cargo.toml"
+
+          # Update the dependency version using sed
+          # Pattern: reasonkit-core = { version = "X.Y.Z", ... }
+          sed -i "s/${COMPONENT} = { version = \"[^\"]*\"/${COMPONENT} = { version = \"${VERSION}\"/" Cargo.toml
+
+          # Also handle simple version format: reasonkit-core = "X.Y.Z"
+          sed -i "s/${COMPONENT} = \"[^\"]*\"/${COMPONENT} = \"${VERSION}\"/" Cargo.toml
+
+          echo "Updated Cargo.toml:"
+          grep -A1 "$COMPONENT" Cargo.toml || true
+
+      - name: Verify build
+        run: |
+          cargo check --all-features
+          cargo test --all-features
+
+      - name: Bump meta-crate patch version
+        id: bump
+        run: |
+          # Get current version
+          CURRENT=$(grep '^version = ' Cargo.toml | head -1 | cut -d'"' -f2)
+          echo "Current version: $CURRENT"
+
+          # Bump patch version
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT"
+          NEW_PATCH=$((PATCH + 1))
+          NEW_VERSION="${MAJOR}.${MINOR}.${NEW_PATCH}"
+
+          echo "New version: $NEW_VERSION"
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+
+          # Update version in Cargo.toml
+          sed -i "0,/^version = \"${CURRENT}\"/s//version = \"${NEW_VERSION}\"/" Cargo.toml
+
+      - name: Create commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          COMPONENT="${{ steps.info.outputs.component }}"
+          VERSION="${{ steps.info.outputs.version }}"
+          NEW_VERSION="${{ steps.bump.outputs.new_version }}"
+
+          git add Cargo.toml
+          git commit -m "chore(deps): update ${COMPONENT} to ${VERSION}
+
+          - Bumped ${COMPONENT} dependency to ${VERSION}
+          - Meta-crate version: ${NEW_VERSION}
+
+          Triggered by: ${{ github.event_name }}
+          "
+
+      - name: Push changes
+        run: git push
+
+      - name: Create release tag
+        if: ${{ github.event.client_payload.auto_publish == 'true' || inputs.auto_publish == true }}
+        run: |
+          NEW_VERSION="${{ steps.bump.outputs.new_version }}"
+          git tag -a "v${NEW_VERSION}" -m "Release v${NEW_VERSION}"
+          git push origin "v${NEW_VERSION}"
+
+  # ===========================================================================
+  # Publish to Crates.io (Optional)
+  # ===========================================================================
+  publish:
+    name: Publish to Crates.io
+    needs: update-dependency
+    if: ${{ github.event.client_payload.auto_publish == 'true' || inputs.auto_publish == true }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main  # Get the updated commit
+
+      - name: Install Rust
+        uses: dtolnay/rust-action@stable
+
+      - name: Publish to crates.io
+        run: cargo publish
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+
+  # ===========================================================================
+  # Notify Success
+  # ===========================================================================
+  notify:
+    name: Notify Completion
+    needs: [update-dependency]
+    runs-on: ubuntu-latest
+    if: always()
+
+    steps:
+      - name: Summary
+        run: |
+          echo "## Sync Release Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Field | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Component | ${{ github.event.client_payload.component || inputs.component }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Version | ${{ github.event.client_payload.version || inputs.version }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Status | ${{ needs.update-dependency.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Trigger | ${{ github.event_name }} |" >> $GITHUB_STEP_SUMMARY

@@ -1,0 +1,407 @@
+# =============================================================================
+# ReasonKit Monorepo Release Workflow
+# =============================================================================
+# Handles coordinated releases of all crates in dependency order:
+#   1. reasonkit-core (no deps on other reasonkit crates)
+#   2. reasonkit-mem (no deps on other reasonkit crates)
+#   3. reasonkit-web (no deps on other reasonkit crates)
+#   4. reasonkit (meta-crate, depends on all three)
+#
+# Trigger: Tag push (v*) or manual dispatch
+# =============================================================================
+
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g., 0.2.0)'
+        required: true
+        type: string
+      crates:
+        description: 'Which crates to release'
+        required: true
+        type: choice
+        options:
+          - all
+          - core
+          - mem
+          - web
+          - meta
+        default: all
+      dry_run:
+        description: 'Dry run (skip publish)'
+        required: false
+        type: boolean
+        default: false
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  # ===========================================================================
+  # Pre-Release Validation
+  # ===========================================================================
+  validate:
+    name: Validate Release
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      is_prerelease: ${{ steps.version.outputs.is_prerelease }}
+      release_core: ${{ steps.crates.outputs.core }}
+      release_mem: ${{ steps.crates.outputs.mem }}
+      release_web: ${{ steps.crates.outputs.web }}
+      release_meta: ${{ steps.crates.outputs.meta }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Extract version
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            VERSION="${GITHUB_REF#refs/tags/v}"
+          else
+            VERSION="${{ inputs.version }}"
+          fi
+
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+          if [[ "$VERSION" == *"-"* ]]; then
+            echo "is_prerelease=true" >> $GITHUB_OUTPUT
+          else
+            echo "is_prerelease=false" >> $GITHUB_OUTPUT
+          fi
+
+          echo "📦 Version: $VERSION"
+
+      - name: Determine crates to release
+        id: crates
+        run: |
+          CRATES="${{ inputs.crates || 'all' }}"
+
+          if [ "$CRATES" = "all" ]; then
+            echo "core=true" >> $GITHUB_OUTPUT
+            echo "mem=true" >> $GITHUB_OUTPUT
+            echo "web=true" >> $GITHUB_OUTPUT
+            echo "meta=true" >> $GITHUB_OUTPUT
+          else
+            echo "core=$( [ "$CRATES" = "core" ] && echo true || echo false )" >> $GITHUB_OUTPUT
+            echo "mem=$( [ "$CRATES" = "mem" ] && echo true || echo false )" >> $GITHUB_OUTPUT
+            echo "web=$( [ "$CRATES" = "web" ] && echo true || echo false )" >> $GITHUB_OUTPUT
+            echo "meta=$( [ "$CRATES" = "meta" ] && echo true || echo false )" >> $GITHUB_OUTPUT
+          fi
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Run all tests
+        run: cargo test --workspace
+
+      - name: Check clippy
+        run: cargo clippy --workspace -- -D warnings
+
+      - name: Verify crate versions
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          echo "Checking all crates have version $VERSION..."
+
+          for crate in reasonkit reasonkit-core reasonkit-mem reasonkit-web; do
+            CRATE_VERSION=$(cargo metadata --format-version 1 | jq -r ".packages[] | select(.name == \"$crate\") | .version")
+            if [ "$CRATE_VERSION" != "$VERSION" ]; then
+              echo "⚠️  Warning: $crate has version $CRATE_VERSION (expected $VERSION)"
+            else
+              echo "✅ $crate: $CRATE_VERSION"
+            fi
+          done
+
+  # ===========================================================================
+  # Publish reasonkit-core
+  # ===========================================================================
+  publish-core:
+    name: Publish reasonkit-core
+    needs: validate
+    runs-on: ubuntu-latest
+    if: needs.validate.outputs.release_core == 'true' && !inputs.dry_run
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Publish reasonkit-core
+        run: cargo publish -p reasonkit-core --allow-dirty
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+
+      - name: Wait for crates.io
+        run: |
+          echo "Waiting for crates.io to index reasonkit-core..."
+          sleep 45
+
+  # ===========================================================================
+  # Publish reasonkit-mem
+  # ===========================================================================
+  publish-mem:
+    name: Publish reasonkit-mem
+    needs: validate
+    runs-on: ubuntu-latest
+    if: needs.validate.outputs.release_mem == 'true' && !inputs.dry_run
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Publish reasonkit-mem
+        run: cargo publish -p reasonkit-mem --allow-dirty
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+
+      - name: Wait for crates.io
+        run: |
+          echo "Waiting for crates.io to index reasonkit-mem..."
+          sleep 45
+
+  # ===========================================================================
+  # Publish reasonkit-web
+  # ===========================================================================
+  publish-web:
+    name: Publish reasonkit-web
+    needs: validate
+    runs-on: ubuntu-latest
+    if: needs.validate.outputs.release_web == 'true' && !inputs.dry_run
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Publish reasonkit-web
+        run: cargo publish -p reasonkit-web --allow-dirty
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+
+      - name: Wait for crates.io
+        run: |
+          echo "Waiting for crates.io to index reasonkit-web..."
+          sleep 45
+
+  # ===========================================================================
+  # Publish reasonkit (meta-crate) - Must wait for all deps
+  # ===========================================================================
+  publish-meta:
+    name: Publish reasonkit (meta-crate)
+    needs: [validate, publish-core, publish-mem, publish-web]
+    runs-on: ubuntu-latest
+    if: |
+      always() &&
+      needs.validate.outputs.release_meta == 'true' &&
+      !inputs.dry_run &&
+      (needs.publish-core.result == 'success' || needs.publish-core.result == 'skipped') &&
+      (needs.publish-mem.result == 'success' || needs.publish-mem.result == 'skipped') &&
+      (needs.publish-web.result == 'success' || needs.publish-web.result == 'skipped')
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Wait for all deps to be indexed
+        run: |
+          echo "Waiting for all dependencies to be indexed on crates.io..."
+          sleep 60
+
+      - name: Publish reasonkit
+        run: cargo publish -p reasonkit --allow-dirty
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+
+  # ===========================================================================
+  # Create GitHub Release
+  # ===========================================================================
+  github-release:
+    name: Create GitHub Release
+    needs: [validate, publish-core, publish-mem, publish-web, publish-meta]
+    runs-on: ubuntu-latest
+    if: always() && !inputs.dry_run
+
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate release notes
+        run: |
+          VERSION="${{ needs.validate.outputs.version }}"
+
+          # Get commits since last tag
+          LAST_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+
+          if [ -n "$LAST_TAG" ]; then
+            COMMITS=$(git log --pretty=format:"- %s" "$LAST_TAG"..HEAD)
+          else
+            COMMITS=$(git log --pretty=format:"- %s" -20)
+          fi
+
+          cat > RELEASE_NOTES.md << 'RELEASE_EOF'
+          # ReasonKit v${{ needs.validate.outputs.version }}
+
+          The Reasoning Engine — Auditable Reasoning for Production AI
+
+          ## Installation
+
+          ```bash
+          # Install complete suite
+          cargo install reasonkit
+
+          # Or install individual components
+          cargo install reasonkit-core  # Reasoning engine
+          cargo install reasonkit-mem   # Memory layer
+          cargo install reasonkit-web   # Web sensing
+          ```
+
+          ## Quick Start
+
+          ```bash
+          # Run structured reasoning
+          reasonkit think --profile balanced "Should we adopt microservices?"
+
+          # Search knowledge base
+          reasonkit mem search "machine learning"
+
+          # Start MCP server
+          reasonkit serve
+          ```
+
+          ## Changes
+
+          RELEASE_EOF
+
+          echo "$COMMITS" >> RELEASE_NOTES.md
+
+          cat >> RELEASE_NOTES.md << 'RELEASE_EOF'
+
+          ## Components
+
+          | Crate | Version | Description |
+          |-------|---------|-------------|
+          | `reasonkit` | v${{ needs.validate.outputs.version }} | Meta-crate (full suite) |
+          | `reasonkit-core` | v${{ needs.validate.outputs.version }} | Reasoning engine |
+          | `reasonkit-mem` | v${{ needs.validate.outputs.version }} | Memory layer |
+          | `reasonkit-web` | v${{ needs.validate.outputs.version }} | Web sensing |
+
+          ## Links
+
+          - 📖 [Documentation](https://docs.rs/reasonkit)
+          - 📦 [Crates.io](https://crates.io/crates/reasonkit)
+          - 🌐 [Website](https://reasonkit.sh)
+          RELEASE_EOF
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ReasonKit v${{ needs.validate.outputs.version }}
+          body_path: RELEASE_NOTES.md
+          prerelease: ${{ needs.validate.outputs.is_prerelease == 'true' }}
+          generate_release_notes: true
+
+  # ===========================================================================
+  # Build Release Binaries
+  # ===========================================================================
+  build-binaries:
+    name: Build (${{ matrix.target }})
+    needs: validate
+    runs-on: ${{ matrix.os }}
+    if: ${{ !inputs.dry_run }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            name: linux-x86_64
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-musl
+            name: linux-x86_64-musl
+          - os: macos-latest
+            target: x86_64-apple-darwin
+            name: macos-x86_64
+          - os: macos-latest
+            target: aarch64-apple-darwin
+            name: macos-aarch64
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            name: windows-x86_64
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - name: Install musl tools
+        if: matrix.target == 'x86_64-unknown-linux-musl'
+        run: sudo apt-get install -y musl-tools
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: "release-${{ matrix.target }}"
+
+      - name: Build
+        run: cargo build --release --target ${{ matrix.target }} -p reasonkit
+
+      - name: Package (Unix)
+        if: runner.os != 'Windows'
+        run: |
+          cd target/${{ matrix.target }}/release
+          tar -czvf ../../../reasonkit-${{ matrix.name }}.tar.gz reasonkit rk 2>/dev/null || \
+          tar -czvf ../../../reasonkit-${{ matrix.name }}.tar.gz reasonkit
+
+      - name: Package (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          cd target/${{ matrix.target }}/release
+          7z a ../../../reasonkit-${{ matrix.name }}.zip reasonkit.exe rk.exe
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: reasonkit-${{ matrix.name }}
+          path: reasonkit-${{ matrix.name }}.*
+
+  # ===========================================================================
+  # Attach Binaries to Release
+  # ===========================================================================
+  attach-binaries:
+    name: Attach Binaries
+    needs: [validate, github-release, build-binaries]
+    runs-on: ubuntu-latest
+    if: ${{ !inputs.dry_run }}
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: List artifacts
+        run: find artifacts -type f
+
+      - name: Upload to release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ needs.validate.outputs.version }}
+          files: artifacts/**/*
