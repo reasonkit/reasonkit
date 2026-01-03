@@ -159,7 +159,7 @@ chrono = { version = "0.4", features = ["serde"] }
 sha2 = "0.10"
 
 # SQLite for local telemetry storage
-rusqlite = { version = "0.32", features = ["bundled"] }
+rusqlite = { version = "0.38", features = ["bundled"] }
 
 # Configuration
 config = "0.14"
