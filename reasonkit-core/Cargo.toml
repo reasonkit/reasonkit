@@ -185,7 +185,7 @@ console = { version = "0.16", features = ["std"] }
 
 # Directories
 directories = "5"
-dirs = "5"
+dirs = "6"
 walkdir = "2.4"
 
 # ONNX Runtime for local embeddings (BGE-M3)
