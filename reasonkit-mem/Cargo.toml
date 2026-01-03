@@ -2,7 +2,7 @@
 name = "reasonkit-mem"
 version = "0.1.3"
 edition = "2021"
-rust-version = "1.74"
+rust-version = "1.80"
 authors = ["ReasonKit Team <team@reasonkit.sh>"]
 description = "High-performance vector database & RAG memory layer - hybrid search, embeddings, RAPTOR trees, BM25 fusion, and semantic retrieval for AI systems"
 license = "Apache-2.0"
@@ -159,7 +159,7 @@ dirs = "5"
 ort = { version = "2.0.0-rc.10", optional = true }
 
 # HuggingFace tokenizers
-tokenizers = { version = "0.19", optional = true }
+tokenizers = { version = "0.22", optional = true }
 
 # NDArray for tensor operations
 ndarray = { version = "0.16", optional = true }
