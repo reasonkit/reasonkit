@@ -1,0 +1,67 @@
+# ReasonKit cargo-deny configuration
+# https://embarkstudios.github.io/cargo-deny/
+
+[graph]
+targets = []
+all-features = true
+
+[advisories]
+version = 2
+db-path = "~/.cargo/advisory-db"
+db-urls = ["https://github.com/RustSec/advisory-db"]
+ignore = [
+    # Unmaintained crates - tracked for future replacement
+    # fxhash: used by sled, scraper, wasmtime - TODO: replace sled with redb
+    "RUSTSEC-2025-0057",
+    # instant: used by parking_lot in sled - removed when sled replaced
+    "RUSTSEC-2024-0384",
+    # protobuf: used by rust-bert via rust_tokenizers
+    # Low risk: only affects parsing untrusted protobuf, we control inputs
+    "RUSTSEC-2024-0437",
+    # number_prefix: unmaintained, low risk, cosmetic dependency
+    "RUSTSEC-2025-0119",
+    # rustls-pemfile: unmaintained, tracked upstream
+    "RUSTSEC-2025-0134",
+    # paste: unmaintained, macro_rules_attribute uses it - widely used, low risk
+    "RUSTSEC-2024-0436",
+]
+
+[licenses]
+version = 2
+allow = [
+    "MIT",
+    "Apache-2.0",
+    "BSD-2-Clause",
+    "BSD-3-Clause",
+    "ISC",
+    "Zlib",
+    "MPL-2.0",
+    "Unicode-3.0",
+    "Unicode-DFS-2016",
+    "OpenSSL",
+    "CC0-1.0",
+    "Unlicense",
+    "Apache-2.0 WITH LLVM-exception",
+    "CDLA-Permissive-2.0",
+]
+confidence-threshold = 0.8
+
+[[licenses.clarify]]
+name = "ring"
+expression = "ISC AND MIT AND OpenSSL"
+license-files = [{ path = "LICENSE", hash = 0xbd0eed23 }]
+
+[[licenses.clarify]]
+name = "encoding_rs"
+expression = "(Apache-2.0 OR MIT) AND BSD-3-Clause"
+license-files = [{ path = "LICENSE", hash = 0x0986ad52 }]
+
+[bans]
+multiple-versions = "warn"
+wildcards = "warn"
+highlight = "all"
+
+[sources]
+unknown-registry = "deny"
+unknown-git = "deny"
+allow-registry = ["https://github.com/rust-lang/crates.io-index"]

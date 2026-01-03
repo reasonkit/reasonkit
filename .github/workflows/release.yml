@@ -59,7 +59,7 @@ jobs:
       release_meta: ${{ steps.crates.outputs.meta }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Extract version
         id: version
@@ -133,7 +133,7 @@ jobs:
     if: needs.validate.outputs.release_core == 'true' && !inputs.dry_run
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: dtolnay/rust-toolchain@stable
 
       - name: Publish reasonkit-core
@@ -156,7 +156,7 @@ jobs:
     if: needs.validate.outputs.release_mem == 'true' && !inputs.dry_run
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: dtolnay/rust-toolchain@stable
 
       - name: Publish reasonkit-mem
@@ -179,7 +179,7 @@ jobs:
     if: needs.validate.outputs.release_web == 'true' && !inputs.dry_run
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: dtolnay/rust-toolchain@stable
 
       - name: Publish reasonkit-web
@@ -208,7 +208,7 @@ jobs:
       (needs.publish-web.result == 'success' || needs.publish-web.result == 'skipped')
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: dtolnay/rust-toolchain@stable
 
       - name: Wait for all deps to be indexed
@@ -234,7 +234,7 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -343,7 +343,7 @@ jobs:
             name: windows-x86_64
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - uses: dtolnay/rust-toolchain@stable
         with:
@@ -374,7 +374,7 @@ jobs:
           7z a ../../../reasonkit-${{ matrix.name }}.zip reasonkit.exe rk.exe
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: reasonkit-${{ matrix.name }}
           path: reasonkit-${{ matrix.name }}.*
@@ -393,7 +393,7 @@ jobs:
 
     steps:
       - name: Download all artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           path: artifacts
 

@@ -1,8 +1,8 @@
 [package]
 name = "reasonkit"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
-rust-version = "1.75"
+rust-version = "1.80"
 authors = ["ReasonKit Team <team@reasonkit.sh>"]
 description = "The Reasoning Engine — Complete ReasonKit Suite | Auditable Reasoning for Production AI"
 license = "Apache-2.0"
@@ -102,8 +102,10 @@ tokio-test = "0.4"
 tempfile = "3"
 
 [package.metadata.docs.rs]
-# Don't use all-features (python requires PyO3/Python headers not in docs.rs)
-features = ["full"]
+# Only core - mem/web have build scripts that fail in docs.rs sandbox
+# (qdrant-client writes to filesystem, chromiumoxide requires browser)
+# Users should refer to individual crate docs for mem/web APIs
+features = ["core"]
 rustdoc-args = ["--cfg", "docsrs"]
 
 # =============================================================================
