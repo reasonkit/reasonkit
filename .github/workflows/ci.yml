@@ -32,6 +32,8 @@ on:
 env:
   CARGO_TERM_COLOR: always
   RUST_BACKTRACE: 1
+  # Override .cargo/config.toml target-cpu=native to prevent SIGILL on different runners
+  CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_RUSTFLAGS: ""
 
 jobs:
   # ===========================================================================
