@@ -1,0 +1,122 @@
+[package]
+name = "reasonkit"
+version = "0.1.1"
+edition = "2021"
+rust-version = "1.75"
+default-run = "rk"
+authors = ["ReasonKit Team <team@reasonkit.sh>"]
+description = "The Reasoning Engine — Complete ReasonKit Suite | Auditable Reasoning for Production AI"
+license = "Apache-2.0"
+repository = "https://github.com/reasonkit/reasonkit"
+homepage = "https://reasonkit.sh"
+documentation = "https://docs.rs/reasonkit"
+readme = "README.md"
+keywords = ["ai", "reasoning", "llm", "mcp", "rag"]
+categories = ["command-line-utilities", "development-tools", "science"]
+exclude = [".github/*", "tests/*", "benches/*"]
+
+[badges]
+maintenance = { status = "actively-developed" }
+
+# =============================================================================
+# DEPENDENCIES
+# =============================================================================
+
+[dependencies]
+# Core ReasonKit Components (all three OSS crates)
+# Uses workspace patch for local development
+reasonkit-core = { version = "0.1", optional = true, package = "reasonkit-core" }
+reasonkit-mem = { version = "0.1", optional = true, package = "reasonkit-mem" }
+reasonkit-web = { version = "0.1", optional = true, package = "reasonkit-web" }
+
+# CLI Framework
+clap = { version = "4.5", features = ["derive", "env", "wrap_help", "color"] }
+clap_complete = "4.5"
+
+# Async Runtime
+tokio = { version = "1.40", features = ["full"] }
+
+# Error Handling
+anyhow = "1.0"
+thiserror = "2.0"
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt"] }
+
+# Serialization (for JSON output)
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# =============================================================================
+# FEATURES
+# =============================================================================
+
+[features]
+# Default: Full suite with all components
+default = ["full"]
+
+# Individual components
+core = ["reasonkit-core"]
+mem = ["reasonkit-mem"]
+web = ["reasonkit-web"]
+
+# Combined features
+full = ["core", "mem", "web"]
+reasoning = ["core"]                    # Alias: Just reasoning engine
+memory = ["mem"]                        # Alias: Just memory layer
+browser = ["web"]                       # Alias: Just web/browser automation
+
+# Advanced features (pass-through to reasonkit-core)
+python = ["reasonkit-core?/python"]     # Python bindings
+arf = ["reasonkit-core?/arf"]           # Autonomous Reasoning Framework
+
+# =============================================================================
+# BINARIES
+# =============================================================================
+
+[[bin]]
+name = "reasonkit"
+path = "src/main.rs"
+required-features = []
+
+# Short alias
+[[bin]]
+name = "rk"
+path = "src/rk.rs"
+required-features = []
+
+# =============================================================================
+# LIBRARY
+# =============================================================================
+
+[lib]
+name = "reasonkit"
+path = "src/lib.rs"
+
+# =============================================================================
+# DEVELOPMENT
+# =============================================================================
+
+[dev-dependencies]
+tokio-test = "0.4"
+tempfile = "3"
+
+[package.metadata.docs.rs]
+# Don't use all-features (python requires PyO3/Python headers not in docs.rs)
+features = ["full"]
+rustdoc-args = ["--cfg", "docsrs"]
+
+# =============================================================================
+# PROFILE
+# =============================================================================
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+strip = true
+panic = "abort"
+
+[profile.dev]
+opt-level = 0
+debug = true
