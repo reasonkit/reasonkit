@@ -374,7 +374,7 @@ jobs:
           7z a ../../../reasonkit-${{ matrix.name }}.zip reasonkit.exe rk.exe
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v6.0.0
         with:
           name: reasonkit-${{ matrix.name }}
           path: reasonkit-${{ matrix.name }}.*
