@@ -59,7 +59,7 @@ jobs:
       release_meta: ${{ steps.crates.outputs.meta }}
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.1
 
       - name: Extract version
         id: version
@@ -133,7 +133,7 @@ jobs:
     if: needs.validate.outputs.release_core == 'true' && !inputs.dry_run
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.1
       - uses: dtolnay/rust-toolchain@stable
 
       - name: Publish reasonkit-core
@@ -156,7 +156,7 @@ jobs:
     if: needs.validate.outputs.release_mem == 'true' && !inputs.dry_run
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.1
       - uses: dtolnay/rust-toolchain@stable
 
       - name: Publish reasonkit-mem
@@ -179,7 +179,7 @@ jobs:
     if: needs.validate.outputs.release_web == 'true' && !inputs.dry_run
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.1
       - uses: dtolnay/rust-toolchain@stable
 
       - name: Publish reasonkit-web
@@ -208,7 +208,7 @@ jobs:
       (needs.publish-web.result == 'success' || needs.publish-web.result == 'skipped')
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.1
       - uses: dtolnay/rust-toolchain@stable
 
       - name: Wait for all deps to be indexed
@@ -234,7 +234,7 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.1
         with:
           fetch-depth: 0
 
@@ -343,7 +343,7 @@ jobs:
             name: windows-x86_64
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.1
 
       - uses: dtolnay/rust-toolchain@stable
         with:
