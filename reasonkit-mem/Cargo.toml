@@ -162,7 +162,7 @@ ort = { version = "2.0.0-rc.10", optional = true }
 tokenizers = { version = "0.22", optional = true }
 
 # NDArray for tensor operations
-ndarray = { version = "0.16", optional = true }
+ndarray = { version = "0.17", optional = true }
 
 # LZ4 compression (optional, for dual-layer memory)
 lz4_flex = { version = "0.11", optional = true }
