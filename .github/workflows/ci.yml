@@ -11,22 +11,22 @@ on:
   push:
     branches: [main, develop]
     paths:
-      - 'reasonkit/**'
-      - 'reasonkit-core/**'
-      - 'reasonkit-mem/**'
-      - 'reasonkit-web/**'
-      - 'Cargo.toml'
-      - 'Cargo.lock'
-      - '.github/workflows/ci.yml'
+      - "reasonkit/**"
+      - "reasonkit-core/**"
+      - "reasonkit-mem/**"
+      - "reasonkit-web/**"
+      - "Cargo.toml"
+      - "Cargo.lock"
+      - ".github/workflows/ci.yml"
   pull_request:
     branches: [main]
     paths:
-      - 'reasonkit/**'
-      - 'reasonkit-core/**'
-      - 'reasonkit-mem/**'
-      - 'reasonkit-web/**'
-      - 'Cargo.toml'
-      - 'Cargo.lock'
+      - "reasonkit/**"
+      - "reasonkit-core/**"
+      - "reasonkit-mem/**"
+      - "reasonkit-web/**"
+      - "Cargo.toml"
+      - "Cargo.lock"
   workflow_dispatch:
 
 env:
@@ -80,6 +80,7 @@ jobs:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
       - uses: dtolnay/rust-toolchain@f7ccc83f9ed1e5b9c81d8a67d7ad1a747e22a561 # stable
         with:
+          toolchain: stable
           components: rustfmt
 
       - name: Check formatting
@@ -97,6 +98,7 @@ jobs:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
       - uses: dtolnay/rust-toolchain@f7ccc83f9ed1e5b9c81d8a67d7ad1a747e22a561 # stable
         with:
+          toolchain: stable
           components: clippy
 
       - uses: Swatinem/rust-cache@779680da715d629ac1d338a641029a2f4372abb5 # v2
@@ -118,7 +120,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest]
-        rust: [stable, "1.74"]  # MSRV
+        rust: [stable, "1.74"] # MSRV
         exclude:
           - os: macos-latest
             rust: "1.74"
@@ -151,6 +153,8 @@ jobs:
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
       - uses: dtolnay/rust-toolchain@f7ccc83f9ed1e5b9c81d8a67d7ad1a747e22a561 # stable
+        with:
+          toolchain: stable
       - uses: Swatinem/rust-cache@779680da715d629ac1d338a641029a2f4372abb5 # v2
 
       - name: Check (full - default)
@@ -179,6 +183,8 @@ jobs:
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
       - uses: dtolnay/rust-toolchain@f7ccc83f9ed1e5b9c81d8a67d7ad1a747e22a561 # nightly
+        with:
+          toolchain: nightly
       - uses: Swatinem/rust-cache@779680da715d629ac1d338a641029a2f4372abb5 # v2
 
       - name: Build docs

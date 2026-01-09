@@ -15,16 +15,16 @@ name: Release
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
 
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version to release (e.g., 0.2.0)'
+        description: "Version to release (e.g., 0.2.0)"
         required: true
         type: string
       crates:
-        description: 'Which crates to release'
+        description: "Which crates to release"
         required: true
         type: choice
         options:
@@ -35,7 +35,7 @@ on:
           - meta
         default: all
       dry_run:
-        description: 'Dry run (skip publish)'
+        description: "Dry run (skip publish)"
         required: false
         type: boolean
         default: false
