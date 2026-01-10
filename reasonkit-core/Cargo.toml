@@ -184,7 +184,7 @@ indicatif = "0.18"
 console = { version = "0.16", features = ["std"] }
 
 # Directories
-directories = "5"
+directories = "6"
 dirs = "6"
 walkdir = "2.4"
 
