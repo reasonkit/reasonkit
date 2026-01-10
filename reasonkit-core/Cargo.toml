@@ -171,7 +171,7 @@ num_cpus = "1.16"
 jsonschema = "0.18"
 
 # File watching (for hot reload)
-notify = "6.1"
+notify = "8.2"
 
 # Rayon for parallel processing
 rayon = "1.10"
