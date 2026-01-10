@@ -4,13 +4,17 @@
 
 **The Reasoning Engine — Auditable Reasoning for Production AI**
 
-[![CI](https://img.shields.io/github/actions/workflow/status/reasonkit/reasonkit/ci.yml?branch=main&style=flat-square&logo=github&label=CI&color=06b6d4)](https://github.com/reasonkit/reasonkit/actions/workflows/ci.yml)
-[![Security](https://img.shields.io/github/actions/workflow/status/reasonkit/reasonkit/security.yml?branch=main&style=flat-square&logo=github&label=Security&color=10b981)](https://github.com/reasonkit/reasonkit/actions/workflows/security.yml)
-[![Crates.io](https://img.shields.io/crates/v/reasonkit.svg)](https://crates.io/crates/reasonkit)
-[![Documentation](https://docs.rs/reasonkit/badge.svg)](https://docs.rs/reasonkit)
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
+[![CI](https://img.shields.io/github/actions/workflow/status/reasonkit/reasonkit/ci.yml?branch=main&style=flat-square&logo=github&label=CI&color=06b6d4&logoColor=06b6d4)](https://github.com/reasonkit/reasonkit/actions/workflows/ci.yml)
+[![Security](https://img.shields.io/github/actions/workflow/status/reasonkit/reasonkit/security.yml?branch=main&style=flat-square&logo=github&label=Security&color=10b981&logoColor=10b981)](https://github.com/reasonkit/reasonkit/actions/workflows/security.yml)
+[![Crates.io](https://img.shields.io/crates/v/reasonkit?style=flat-square&logo=rust&color=10b981&logoColor=f9fafb)](https://crates.io/crates/reasonkit)
+[![docs.rs](https://img.shields.io/docsrs/reasonkit?style=flat-square&logo=docs.rs&color=06b6d4&logoColor=f9fafb)](https://docs.rs/reasonkit)
+[![Downloads](https://img.shields.io/crates/d/reasonkit?style=flat-square&color=ec4899&logo=rust&logoColor=f9fafb)](https://crates.io/crates/reasonkit)
+[![License](https://img.shields.io/badge/license-Apache%202.0-a855f7?style=flat-square&labelColor=030508)](LICENSE)
+[![Rust](https://img.shields.io/badge/rust-1.75+-f97316?style=flat-square&logo=rust&logoColor=f9fafb)](https://www.rust-lang.org/)
 
-[Website](https://reasonkit.sh) • [Documentation](https://docs.rs/reasonkit) • [Crates.io](https://crates.io/crates/reasonkit)
+_Meta-crate providing unified installation for the complete ReasonKit suite_
+
+[Documentation](https://docs.rs/reasonkit) | [Crates.io](https://crates.io/crates/reasonkit) | [Website](https://reasonkit.sh)
 
 </div>
 
