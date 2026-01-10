@@ -97,7 +97,7 @@ url = "2"
 uuid = { version = "1", features = ["v4", "serde"] }
 hdrhistogram = "7"
 parking_lot = "0.12"
-sysinfo = "0.33"
+sysinfo = "0.37"
 
 [dev-dependencies]
 tokio-test = "0.4"
