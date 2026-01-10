@@ -165,7 +165,7 @@ tokenizers = { version = "0.22", optional = true }
 ndarray = { version = "0.16", optional = true }
 
 # LZ4 compression (optional, for dual-layer memory)
-lz4_flex = { version = "0.11", optional = true }
+lz4_flex = { version = "0.12", optional = true }
 
 # ============================================================================
 # DEV DEPENDENCIES
