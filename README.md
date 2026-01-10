@@ -4,13 +4,13 @@
 
 **The Reasoning Engine — Auditable Reasoning for Production AI**
 
-[![CI](https://img.shields.io/github/actions/workflow/status/reasonkit/reasonkit/ci.yml?branch=main&style=flat-square&logo=github&label=CI&color=06b6d4&logoColor=06b6d4)](https://github.com/reasonkit/reasonkit/actions/workflows/ci.yml)
-[![Security](https://img.shields.io/github/actions/workflow/status/reasonkit/reasonkit/security.yml?branch=main&style=flat-square&logo=github&label=Security&color=10b981&logoColor=10b981)](https://github.com/reasonkit/reasonkit/actions/workflows/security.yml)
-[![Crates.io](https://img.shields.io/crates/v/reasonkit?style=flat-square&logo=rust&color=10b981&logoColor=f9fafb)](https://crates.io/crates/reasonkit)
-[![docs.rs](https://img.shields.io/docsrs/reasonkit?style=flat-square&logo=docs.rs&color=06b6d4&logoColor=f9fafb)](https://docs.rs/reasonkit)
-[![Downloads](https://img.shields.io/crates/d/reasonkit?style=flat-square&color=ec4899&logo=rust&logoColor=f9fafb)](https://crates.io/crates/reasonkit)
-[![License](https://img.shields.io/badge/license-Apache%202.0-a855f7?style=flat-square&labelColor=030508)](LICENSE)
-[![Rust](https://img.shields.io/badge/rust-1.75+-f97316?style=flat-square&logo=rust&logoColor=f9fafb)](https://www.rust-lang.org/)
+[![CI](https://badges.reasonkit.sh/github/actions/workflow/status/reasonkit/reasonkit/ci.yml?branch=main&style=flat-square&logo=github&label=CI&color=06b6d4&logoColor=06b6d4)](https://github.com/reasonkit/reasonkit/actions/workflows/ci.yml)
+[![Security](https://badges.reasonkit.sh/github/actions/workflow/status/reasonkit/reasonkit/security.yml?branch=main&style=flat-square&logo=github&label=Security&color=10b981&logoColor=10b981)](https://github.com/reasonkit/reasonkit/actions/workflows/security.yml)
+[![Crates.io](https://badges.reasonkit.sh/crates/v/reasonkit?style=flat-square&logo=rust&color=f97316&logoColor=f9fafb)](https://crates.io/crates/reasonkit)
+[![docs.rs](https://badges.reasonkit.sh/docsrs/reasonkit?style=flat-square&logo=docs.rs&color=06b6d4&logoColor=f9fafb)](https://docs.rs/reasonkit)
+[![Downloads](https://badges.reasonkit.sh/crates/d/reasonkit?style=flat-square&color=ec4899&logo=rust&logoColor=f9fafb)](https://crates.io/crates/reasonkit)
+[![License](https://badges.reasonkit.sh/static/v1?label=license&message=Apache%202.0&color=a855f7&style=flat-square&labelColor=030508)](LICENSE)
+[![Rust](https://badges.reasonkit.sh/static/v1?label=rust&message=1.75%2B&color=f97316&style=flat-square&logo=rust&logoColor=f9fafb)](https://www.rust-lang.org/)
 
 _Meta-crate providing unified installation for the complete ReasonKit suite_
 
@@ -18,47 +18,142 @@ _Meta-crate providing unified installation for the complete ReasonKit suite_
 
 </div>
 
----
+**ReasonKit** transforms ad-hoc LLM prompting into structured, auditable reasoning chains. This meta-crate provides a unified installation for the complete ReasonKit suite.
 
-## Overview
-
-ReasonKit transforms ad-hoc LLM prompting into structured, auditable reasoning chains.
-
-**Philosophy:** _Designed, Not Dreamed_ — Structure beats raw intelligence.
-
-## Installation
+## One-Line Install
 
 ```bash
-# Install complete suite
+# Install complete ReasonKit suite
 cargo install reasonkit
 
-# Or install individual components
-cargo install reasonkit-core  # Reasoning engine
-cargo install reasonkit-mem   # Memory layer
-cargo install reasonkit-web   # Web sensing
+# Or use the universal installer
+curl -fsSL https://get.reasonkit.sh | bash
 ```
+
+Installing provides two equivalent binaries:
+
+- `reasonkit` — Full command name
+- `rk` — Short alias for faster typing
+
+## What's Included
+
+| Component  | Crate                                                     | Purpose                                     |
+| ---------- | --------------------------------------------------------- | ------------------------------------------- |
+| **Core**   | [reasonkit-core](https://crates.io/crates/reasonkit-core) | Reasoning engine with ThinkTools            |
+| **Memory** | [reasonkit-mem](https://crates.io/crates/reasonkit-mem)   | Vector storage, hybrid search, RAPTOR trees |
+| **Web**    | [reasonkit-web](https://crates.io/crates/reasonkit-web)   | Browser automation, MCP sidecar             |
 
 ## Quick Start
 
+### CLI Usage
+
+Use `reasonkit` or the short alias `rk` — they're identical:
+
 ```bash
-# Run structured reasoning
-reasonkit think --profile balanced "Should we adopt microservices?"
+# Run structured reasoning (ThinkTools)
+rk think --profile balanced "Should we migrate to microservices?"
 
-# Search knowledge base
-reasonkit mem search "machine learning fundamentals"
+# Quick 2-step analysis
+rk think --profile quick "Is this email phishing?"
 
-# Start MCP server
-reasonkit serve
+# Maximum rigor (paranoid mode)
+rk think --profile paranoid "Validate this cryptographic implementation"
+
+# Verify claims with triangulation
+rk verify "GPT-4 has 1.76 trillion parameters"
+
+# Start MCP server for AI agent integration
+rk serve
 ```
 
-## Components
+### Library Usage
 
-| Crate                                                       | Description                                          |
-| ----------------------------------------------------------- | ---------------------------------------------------- |
-| [`reasonkit`](https://crates.io/crates/reasonkit)           | Meta-crate — installs complete suite                 |
-| [`reasonkit-core`](https://crates.io/crates/reasonkit-core) | The Reasoning Engine — ThinkTools, protocols, MCP    |
-| [`reasonkit-mem`](https://crates.io/crates/reasonkit-mem)   | Memory layer — vector storage, hybrid search, RAPTOR |
-| [`reasonkit-web`](https://crates.io/crates/reasonkit-web)   | Web sensing — browser automation, content extraction |
+```rust
+use reasonkit::prelude::*;
+
+#[tokio::main]
+async fn main() -> anyhow::Result<()> {
+    // Create reasoning executor
+    let executor = reasonkit::core::thinktool::ProtocolExecutor::new()?;
+
+    // Run GigaThink for multi-perspective analysis
+    let result = executor.execute(
+        "gigathink",
+        reasonkit::core::thinktool::ProtocolInput::query("What factors drive startup success?")
+    ).await?;
+
+    println!("Confidence: {:.1}%", result.confidence * 100.0);
+    for step in &result.steps {
+        println!("- {}", step.as_text().unwrap_or_default());
+    }
+
+    Ok(())
+}
+```
+
+## ThinkTools
+
+Five core reasoning protocols:
+
+| Tool              | Shortcut | Purpose                                          |
+| ----------------- | -------- | ------------------------------------------------ |
+| **GigaThink**     | `gt`     | Generate 10+ diverse perspectives                |
+| **LaserLogic**    | `ll`     | Precision deductive reasoning, fallacy detection |
+| **BedRock**       | `br`     | First principles decomposition                   |
+| **ProofGuard**    | `pg`     | Multi-source verification (3+ sources)           |
+| **BrutalHonesty** | `bh`     | Adversarial self-critique                        |
+
+## Profiles
+
+Pre-configured protocol chains:
+
+| Profile    | ThinkTools         | Confidence | Use Case           |
+| ---------- | ------------------ | ---------- | ------------------ |
+| `quick`    | GT, LL             | 70%        | Fast analysis      |
+| `balanced` | GT, LL, BR, PG     | 80%        | Standard decisions |
+| `deep`     | All 5              | 85%        | Complex problems   |
+| `paranoid` | All 5 + validation | 95%        | High-stakes        |
+
+## Features
+
+```toml
+[dependencies]
+# Full suite (default)
+reasonkit = "0.1"
+
+# Core reasoning only
+reasonkit = { version = "0.1", default-features = false, features = ["core"] }
+
+# Memory layer only
+reasonkit = { version = "0.1", default-features = false, features = ["mem"] }
+
+# Web automation only
+reasonkit = { version = "0.1", default-features = false, features = ["web"] }
+```
+
+| Feature  | Description                 |
+| -------- | --------------------------- |
+| `full`   | All components (default)    |
+| `core`   | Reasoning engine only       |
+| `mem`    | Memory layer only           |
+| `web`    | Web/browser automation only |
+| `python` | Python bindings via PyO3    |
+
+## LLM Providers
+
+18+ providers supported out of the box:
+
+- **Major Cloud**: Anthropic, OpenAI, Google Gemini, Vertex AI, Azure OpenAI, AWS Bedrock
+- **Specialized**: xAI (Grok), Groq, Mistral, DeepSeek, Cohere, Perplexity
+- **Aggregation**: OpenRouter (300+ models)
+
+```bash
+# Set your API key
+export ANTHROPIC_API_KEY="sk-ant-..."
+
+# Or use a different provider
+rk think --provider openai --model gpt-4o "Your question"
+```
 
 ## Architecture
 
@@ -66,31 +161,60 @@ reasonkit serve
 reasonkit (meta-crate)
 │
 ├── reasonkit-core    ─── The Reasoning Engine
-│   ├── ThinkTools (GigaThink, LaserLogic, BedRock, ProofGuard, BrutalHonesty)
+│   ├── ThinkTools
 │   ├── Protocol Executor
-│   ├── LLM Client (18+ providers)
+│   ├── LLM Client
 │   └── MCP Server
 │
 ├── reasonkit-mem     ─── Memory Infrastructure
 │   ├── Vector Storage (Qdrant)
-│   ├── Sparse Index (Tantivy BM25)
+│   ├── Sparse Index (Tantivy)
 │   ├── Hybrid Retrieval
 │   └── RAPTOR Trees
 │
 └── reasonkit-web     ─── Web Sensing Layer
-    ├── Browser Controller (CDP)
+    ├── Browser Controller
     ├── Content Extraction
     └── MCP Sidecar
 ```
 
+## Philosophy
+
+**"Designed, Not Dreamed"** — Structure beats raw intelligence.
+
+ReasonKit imposes systematic reasoning protocols on LLM outputs, producing more reliable, verifiable, and explainable results.
+
+## Documentation
+
+- **Website**: https://reasonkit.sh
+- **API Docs**: https://docs.rs/reasonkit
+- **Core Docs**: https://docs.rs/reasonkit-core
+- **Memory Docs**: https://docs.rs/reasonkit-mem
+- **Web Docs**: https://docs.rs/reasonkit-web
+
+## Individual Crates
+
+If you only need specific functionality:
+
+```bash
+# Reasoning only
+cargo install reasonkit-core
+
+# Memory layer only
+cargo install reasonkit-mem
+
+# Web automation only
+cargo install reasonkit-web
+```
+
 ## License
 
-Apache 2.0 — See [LICENSE](LICENSE) for details.
+Apache-2.0 — See [LICENSE](LICENSE) for details.
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ---
 
-<div align="center">
-
-**[reasonkit.sh](https://reasonkit.sh)** — Turn Prompts into Protocols
-
-</div>
+**Turn Prompts into Protocols** | https://reasonkit.sh
