@@ -113,7 +113,7 @@ sled = "0.34"
 tokio = { version = "1", features = ["full"] }
 
 # HTTP Client (for Qdrant health checks)
-reqwest = { version = "0.12", features = ["json"] }
+reqwest = { version = "0.13", features = ["json"] }
 
 # Error Handling
 anyhow = "1.0"
