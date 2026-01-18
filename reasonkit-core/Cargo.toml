@@ -97,7 +97,7 @@ required-features = ["minimax"]
 
 [dependencies]
 # Python Integration (0.24+ supports Python 3.13) - optional
-pyo3 = { version = "0.24.1", features = ["extension-module"], optional = true }
+pyo3 = { version = "0.27.2", features = ["extension-module"], optional = true }
 
 # Serialization
 serde = { version = "1.0", features = ["derive"] }
