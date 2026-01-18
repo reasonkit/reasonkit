@@ -144,7 +144,7 @@ crc32fast = "1.4"
 rayon = "1.10"
 
 # Concurrent data structures
-dashmap = "5.5"
+dashmap = "6.1"
 
 # CPU detection for optimal shard count
 num_cpus = "1.16"
