@@ -122,10 +122,10 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest]
-        rust: [stable, "1.74"]  # MSRV
+        rust: [stable, "1.75"]  # MSRV (matches rust-version in Cargo.toml)
         exclude:
           - os: macos-latest
-            rust: "1.74"
+            rust: "1.75"
 
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v4
