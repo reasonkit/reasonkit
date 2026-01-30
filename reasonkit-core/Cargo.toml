@@ -111,7 +111,7 @@ lopdf = "0.38"
 
 # Text Processing
 pulldown-cmark = "0.13"
-scraper = "0.18"
+scraper = "0.25"
 regex = "1.10"
 
 # Vector Database (optional - use reasonkit-mem for full memory features)

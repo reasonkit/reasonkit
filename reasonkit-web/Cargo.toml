@@ -76,7 +76,7 @@ tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 clap = { version = "4", features = ["derive"] }
 
 # HTML/Content processing
-scraper = "0.21"
+scraper = "0.25"
 html5ever = "0.37"
 base64 = "0.22.1"
 futures = "0.3.31"
