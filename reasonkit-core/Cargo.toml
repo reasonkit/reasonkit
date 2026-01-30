@@ -214,7 +214,7 @@ md5 = { version = "0.7", optional = true }  # For aesthetic engine config hashin
 tokio-test = "0.4"
 tempfile = "3.10"
 pretty_assertions = "1.4"
-criterion = { version = "0.5", features = ["html_reports", "async_tokio"] }
+criterion = { version = "0.8", features = ["html_reports", "async_tokio"] }
 futures = "0.3"
 # Property-based testing for comprehensive fuzzing and invariant verification
 proptest = "1.4"
