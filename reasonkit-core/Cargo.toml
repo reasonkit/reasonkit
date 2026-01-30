@@ -204,7 +204,7 @@ sysinfo = { version = "0.30", optional = true }
 petgraph = { version = "0.8", optional = true, features = ["serde-1"] }
 rust-bert = { version = "0.23", optional = true, features = ["download-libtorch", "hf-tokenizers"], default-features = false }
 parking_lot = { version = "0.12", optional = true }
-md5 = { version = "0.7", optional = true }  # For aesthetic engine config hashing
+md5 = { version = "0.8", optional = true }  # For aesthetic engine config hashing
 
 # ============================================================================
 # DEV DEPENDENCIES
