@@ -737,20 +737,19 @@ fn json_to_pyobject<'py>(
     py: Python<'py>,
     value: &serde_json::Value,
 ) -> PyResult<Bound<'py, PyAny>> {
-    use pyo3::ToPyObject;
     match value {
         serde_json::Value::Null => Ok(py.None().into_bound(py)),
-        serde_json::Value::Bool(b) => Ok(b.to_object(py).into_bound(py)),
+        serde_json::Value::Bool(b) => Ok(pyo3::types::PyBool::new(py, *b).to_owned().into_any()),
         serde_json::Value::Number(n) => {
             if let Some(i) = n.as_i64() {
-                Ok(i.to_object(py).into_bound(py))
+                Ok(pyo3::types::PyInt::new(py, i).into_any())
             } else if let Some(f) = n.as_f64() {
-                Ok(f.to_object(py).into_bound(py))
+                Ok(pyo3::types::PyFloat::new(py, f).into_any())
             } else {
                 Err(PyValueError::new_err("Invalid number"))
             }
         }
-        serde_json::Value::String(s) => Ok(s.to_object(py).into_bound(py)),
+        serde_json::Value::String(s) => Ok(pyo3::types::PyString::new(py, s).into_any()),
         serde_json::Value::Array(arr) => {
             let list = PyList::empty(py);
             for item in arr {

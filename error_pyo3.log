@@ -1,0 +1,73 @@
+warning: profiles for the non root package will be ignored, specify profiles at the workspace root:
+package:   /app/reasonkit/Cargo.toml
+workspace: /app/Cargo.toml
+warning: profiles for the non root package will be ignored, specify profiles at the workspace root:
+package:   /app/reasonkit-web/Cargo.toml
+workspace: /app/Cargo.toml
+    Updating crates.io index
+     Locking 54 packages to latest compatible versions
+      Adding bit-set v0.5.3
+      Adding bit-vec v0.6.3
+      Adding cssparser v0.31.2
+      Adding cssparser v0.34.0
+ Downgrading dashmap v6.1.0 -> v5.5.3 (available: v6.1.0)
+ Downgrading derive_more v2.1.1 -> v0.99.20
+      Adding ego-tree v0.6.3
+      Adding ego-tree v0.9.0
+ Downgrading fancy-regex v0.17.0 -> v0.13.0
+      Adding html5ever v0.26.0
+      Adding html5ever v0.29.1
+      Adding hyper-tls v0.6.0
+      Adding iso8601 v0.6.3
+ Downgrading jsonschema v0.39.0 -> v0.18.3 (available: v0.44.1)
+ Downgrading lopdf v0.39.0 -> v0.38.0 (available: v0.39.0)
+      Adding markup5ever v0.11.0
+      Adding markup5ever v0.14.1
+      Adding match_token v0.1.0
+ Downgrading md5 v0.8.0 -> v0.7.0 (available: v0.8.0)
+      Adding phf v0.10.1
+      Adding phf v0.11.3
+      Adding phf_codegen v0.10.0
+      Adding phf_codegen v0.11.3
+      Adding phf_generator v0.10.0
+      Adding phf_generator v0.11.3
+ Downgrading phf_macros v0.13.1 -> v0.11.3
+      Adding phf_shared v0.10.0
+      Adding phf_shared v0.11.3
+    Updating pyo3 v0.24.2 -> v0.27.2 (available: v0.28.2)
+    Updating pyo3-build-config v0.24.2 -> v0.27.2
+    Updating pyo3-ffi v0.24.2 -> v0.27.2
+    Updating pyo3-macros v0.24.2 -> v0.27.2
+    Updating pyo3-macros-backend v0.24.2 -> v0.27.2
+ Downgrading rmcp v0.13.0 -> v0.12.0 (available: v1.1.0)
+ Downgrading rmcp-macros v0.13.0 -> v0.12.0
+      Adding scraper v0.18.1 (available: v0.25.0)
+      Adding scraper v0.21.0 (available: v0.25.0)
+      Adding selectors v0.25.0
+      Adding selectors v0.26.0
+      Adding servo_arc v0.3.0
+      Adding siphasher v0.3.11
+      Adding string_cache v0.8.9
+      Adding string_cache_codegen v0.5.4
+      Adding syn v1.0.109
+      Adding sysinfo v0.30.13 (available: v0.38.3)
+      Adding sysinfo v0.33.1 (available: v0.38.3)
+      Adding tokio-native-tls v0.3.1
+      Adding windows v0.52.0
+      Adding windows v0.57.0
+      Adding windows-core v0.52.0
+      Adding windows-core v0.57.0
+      Adding windows-implement v0.57.0
+      Adding windows-interface v0.57.0
+      Adding windows-result v0.1.2
+    Checking tantivy-sstable v0.6.0
+    Checking chromiumoxide v0.8.0
+    Checking tonic v0.12.3
+    Checking reasonkit-core v0.1.3 (/app/reasonkit-core)
+    Checking tantivy-columnar v0.6.0
+    Checking tantivy v0.25.0
+    Checking qdrant-client v1.17.0
+    Checking reasonkit-web v0.1.4 (/app/reasonkit-web)
+    Checking reasonkit-mem v0.1.3 (/app/reasonkit-mem)
+    Checking reasonkit v0.1.2 (/app/reasonkit)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 15.62s
