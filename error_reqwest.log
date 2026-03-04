@@ -1,0 +1,22 @@
+warning: profiles for the non root package will be ignored, specify profiles at the workspace root:
+package:   /mnt/storage/RK-PROJECT/reasonkit/.worktrees/oss-umbrella/reasonkit/Cargo.toml
+workspace: /mnt/storage/RK-PROJECT/reasonkit/.worktrees/oss-umbrella/Cargo.toml
+warning: profiles for the non root package will be ignored, specify profiles at the workspace root:
+package:   /mnt/storage/RK-PROJECT/reasonkit/.worktrees/oss-umbrella/reasonkit-web/Cargo.toml
+workspace: /mnt/storage/RK-PROJECT/reasonkit/.worktrees/oss-umbrella/Cargo.toml
+    Updating crates.io index
+error: failed to select a version for `reqwest`.
+    ... required by package `reasonkit-web v0.1.4 (/mnt/storage/RK-PROJECT/reasonkit/.worktrees/oss-umbrella/reasonkit-web)`
+    ... which satisfies dependency `reasonkit-web = "^0.1"` (locked to 0.1.4) of package `reasonkit v0.1.2 (/mnt/storage/RK-PROJECT/reasonkit/.worktrees/oss-umbrella/reasonkit)`
+versions that meet the requirements `^0.13` are: 0.13.2, 0.13.1, 0.13.0
+
+the package `reasonkit-web` depends on `reqwest`, with features: `rustls-tls` but `reqwest` does not have these features.
+
+
+all possible versions conflict with previously selected packages.
+
+  previously selected package `reqwest v0.13.0`
+    ... which satisfies dependency `reqwest = "^0.13"` of package `reasonkit-core v0.1.3 (/mnt/storage/RK-PROJECT/reasonkit/.worktrees/oss-umbrella/reasonkit-core)`
+    ... which satisfies dependency `reasonkit-core = "^0.1"` (locked to 0.1.3) of package `reasonkit v0.1.2 (/mnt/storage/RK-PROJECT/reasonkit/.worktrees/oss-umbrella/reasonkit)`
+
+failed to select a version for `reqwest` which could resolve this conflict

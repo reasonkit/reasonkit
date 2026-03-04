@@ -1,0 +1,79 @@
+warning: profiles for the non root package will be ignored, specify profiles at the workspace root:
+package:   /app/reasonkit/Cargo.toml
+workspace: /app/Cargo.toml
+warning: profiles for the non root package will be ignored, specify profiles at the workspace root:
+package:   /app/reasonkit-web/Cargo.toml
+workspace: /app/Cargo.toml
+warning: use of deprecated type alias `pyo3::PyObject`: use `Py<PyAny>` instead
+   --> reasonkit-mem/src/lib.rs:649:19
+    |
+649 |         embed_fn: PyObject,
+    |                   ^^^^^^^^
+    |
+    = note: `#[warn(deprecated)]` on by default
+
+warning: use of deprecated type alias `pyo3::PyObject`: use `Py<PyAny>` instead
+   --> reasonkit-mem/src/lib.rs:650:23
+    |
+650 |         summarize_fn: PyObject,
+    |                       ^^^^^^^^
+
+warning: use of deprecated method `pyo3::Python::<'py>::allow_threads`: use `Python::detach` instead
+   --> reasonkit-mem/src/lib.rs:675:12
+    |
+675 |         py.allow_threads(move || {
+    |            ^^^^^^^^^^^^^
+
+warning: use of deprecated associated function `pyo3::Python::<'_>::with_gil`: use `Python::attach` instead
+   --> reasonkit-mem/src/lib.rs:681:29
+    |
+681 |                     Python::with_gil(|py| {
+    |                             ^^^^^^^^
+
+warning: use of deprecated associated function `pyo3::Python::<'_>::with_gil`: use `Python::attach` instead
+   --> reasonkit-mem/src/lib.rs:691:29
+    |
+691 |                     Python::with_gil(|py| {
+    |                             ^^^^^^^^
+
+warning: use of deprecated method `pyo3::Python::<'py>::allow_threads`: use `Python::detach` instead
+   --> reasonkit-mem/src/lib.rs:727:12
+    |
+727 |         py.allow_threads(move || {
+    |            ^^^^^^^^^^^^^
+
+warning: `reasonkit-mem` (lib) generated 6 warnings
+    Checking reasonkit-core v0.1.3 (/app/reasonkit-core)
+warning: use of deprecated method `pyo3::types::PyAnyMethods::downcast`: use `Bound::cast` instead
+   --> reasonkit-core/src/bindings.rs:195:17
+    |
+195 |             obj.downcast::<PyDict>()
+    |                 ^^^^^^^^
+    |
+    = note: `#[warn(deprecated)]` on by default
+
+error[E0507]: cannot move out of dereference of `pyo3::Borrowed<'_, '_, PyBool>`
+   --> reasonkit-core/src/bindings.rs:742:42
+    |
+742 |         serde_json::Value::Bool(b) => Ok(pyo3::types::PyBool::new(py, *b).into_any()),
+    |                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ ---------- value moved due to this method call
+    |                                          |
+    |                                          move occurs because value has type `pyo3::Bound<'_, PyBool>`, which does not implement the `Copy` trait
+    |
+note: `pyo3::Bound::<'py, T>::into_any` takes ownership of the receiver `self`, which moves value
+   --> /app/.cargo_docker/registry/src/index.crates.io-1949cf8c6b5b557f/pyo3-0.27.2/src/instance.rs:852:21
+    |
+852 |     pub fn into_any(self) -> Bound<'py, PyAny> {
+    |                     ^^^^
+help: you can `clone` the value and consume it, but this might not be your desired behavior
+    |
+742 |         serde_json::Value::Bool(b) => Ok(<pyo3::Bound<'_, PyBool> as Clone>::clone(&pyo3::types::PyBool::new(py, *b)).into_any()),
+    |                                          +++++++++++++++++++++++++++++++++++++++++++                                +
+help: consider cloning the value if the performance cost is acceptable
+    |
+742 |         serde_json::Value::Bool(b) => Ok(pyo3::types::PyBool::new(py, *b).clone().into_any()),
+    |                                                                          ++++++++
+
+For more information about this error, try `rustc --explain E0507`.
+warning: `reasonkit-core` (lib) generated 1 warning
+error: could not compile `reasonkit-core` (lib) due to 1 previous error; 1 warning emitted
