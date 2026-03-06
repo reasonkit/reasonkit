@@ -46,7 +46,7 @@ targets = [
 tokio = { version = "1", features = ["full"] }
 
 # CDP/Browser automation
-chromiumoxide = { version = "0.8", features = ["tokio-runtime"] }
+chromiumoxide = { version = "0.9", features = ["tokio-runtime"] }
 
 # MCP server
 rmcp = "0.12"
