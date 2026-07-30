@@ -4,13 +4,13 @@
 
 **The Reasoning Engine — Auditable Reasoning for Production AI**
 
-[![CI](https://badges.reasonkit.sh/github/actions/workflow/status/reasonkit/reasonkit/ci.yml?branch=main&style=flat-square&logo=github&label=CI&color=06b6d4&logoColor=06b6d4)](https://github.com/reasonkit/reasonkit/actions/workflows/ci.yml)
-[![Security](https://badges.reasonkit.sh/github/actions/workflow/status/reasonkit/reasonkit/security.yml?branch=main&style=flat-square&logo=github&label=Security&color=10b981&logoColor=10b981)](https://github.com/reasonkit/reasonkit/actions/workflows/security.yml)
-[![Crates.io](https://badges.reasonkit.sh/crates/v/reasonkit?style=flat-square&logo=rust&color=f97316&logoColor=f9fafb)](https://crates.io/crates/reasonkit)
-[![docs.rs](https://badges.reasonkit.sh/docsrs/reasonkit?style=flat-square&logo=docs.rs&color=06b6d4&logoColor=f9fafb)](https://docs.rs/reasonkit)
-[![Downloads](https://badges.reasonkit.sh/crates/d/reasonkit?style=flat-square&color=ec4899&logo=rust&logoColor=f9fafb)](https://crates.io/crates/reasonkit)
-[![License](https://badges.reasonkit.sh/static/v1?label=license&message=Apache%202.0&color=a855f7&style=flat-square&labelColor=030508)](LICENSE)
-[![Rust](https://badges.reasonkit.sh/static/v1?label=rust&message=1.75%2B&color=f97316&style=flat-square&logo=rust&logoColor=f9fafb)](https://www.rust-lang.org/)
+[![CI](https://badges.reasonkit.sh/github/actions/workflow/status/reasonkit/reasonkit/ci.yml?branch=main&logo=github&label=CI&color=06b6d4&logoColor=06b6d4)](https://github.com/reasonkit/reasonkit/actions/workflows/ci.yml)
+[![Security](https://badges.reasonkit.sh/github/actions/workflow/status/reasonkit/reasonkit/security.yml?branch=main&logo=github&label=Security&color=10b981&logoColor=10b981)](https://github.com/reasonkit/reasonkit/actions/workflows/security.yml)
+[![Crates.io](https://badges.reasonkit.sh/crates/v/reasonkit?logo=rust&color=f97316&logoColor=f9fafb)](https://crates.io/crates/reasonkit)
+[![docs.rs](https://badges.reasonkit.sh/docsrs/reasonkit?logo=docs.rs&color=06b6d4&logoColor=f9fafb)](https://docs.rs/reasonkit)
+[![Downloads](https://badges.reasonkit.sh/crates/d/reasonkit?color=ec4899&logo=rust&logoColor=f9fafb)](https://crates.io/crates/reasonkit)
+[![License](https://badges.reasonkit.sh/static/v1?label=license&message=Apache%202.0&color=a855f7)](LICENSE)
+[![Rust](https://badges.reasonkit.sh/static/v1?label=rust&message=1.75%2B&color=f97316&logo=rust&logoColor=f9fafb)](https://www.rust-lang.org/)
 
 _Meta-crate providing unified installation for the complete ReasonKit suite_
 
